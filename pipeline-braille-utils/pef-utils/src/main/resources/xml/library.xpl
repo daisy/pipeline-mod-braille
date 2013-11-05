@@ -24,7 +24,7 @@
     <!--
         pef:validate
     -->
-    <p:import href="http://www.daisy.org/pipeline/modules/braille/pef-calabash/validate.xpl"/>
+    <p:import href="validate.xpl"/>
     
     <!--
         pef:compare
