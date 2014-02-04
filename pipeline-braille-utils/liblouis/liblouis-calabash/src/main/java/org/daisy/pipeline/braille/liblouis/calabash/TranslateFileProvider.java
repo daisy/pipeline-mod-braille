@@ -38,6 +38,7 @@ public class TranslateFileProvider implements XProcStepProvider {
 	private static final QName louis_result = new QName(LOUIS_PREFIX, LOUIS_NS, "result");
 	
 	private static final QName _table = new QName("table");
+	private static final QName _pagenum_table = new QName("pagenum-table");
 	private static final QName _paged = new QName("paged");
 	private static final QName _temp_dir = new QName("temp-dir");
 	private static final QName _href = new QName("href");
@@ -158,6 +159,8 @@ public class TranslateFileProvider implements XProcStepProvider {
 				if (pageLayout.containsKey(louis_braille_page_begin))
 					settings.put("beginningPageNumber",
 					             pageLayout.get(louis_braille_page_begin).getString());
+				if (getOption(_pagenum_table) != null && !"".equals(getOption(_pagenum_table).getString()))
+					settings.put("pageNumberTable",  getOption(_pagenum_table).getString());
 				
 				File tempDir = new File(new URI(getOption(_temp_dir).getString()));
 				String configPath = null;

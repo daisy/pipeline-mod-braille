@@ -15,6 +15,7 @@
     <p:input port="source" sequence="true" primary="true"/>
     <p:output port="result" sequence="false" primary="true"/>
     
+    <p:option name="pagenum-table" required="false"/>
     <p:option name="temp-dir" required="true"/>
     
     <p:import href="utils/xslt-for-each.xpl"/>
@@ -285,6 +286,12 @@
         <p:input port="spine">
             <p:pipe step="split-into-sections" port="spine"/>
         </p:input>
+        <p:with-option name="pagenum-table"
+                       select="if (p:value-available('pagenum-table'))
+                               then string-join((resolve-uri('../lbx_files/nabcc.dis'), $pagenum-table), ',')
+                               else ''">
+            <p:empty/>
+        </p:with-option>
         <p:with-option name="temp-dir" select="$temp-dir">
             <p:empty/>
         </p:with-option>

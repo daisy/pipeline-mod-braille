@@ -111,6 +111,9 @@ public class LiblouisutdmlProcessBuilderImpl implements Liblouisutdml {
 				settings.put("editTable", tablePath); }
 			if (otherSettings != null)
 				settings.putAll(otherSettings);
+			String pagenumTable = settings.get("pageNumberTable");
+			if (pagenumTable != null)
+				settings.put("pageNumberTable", "\"" + resolveTable(pagenumTable).getCanonicalPath() + "\"");
 			for (String key : settings.keySet())
 				command.add("-C" + key + "=" + settings.get(key));
 			command.add(input.getAbsolutePath());

@@ -16,6 +16,7 @@
     <p:input port="spine" sequence="false"/>
     <p:output port="result" sequence="true" primary="true"/>
     
+    <p:option name="pagenum-table" required="true"/>
     <p:option name="temp-dir" required="true"/>
     
     <p:import href="utils/select-by-base.xpl"/>
@@ -290,6 +291,7 @@
                         <p:input port="page-layout" select="/*/louis:page-layout/c:param-set">
                             <p:pipe step="source.section" port="matched"/>
                         </p:input>
+                        <p:with-option name="pagenum-table" select="$pagenum-table"/>
                         <p:with-option name="temp-dir" select="$temp-dir"/>
                     </louis:translate-file>
                     
@@ -422,6 +424,9 @@
                             <p:input port="spine">
                                 <p:pipe step="main" port="spine"/>
                             </p:input>
+                            <p:with-option name="pagenum-table" select="$pagenum-table">
+                                <p:empty/>
+                            </p:with-option>
                             <p:with-option name="temp-dir" select="$temp-dir">
                                 <p:empty/>
                             </p:with-option>
@@ -483,6 +488,7 @@
                             <p:with-param port="page-layout" name="louis:page-width" select="/*/@width">
                                 <p:pipe step="source.box" port="result"/>
                             </p:with-param>
+                            <p:with-option name="pagenum-table" select="$pagenum-table"/>
                             <p:with-option name="temp-dir" select="$temp-dir"/>
                         </louis:translate-file>
                         <p:xslt>
@@ -564,6 +570,9 @@
                             <p:input port="spine">
                                 <p:pipe step="main" port="spine"/>
                             </p:input>
+                            <p:with-option name="pagenum-table" select="$pagenum-table">
+                                <p:empty/>
+                            </p:with-option>
                             <p:with-option name="temp-dir" select="$temp-dir">
                                 <p:empty/>
                             </p:with-option>
@@ -622,6 +631,7 @@
                             <p:input port="page-layout" select="/*/louis:page-layout/c:param-set">
                                 <p:pipe step="set-braille-page-begin" port="result"/>
                             </p:input>
+                            <p:with-option name="pagenum-table" select="$pagenum-table"/>
                             <p:with-option name="temp-dir" select="$temp-dir"/>
                         </louis:translate-file>
                         <p:add-attribute match="/louis:result" attribute-name="xml:base">
@@ -707,6 +717,9 @@
                             <p:input port="spine">
                                 <p:pipe step="main" port="spine"/>
                             </p:input>
+                            <p:with-option name="pagenum-table" select="$pagenum-table">
+                                <p:empty/>
+                            </p:with-option>
                             <p:with-option name="temp-dir" select="$temp-dir">
                                 <p:empty/>
                             </p:with-option>

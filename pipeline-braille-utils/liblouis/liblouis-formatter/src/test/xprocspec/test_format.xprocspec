@@ -386,4 +386,28 @@
     </x:expect>
   </x:scenario>
   
+  
+  
+  <!-- ======= -->
+  <!-- test_22 -->
+  <!-- ======= -->
+  <!--
+      
+  -->
+  <x:scenario label="test_22">
+    <x:call step="louis:format">
+      <x:input port="source">
+        <x:document type="file" href="../resources/xml/test_22.xml"/>
+      </x:input>
+      <x:option name="pagenum-table" select="resolve-uri('../resources/tables/pagenum.cti')"/>
+      <x:option name="temp-dir" select="resolve-uri('../../../target/xprocspec/tmp/')"/>
+    </x:call>
+    <x:context label="result">
+      <x:document type="port" port="result"/>
+    </x:context>
+    <x:expect label="result" type="custom" href="pef-compare.xpl" step="pxi:pef-compare">
+      <x:document type="file" href="../resources/pef/test_22.pef"/>
+    </x:expect>
+  </x:scenario>
+  
 </x:description>
