@@ -11,7 +11,10 @@ public interface XProcTransform extends Transform {
 	/**
 	 * Expose the {@link org.daisy.pipeline.braille.common.Transform} as an
 	 * XProc step (an href to an XProc document and a step name) with a set of
-	 * options.
+	 * options. The step must accept a single document on its "source" port
+	 * and produce a single document on its "result" port. Optionally, the
+	 * step may produce a document on its "resource-map" output port with
+	 * synchronization data between input and ouput.
 	 */
 	public Tuple3<URI,QName,Map<String,String>> asXProc();
 	
