@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE catalog
+  PUBLIC "-//OASIS/DTD Entity Resolution XML Catalog V1.0//EN" "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" xmlns:px="http://www.daisy.org/ns/pipeline">
+  <uri name="http://www.daisy.org/pipeline/modules/braille/braille-in-epub3/braille-in-epub3.xpl" uri="../xml/braille-in-epub3.xpl" px:script="true"/>
+  <nextCatalog catalog="org:daisy:pipeline:modules:braille:css-utils"/>
+  <nextCatalog catalog="org:daisy:pipeline:modules:braille:common-utils"/>
+  <nextCatalog catalog="org:daisy:pipeline:modules:fileset-utils"/>
+  <nextCatalog catalog="org:daisy:pipeline:modules:file-utils"/>
+  <nextCatalog catalog="org:daisy:pipeline:modules:zip-utils"/>
+  <nextCatalog catalog="org:daisy:pipeline:modules:common-utils"/>
+</catalog>
