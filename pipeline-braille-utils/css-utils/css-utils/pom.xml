@@ -100,7 +100,7 @@
         <configuration>
           <instructions>
             <_dsannotations>*</_dsannotations>
-            <Require-Capability>xproc.step;filter:="(name={http://www.daisy.org/ns/pipeline/braille-css}inline)"</Require-Capability>
+            <Require-Capability>xproc.step;filter:="(name={http://www.daisy.org/ns/pipeline/xproc/internal}:css-inline)"</Require-Capability>
           </instructions>
         </configuration>
       </plugin>
