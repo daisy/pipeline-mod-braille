@@ -6,12 +6,30 @@
                 xmlns:css="http://www.daisy.org/ns/pipeline/braille-css"
                 exclude-result-prefixes="#all">
 	
-	<xsl:import href="http://www.daisy.org/pipeline/modules/braille/css-utils/transform/block-translator-template.xsl"/>
-	
 	<xsl:param name="query"/>
 	
-	<xsl:template match="css:block" mode="#all">
-		<xsl:variable name="text" as="text()*" select="//text()"/>
+	<xsl:template match="css:block" mode="#default">
+		<xsl:param name="source-path" as="xs:integer*" required="yes"/>
+		<xsl:param name="result-path" as="xs:integer*" required="yes"/>
+		<xsl:variable name="new-text-nodes" as="xs:string*">
+			<xsl:call-template name="translate-text-nodes"/>
+		</xsl:variable>
+		<xsl:apply-templates select="node()[1]" mode="treewalk">
+			<xsl:with-param name="source-path" select="$source-path"/>
+			<xsl:with-param name="result-path" select="$result-path"/>
+			<xsl:with-param name="new-text-nodes" select="$new-text-nodes"/>
+		</xsl:apply-templates>
+	</xsl:template>
+	
+	<xsl:template match="css:block" mode="before after string-set">
+		<xsl:variable name="new-text-nodes" as="xs:string*">
+			<xsl:call-template name="translate-text-nodes"/>
+		</xsl:variable>
+		<xsl:value-of select="string-join($new-text-nodes,'')"/>
+	</xsl:template>
+	
+	<xsl:template name="translate-text-nodes" as="xs:string*">
+		<xsl:variable name="text" as="text()*" select=".//text()"/>
 		<xsl:variable name="style" as="xs:string*">
 			<xsl:for-each select="$text">
 				<xsl:variable name="inline-style" as="element()*"
@@ -19,9 +37,7 @@
 				<xsl:sequence select="css:serialize-declaration-list($inline-style[not(@value=css:initial-value(@name))])"/>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:apply-templates select="node()[1]" mode="treewalk">
-			<xsl:with-param name="new-text-nodes" select="louis:translate(concat($query,'(locale:',string(@xml:lang),')'), $text, $style)"/>
-		</xsl:apply-templates>
+		<xsl:sequence select="louis:translate(concat($query,'(locale:',string(@xml:lang),')'), $text, $style)"/>
 	</xsl:template>
 	
 	<xsl:template match="css:property[@name=('text-transform','font-style','font-weight','text-decoration','color')]"

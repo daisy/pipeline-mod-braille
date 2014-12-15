@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.daisy.org/ns/xprocspec"
+               xmlns:louis="http://liblouis.org/liblouis"
+               xmlns:d="http://www.daisy.org/ns/pipeline/data"
+               script="../../main/resources/xml/transform/liblouis-block-translate.xpl">
+  
+  <x:scenario label="test_01" pending="white-space:pre not honored">
+    <x:call step="louis:block-translate">
+      <x:input port="source">
+        <x:document type="inline">
+          <doc xml:lang="en">
+            <p style="display: block">
+              <span style="hyphens: auto; white-space: pre">
+                foo<span style="font-weight: bold">bar</span>
+              </span>
+            </p>
+          </doc>
+        </x:document>
+      </x:input>
+    </x:call>
+    <x:context label="result">
+      <x:document type="port" port="result"/>
+    </x:context>
+    <x:expect label="result" type="compare">
+      <x:document type="inline">
+        <doc xml:lang="en">
+          <p style="{ display: block }">
+            <span style="{ hyphens: manual; white-space: pre }">
+              ⠋⠕⠕<span>⠃⠜</span>
+            </span>
+          </p>
+        </doc>
+      </x:document>
+    </x:expect>
+    <x:context label="result">
+      <x:document type="port" port="resource-map"/>
+    </x:context>
+    <x:expect label="resource-map" type="compare">
+      <x:document type="inline">
+        <d:resource-map>
+          <d:sync source-ref="/2/2/1" result-ref="/2/2/1"/>
+          <d:sync source-ref="/2/2/2/1" result-ref="/2/2/2/1"/>
+        </d:resource-map>
+      </x:document>
+    </x:expect>
+  </x:scenario>
+  
+  <x:scenario label="test_02" pending="liblouis typeform broken">
+    <x:call step="louis:block-translate">
+      <x:input port="source">
+        <x:document type="inline">
+          <doc xml:lang="en">
+            <p style="display: block">
+              <span style="text-transform: louis-ital">
+                foo <span style="text-transform: louis-bold">bar</span>
+              </span>
+            </p>
+          </doc>
+        </x:document>
+      </x:input>
+    </x:call>
+    <x:context label="result">
+      <x:document type="port" port="result"/>
+    </x:context>
+    <x:expect label="result" type="compare">
+      <x:document type="inline">
+        <doc xml:lang="en">
+          <p style="{{ display: block }}">
+            <span>
+              ⠋⠕⠕ <span>⠃⠜</span>
+            </span>
+          </p>
+        </doc>
+      </x:document>
+    </x:expect>
+  </x:scenario>
+  
+</x:description>

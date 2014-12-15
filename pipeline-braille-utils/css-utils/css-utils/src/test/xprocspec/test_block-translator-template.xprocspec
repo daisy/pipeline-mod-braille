@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.daisy.org/ns/xprocspec"
+               xmlns:css="http://www.daisy.org/ns/pipeline/braille-css"
+               xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:d="http://www.daisy.org/ns/pipeline/data"
+               script="../../main/resources/xml/transform/block-translator-template.xpl">
+  
+  <x:scenario label="test_01">
+    <x:call step="css:block-translate">
+      <x:input port="source">
+        <x:document type="inline">
+          <doc>
+            <h style="display: block; string-set: running-footer content()">foobar</h>
+            <p style="{ display: block } ::after { content: 'bar' }">foo</p>
+            <pagenum value="1" style="display: none; string-set: print-page attr(value)"/>
+          </doc>
+        </x:document>
+      </x:input>
+      <x:input port="translator">
+        <x:document type="inline">
+          <xsl:stylesheet version="2.0">
+            <xsl:template match="css:block" mode="#default after before string-set">
+              <xsl:value-of select="upper-case(string(.))"/>
+            </xsl:template>
+          </xsl:stylesheet>
+        </x:document>
+      </x:input>
+    </x:call>
+    <x:context label="result">
+      <x:document type="port" port="result"/>
+    </x:context>
+    <x:expect label="result" type="compare">
+      <x:document type="inline">
+        <doc>
+          <h style="{ display: block; string-set: running-footer content() }">FOOBAR</h>
+          <p style="{ display: block } ::after { content: &quot;BAR&quot; }">FOO</p>
+          <pagenum value="1" style="{ display: none; string-set: print-page &quot;1&quot; }"/>
+        </doc>
+      </x:document>
+    </x:expect>
+    <x:context label="result">
+      <x:document type="port" port="resource-map"/>
+    </x:context>
+    <x:expect label="resource-map" type="compare">
+      <x:document type="inline">
+        <d:resource-map>
+          <d:sync source-ref="/2/1" result-ref="/2/1"/>
+          <d:sync source-ref="/4/1" result-ref="/4/1"/>
+        </d:resource-map>
+      </x:document>
+    </x:expect>
+  </x:scenario>
+  
+    <x:scenario label="test_02">
+    <x:call step="css:block-translate">
+      <x:input port="source">
+        <x:document type="inline">
+          <doc>
+            <h style="display: block">foo<span>bar</span></h>
+            <p style="{ display: block } ::after { content: 'bar' }">foo</p>
+          </doc>
+        </x:document>
+      </x:input>
+      <x:input port="translator">
+        <x:document type="inline">
+          <xsl:stylesheet version="2.0">
+            <xsl:template match="css:block" mode="#default">
+              <xsl:param name="source-path" as="xs:integer*" required="yes"/>
+              <xsl:param name="result-path" as="xs:integer*" required="yes"/>
+              <xsl:apply-templates select="node()[1]" mode="treewalk">
+                <xsl:with-param name="source-path" select="$source-path"/>
+                <xsl:with-param name="result-path" select="$result-path"/>
+                <xsl:with-param name="new-text-nodes" select="descendant::text()/upper-case(string(.))"/>
+              </xsl:apply-templates>
+            </xsl:template>
+            <xsl:template match="css:block" mode="before after string-set">
+              <xsl:value-of select="upper-case(string(.))"/>
+            </xsl:template>
+          </xsl:stylesheet>
+        </x:document>
+      </x:input>
+    </x:call>
+    <x:context label="result">
+      <x:document type="port" port="result"/>
+    </x:context>
+    <x:expect label="result" type="compare">
+      <x:document type="inline">
+        <doc>
+          <h style="{ display: block }">FOO<span>BAR</span></h>
+          <p style="{ display: block } ::after { content: &quot;BAR&quot; }">FOO</p>
+        </doc>
+      </x:document>
+    </x:expect>
+    <x:context label="result">
+      <x:document type="port" port="resource-map"/>
+    </x:context>
+    <x:expect label="resource-map" type="compare">
+      <x:document type="inline">
+        <d:resource-map>
+          <d:sync source-ref="/2/1" result-ref="/2/1"/>
+          <d:sync source-ref="/2/2/1" result-ref="/2/2/1"/>
+          <d:sync source-ref="/4/1" result-ref="/4/1"/>
+        </d:resource-map>
+      </x:document>
+    </x:expect>
+  </x:scenario>
+  
+</x:description>

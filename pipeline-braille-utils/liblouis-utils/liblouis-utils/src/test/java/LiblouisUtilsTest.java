@@ -73,30 +73,30 @@ public class LiblouisUtilsTest {
 		);
 	}
 	
-	@Inject
-	private XSpecRunner xspecRunner;
+	// @Inject
+	// private XSpecRunner xspecRunner;
 	
-	@Test
-	public void runXSpec() throws Exception {
-		File baseDir = new File(PathUtils.getBaseDir());
-		File testsDir = new File(baseDir, "src/test/xspec");
-		File reportsDir = new File(baseDir, "target/surefire-reports");
-		reportsDir.mkdirs();
-		TestResults result = xspecRunner.run(testsDir, reportsDir);
-		assertEquals("Number of failures and errors should be zero", 0L, result.getFailures() + result.getErrors());
-	}
+	// @Test
+	// public void runXSpec() throws Exception {
+	// 	File baseDir = new File(PathUtils.getBaseDir());
+	// 	File testsDir = new File(baseDir, "src/test/xspec");
+	// 	File reportsDir = new File(baseDir, "target/surefire-reports");
+	// 	reportsDir.mkdirs();
+	// 	TestResults result = xspecRunner.run(testsDir, reportsDir);
+	// 	assertEquals("Number of failures and errors should be zero", 0L, result.getFailures() + result.getErrors());
+	// }
 	
 	@Inject
 	private XProcSpecRunner xprocspecRunner;
 	
-	// @Test
-	// public void runXProcSpec() throws Exception {
-	// 	File baseDir = new File(PathUtils.getBaseDir());
-	// 	boolean success = xprocspecRunner.run(new File(baseDir, "src/test/xprocspec"),
-	// 	                                      new File(baseDir, "target/xprocspec-reports"),
-	// 	                                      new File(baseDir, "target/surefire-reports"),
-	// 	                                      new File(baseDir, "target/xprocspec"),
-	// 	                                      new XProcSpecRunner.Reporter.DefaultReporter());
-	// 	assertTrue("XProcSpec tests should run with success", success);
-	// }
+	@Test
+	public void runXProcSpec() throws Exception {
+		File baseDir = new File(PathUtils.getBaseDir());
+		boolean success = xprocspecRunner.run(new File(baseDir, "src/test/xprocspec"),
+		                                      new File(baseDir, "target/xprocspec-reports"),
+		                                      new File(baseDir, "target/surefire-reports"),
+		                                      new File(baseDir, "target/xprocspec"),
+		                                      new XProcSpecRunner.Reporter.DefaultReporter());
+		assertTrue("XProcSpec tests should run with success", success);
+	}
 }
