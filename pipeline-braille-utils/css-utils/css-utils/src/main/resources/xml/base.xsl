@@ -129,7 +129,14 @@
     <xsl:variable name="css:LEADER_FN_RE" select="concat('leader\(\s*(',$css:BRAILLE_STRING_RE,')\s*\)')"/>
     
     <!--
-        # groups: 51
+        flow(<ident>)
+        # groups: 3
+        $1: <ident>
+    -->
+    <xsl:variable name="css:FLOW_FN_RE" select="concat('flow\(\s*(',$css:IDENT_RE,')\s*\)')"/>
+    
+    <!--
+        # groups: 55
         $1: <string>
         $2: content()
         $3: attr(<name>)
@@ -150,6 +157,8 @@
         $47:                              <counter-style>
         $50: leader(<braille-string>)
         $51:        <braille-string>
+        $52: flow(<ident>)
+        $53:      <ident>
     -->
     <xsl:variable name="css:CONTENT_RE" select="concat('(',$css:STRING_RE,')|
                                                         (',$css:CONTENT_FN_RE,')|
@@ -159,7 +168,8 @@
                                                         (',$css:TARGET_TEXT_FN_RE,')|
                                                         (',$css:TARGET_STRING_FN_RE,')|
                                                         (',$css:TARGET_COUNTER_FN_RE,')|
-                                                        (',$css:LEADER_FN_RE,')')"/>
+                                                        (',$css:LEADER_FN_RE,')|
+                                                        (',$css:FLOW_FN_RE,')')"/>
     
     <!--
         # groups: ?
@@ -333,6 +343,12 @@
                         -->
                         <xsl:when test="regex-group(50)!=''">
                             <css:leader pattern="{substring(regex-group(51), 2, string-length(regex-group(51))-2)}"/>
+                        </xsl:when>
+                        <!--
+                            flow(<ident>)
+                        -->
+                        <xsl:when test="regex-group(52)!=''">
+                            <css:flow from="{regex-group(53)}"/>
                         </xsl:when>
                     </xsl:choose>
                 </xsl:matching-substring>
