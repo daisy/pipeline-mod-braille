@@ -34,6 +34,9 @@
     <dependency>
       <groupId>org.daisy.pipeline.modules</groupId>
       <artifactId>fileset-utils</artifactId>
+      <!--
+          depends on https://github.com/daisy/pipeline-modules-common/pull/73
+      -->
       <version>1.1.1-SNAPSHOT</version>
       <scope>runtime</scope>
     </dependency>
