@@ -9,6 +9,7 @@
                 xmlns:ocf="urn:oasis:names:tc:opendocument:xmlns:container"
                 xmlns:html="http://www.w3.org/1999/xhtml"
                 xmlns:epub="http://www.idpf.org/2007/ops"
+                xmlns:rendition="http://www.idpf.org/2013/rendition"
                 exclude-inline-prefixes="#all"
                 name="main">
     
@@ -91,7 +92,9 @@
     <p:insert position="last-child" match="/ocf:container/ocf:rootfiles">
         <p:input port="insertion">
             <p:inline xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
-                <rootfile full-path="EPUB/package-braille.opf" media-type="application/oebps-package+xml"/>
+                <rootfile full-path="EPUB/package-braille.opf" media-type="application/oebps-package+xml"
+                          rendition:accessMode="tactile"
+                          rendition:label="Pre-translated to braille"/>
             </p:inline>
         </p:input>
     </p:insert>
