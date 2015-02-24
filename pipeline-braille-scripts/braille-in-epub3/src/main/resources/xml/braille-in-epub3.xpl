@@ -188,6 +188,8 @@
             </p:input>
             <p:with-option name="default-stylesheet" select="$stylesheet"/>
         </css:inline>
+        <p:delete match="/html:html/html:head/html:style[@type='text/css']|
+                         /html:html/html:head/html:link[@type='text/css' and @rel='stylesheet']"/>
         <px:transform type="css-block" query="(translator:liblouis)" name="transform"/>
         <p:delete match="@style" name="result"/>
         <p:for-each name="resource-map">
