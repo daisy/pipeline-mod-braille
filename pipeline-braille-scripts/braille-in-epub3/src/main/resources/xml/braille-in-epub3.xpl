@@ -9,6 +9,8 @@
                 xmlns:ocf="urn:oasis:names:tc:opendocument:xmlns:container"
                 xmlns:html="http://www.w3.org/1999/xhtml"
                 xmlns:epub="http://www.idpf.org/2007/ops"
+                xmlns:opf="http://www.idpf.org/2007/opf"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:rendition="http://www.idpf.org/2013/rendition"
                 exclude-inline-prefixes="#all"
                 name="main">
@@ -160,6 +162,38 @@
     <p:delete match="/*/@xml:base" name="braille-rendition.package-document"/>
     
     <!--
+        metadata.xml
+    -->
+    
+    <p:identity>
+        <p:input port="source">
+            <p:inline xmlns="http://www.idpf.org/2007/opf">
+<metadata xmlns:dcterms="http://purl.org/dc/terms/"/></p:inline>
+        </p:input>
+    </p:identity>
+    <p:add-attribute match="/opf:metadata" attribute-name="unique-identifier">
+        <p:with-option name="attribute-value" select="/opf:package/@unique-identifier">
+            <p:pipe step="braille-rendition.package-document" port="result"/>
+        </p:with-option>
+    </p:add-attribute>
+    <p:insert match="/opf:metadata" position="last-child">
+        <p:input port="insertion" select="for $unique-identifier in /opf:package/@unique-identifier
+                                          return /opf:package/opf:metadata/dc:identifier[@id=$unique-identifier]">
+            <p:pipe step="braille-rendition.package-document" port="result"/>
+        </p:input>
+    </p:insert>
+    <p:insert match="/opf:metadata" position="last-child">
+        <p:input port="insertion" select="/opf:package/opf:metadata/opf:meta[@property='dcterms:modified']">
+            <p:pipe step="braille-rendition.package-document" port="result"/>
+        </p:input>
+    </p:insert>
+    <p:add-attribute match="/*" attribute-name="xml:base">
+        <p:with-option name="attribute-value" select="resolve-uri('META-INF/metadata.xml',$target.base)"/>
+    </p:add-attribute>
+    <p:delete match="/*/@xml:base"/>
+    <p:identity name="metadata"/>
+    
+    <!--
         braille rendition xhtml documents
     -->
     <px:fileset-filter media-types="application/xhtml+xml" name="braille-rendition.html.fileset">
@@ -260,6 +294,7 @@
         </p:input>
     </px:fileset-join>
     <px:fileset-add-entry href="META-INF/container.xml"/>
+    <px:fileset-add-entry href="META-INF/metadata.xml"/>
     <px:fileset-add-entry href="EPUB/package-braille.opf"/>
     <px:fileset-add-entry href="renditionMapping.html"/>
     <p:add-attribute match="d:file[@href='renditionMapping.html']" attribute-name="indent" attribute-value="true"/>
@@ -267,6 +302,7 @@
         <p:input port="in-memory.in">
             <p:pipe step="source.in-memory" port="result"/>
             <p:pipe step="container" port="result"/>
+            <p:pipe step="metadata" port="result"/>
             <p:pipe step="braille-rendition.package-document" port="result"/>
             <p:pipe step="braille-rendition.html" port="result"/>
             <p:pipe step="rendition-mapping" port="result"/>
