@@ -102,9 +102,10 @@
             </p:inline>
         </p:input>
     </p:insert>
-    <p:add-attribute match="/*" attribute-name="xml:base" name="container">
+    <p:add-attribute match="/*" attribute-name="xml:base">
         <p:with-option name="attribute-value" select="resolve-uri('META-INF/container.xml',$target.base)"/>
     </p:add-attribute>
+    <p:delete match="/*/@xml:base" name="container"/>
     
     <!--
         default rendition package document
@@ -114,11 +115,12 @@
         <p:with-option name="href" select="$source"/>
         <p:with-option name="file" select="//ocf:rootfile[1]/@full-path"/>
     </px:unzip>
-    <p:add-attribute match="/*" attribute-name="xml:base" name="default-rendition.package-document">
+    <p:add-attribute match="/*" attribute-name="xml:base">
         <p:with-option name="attribute-value" select="resolve-uri(//ocf:rootfile[1]/@full-path,$target.base)">
             <p:pipe step="container" port="result"/>
         </p:with-option>
     </p:add-attribute>
+    <p:delete match="/*/@xml:base" name="default-rendition.package-document"/>
     
     <!--
         braille rendition file set
@@ -141,7 +143,7 @@
         braille rendition package document
     -->
     
-    <p:xslt name="braille-rendition.package-document">
+    <p:xslt>
         <p:input port="source">
             <p:pipe step="default-rendition.package-document" port="result"/>
             <p:pipe step="braille-rendition.fileset" port="result"/>
@@ -152,6 +154,7 @@
         <p:with-param name="braille-rendition.package-document.base"
                       select="resolve-uri('EPUB/package-braille.opf',$target.base)"/>
     </p:xslt>
+    <p:delete match="/*/@xml:base" name="braille-rendition.package-document"/>
     
     <!--
         braille rendition xhtml documents
@@ -236,9 +239,10 @@
             <p:pipe step="braille-rendition.html" port="resource-map"/>
         </p:input>
     </p:insert>
-    <p:add-attribute match="/*" attribute-name="xml:base" name="rendition-mapping">
+    <p:add-attribute match="/*" attribute-name="xml:base">
         <p:with-option name="attribute-value" select="resolve-uri('renditionMapping.html',$target.base)"/>
     </p:add-attribute>
+    <p:delete match="/*/@xml:base" name="rendition-mapping"/>
     
     <!-- ===== -->
     <!-- Store -->
