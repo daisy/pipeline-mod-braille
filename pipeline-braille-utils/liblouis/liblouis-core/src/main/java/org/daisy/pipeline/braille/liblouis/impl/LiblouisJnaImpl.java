@@ -298,12 +298,16 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 			boolean[] hyphenate = new boolean[cssStyle.length];
 			for (int i = 0; i < cssStyle.length; i++) {
 				Map<String,String> style = CSS_PARSER.split(cssStyle[i]);
-				typeform[i] = typeformFromInlineCSS(style);
-				if (style.containsKey("text-transform"))
-					typeform[i] |= typeformFromTextTransform(style.get("text-transform"));
+				String val = style.remove("text-transform");
+				typeform[i] = Typeform.PLAIN;
+				if (val != null)
+					typeform[i] |= typeformFromTextTransform(val);
+				style.remove("hyphens");
 				hyphenate[i] = false;
-				if (style.containsKey("hyphens") && "auto".equals(style.get("hyphens")))
-					hyphenate[i] = true; }
+				if (val != null)
+					if ("auto".equals(val))
+						hyphenate[i] = true;
+				typeform[i] |= typeformFromInlineCSS(style);}
 			return transform(text, typeform, hyphenate);
 		}
 		
