@@ -1,5 +1,10 @@
 package org.daisy.pipeline.braille.libhyphen;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 import javax.inject.Inject;
 
 import org.junit.Test;
@@ -49,10 +54,24 @@ public class LibhyphenCoreTest {
 			mavenBundle().groupId("org.daisy.bindings").artifactId("jhyphen").versionAsInProject(),
 			mavenBundle().groupId("org.daisy.pipeline.modules.braille").artifactId("common-java").versionAsInProject(),
 			forThisPlatform(mavenBundle().groupId("org.daisy.pipeline.modules.braille").artifactId("libhyphen-native").versionAsInProject()),
-			bundle("reference:file:" + PathUtils.getBaseDir() + "/target/classes/"),
+			thisBundle("org.daisy.pipeline.modules.braille", "libhyphen-core"),
 			bundle("reference:file:" + PathUtils.getBaseDir() + "/target/test-classes/table_paths/"),
 			junitBundles()
 		);
+	}
+	
+	public static Option thisBundle(String groupId, String artifactId) {
+		Properties dependencies = new Properties();
+		try {
+			dependencies.load(new FileInputStream(new File(PathUtils.getBaseDir() + "/target/classes/META-INF/maven/dependencies.properties"))); }
+		catch (IOException e) {
+			throw new RuntimeException(e); }
+		String projectGroupId = dependencies.getProperty("groupId");
+		String projectArtifactId = dependencies.getProperty("artifactId");
+		if (groupId.equals(projectGroupId) && artifactId.equals(projectArtifactId))
+			return bundle("reference:file:" + PathUtils.getBaseDir() + "/target/classes/");
+		else
+			return mavenBundle().groupId(groupId).artifactId(artifactId).versionAsInProject();
 	}
 	
 	public static MavenArtifactProvisionOption forThisPlatform(MavenArtifactProvisionOption bundle) {

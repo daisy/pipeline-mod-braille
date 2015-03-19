@@ -1,8 +1,11 @@
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.inject.Inject;
 
@@ -76,7 +79,7 @@ public class CSSCalabashTest {
 				.bundleVersion("1.0.0"),
 			mavenBundle().groupId("org.daisy.maven").artifactId("xprocspec-runner").versionAsInProject(),
 			mavenBundle().groupId("commons-io").artifactId("commons-io").versionAsInProject(),
-			bundle("reference:file:" + PathUtils.getBaseDir() + "/target/classes/"),
+			thisBundle("org.daisy.pipeline.modules.braille", "css-calabash"),
 			junitBundles()
 		);
 	}
@@ -90,5 +93,19 @@ public class CSSCalabashTest {
 		                                      new File(baseDir, "target/xprocspec"),
 		                                      new XProcSpecRunner.Reporter.DefaultReporter());
 		assertTrue("XProcSpec tests should run with success", success);
+	}
+	
+	public static Option thisBundle(String groupId, String artifactId) {
+		Properties dependencies = new Properties();
+		try {
+			dependencies.load(new FileInputStream(new File(PathUtils.getBaseDir() + "/target/classes/META-INF/maven/dependencies.properties"))); }
+		catch (IOException e) {
+			throw new RuntimeException(e); }
+		String projectGroupId = dependencies.getProperty("groupId");
+		String projectArtifactId = dependencies.getProperty("artifactId");
+		if (groupId.equals(projectGroupId) && artifactId.equals(projectArtifactId))
+			return bundle("reference:file:" + PathUtils.getBaseDir() + "/target/classes/");
+		else
+			return mavenBundle().groupId(groupId).artifactId(artifactId).versionAsInProject();
 	}
 }
