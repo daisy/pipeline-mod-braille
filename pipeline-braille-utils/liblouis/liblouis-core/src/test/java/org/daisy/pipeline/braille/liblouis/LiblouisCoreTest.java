@@ -1,7 +1,10 @@
 package org.daisy.pipeline.braille.liblouis;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
+import java.util.Properties;
 
 import javax.inject.Inject;
 
@@ -54,7 +57,7 @@ public class LiblouisCoreTest {
 			mavenBundle().groupId("org.liblouis").artifactId("liblouis-java").versionAsInProject(),
 			mavenBundle().groupId("org.daisy.pipeline.modules.braille").artifactId("common-java").versionAsInProject(),
 			forThisPlatform(mavenBundle().groupId("org.daisy.pipeline.modules.braille").artifactId("liblouis-native").versionAsInProject()),
-			bundle("reference:file:" + PathUtils.getBaseDir() + "/target/classes/"),
+			thisBundle("org.daisy.pipeline.modules.braille", "liblouis-core"),
 			bundle("reference:file:" + PathUtils.getBaseDir() + "/target/test-classes/table_paths/"),
 			junitBundles()
 		);
@@ -88,6 +91,20 @@ public class LiblouisCoreTest {
 	@Test
 	public void testHyphenateCompoundWord() {
 		assertEquals("foo-\u200Bbar", liblouis.hyphenate("foobar.cti,foobar.dic", "foo-bar"));
+	}
+	
+	public static Option thisBundle(String groupId, String artifactId) {
+		Properties dependencies = new Properties();
+		try {
+			dependencies.load(new FileInputStream(new File(PathUtils.getBaseDir() + "/target/classes/META-INF/maven/dependencies.properties"))); }
+		catch (IOException e) {
+			throw new RuntimeException(e); }
+		String projectGroupId = dependencies.getProperty("groupId");
+		String projectArtifactId = dependencies.getProperty("artifactId");
+		if (groupId.equals(projectGroupId) && artifactId.equals(projectArtifactId))
+			return bundle("reference:file:" + PathUtils.getBaseDir() + "/target/classes/");
+		else
+			return mavenBundle().groupId(groupId).artifactId(artifactId).versionAsInProject();
 	}
 	
 	public static MavenArtifactProvisionOption forThisPlatform(MavenArtifactProvisionOption bundle) {
