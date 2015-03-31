@@ -103,7 +103,7 @@
     <p:insert position="last-child" match="/ocf:container">
         <p:input port="insertion">
             <p:inline xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
-                <link href="renditionMapping.html" rel="mapping" media-type="application/xhtml+xml"/>
+                <link href="EPUB/renditionMapping.html" rel="mapping" media-type="application/xhtml+xml"/>
             </p:inline>
         </p:input>
     </p:insert>
@@ -253,7 +253,7 @@
                 </p:input>
                 <p:with-param name="default-rendition.html.base" select="$default-rendition.html.base"/>
                 <p:with-param name="braille-rendition.html.base" select="$braille-rendition.html.base"/>
-                <p:with-param name="rendition-mapping.base" select="resolve-uri('renditionMapping.html',$target.base)"/>
+                <p:with-param name="rendition-mapping.base" select="resolve-uri('EPUB/renditionMapping.html',$target.base)"/>
             </p:xslt>
         </p:for-each>
     </p:for-each>
@@ -279,7 +279,7 @@
         </p:input>
     </p:insert>
     <p:add-attribute match="/*" attribute-name="xml:base">
-        <p:with-option name="attribute-value" select="resolve-uri('renditionMapping.html',$target.base)"/>
+        <p:with-option name="attribute-value" select="resolve-uri('EPUB/renditionMapping.html',$target.base)"/>
     </p:add-attribute>
     <p:delete match="/*/@xml:base" name="rendition-mapping"/>
     
@@ -296,8 +296,8 @@
     <px:fileset-add-entry href="META-INF/container.xml"/>
     <px:fileset-add-entry href="META-INF/metadata.xml"/>
     <px:fileset-add-entry href="EPUB/package-braille.opf"/>
-    <px:fileset-add-entry href="renditionMapping.html"/>
-    <p:add-attribute match="d:file[@href='renditionMapping.html']" attribute-name="indent" attribute-value="true"/>
+    <px:fileset-add-entry href="EPUB/renditionMapping.html"/>
+    <p:add-attribute match="d:file[@href='EPUB/renditionMapping.html']" attribute-name="indent" attribute-value="true"/>
     <px:fileset-store>
         <p:input port="in-memory.in">
             <p:pipe step="source.in-memory" port="result"/>
