@@ -183,6 +183,11 @@
         </p:input>
     </p:insert>
     <p:insert match="/opf:metadata" position="last-child">
+        <p:input port="insertion" select="/opf:package/opf:metadata/dc:type[string(.)='edupub']">
+            <p:pipe step="braille-rendition.package-document" port="result"/>
+        </p:input>
+    </p:insert>
+    <p:insert match="/opf:metadata" position="last-child">
         <p:input port="insertion" select="/opf:package/opf:metadata/opf:meta[@property='dcterms:modified']">
             <p:pipe step="braille-rendition.package-document" port="result"/>
         </p:input>
@@ -297,6 +302,7 @@
     <px:fileset-add-entry href="META-INF/metadata.xml"/>
     <px:fileset-add-entry href="EPUB/package-braille.opf"/>
     <px:fileset-add-entry href="EPUB/renditionMapping.html"/>
+    <p:add-attribute match="d:file[@href='META-INF/metadata.xml']" attribute-name="indent" attribute-value="true"/>
     <p:add-attribute match="d:file[@href='EPUB/renditionMapping.html']" attribute-name="indent" attribute-value="true"/>
     <px:fileset-store>
         <p:input port="in-memory.in">
