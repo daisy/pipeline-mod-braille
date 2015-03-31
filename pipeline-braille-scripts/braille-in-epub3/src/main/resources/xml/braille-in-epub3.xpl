@@ -42,6 +42,7 @@
     
     <p:import href="http://www.daisy.org/pipeline/modules/braille/common-utils/library.xpl"/>
     <p:import href="http://www.daisy.org/pipeline/modules/braille/css-utils/library.xpl"/>
+    <p:import href="http://www.daisy.org/pipeline/modules/braille/css-utils/transform/block-translator-template.xpl"/>
     <p:import href="http://www.daisy.org/pipeline/modules/fileset-utils/library.xpl"/>
     <p:import href="http://www.daisy.org/pipeline/modules/file-utils/library.xpl"/>
     <p:import href="http://www.daisy.org/pipeline/modules/zip-utils/library.xpl"/>
@@ -232,7 +233,12 @@
         </css:inline>
         <p:delete match="/html:html/html:head/html:style[@type='text/css']|
                          /html:html/html:head/html:link[@type='text/css' and @rel='stylesheet']"/>
-        <px:transform type="css-block" query="(translator:liblouis)" name="transform"/>
+        <css:block-translate name="transform">
+            <p:input port="translator">
+                <p:document href="liblouis-block-translate.xsl"/>
+            </p:input>
+            <p:with-param name="query" select="''"/>
+        </css:block-translate>
         <p:delete match="@style" name="result"/>
         <p:for-each name="resource-map">
             <p:iteration-source>

@@ -60,7 +60,7 @@
 			</xsl:apply-templates>
 		</xsl:variable>
 		<xsl:copy>
-			<xsl:sequence select="@* except @style"/>
+			<xsl:apply-templates select="@* except @style" mode="#current"/>
 			<xsl:sequence select="css:style-attribute(css:serialize-stylesheet($translated-rules))"/>
 			<xsl:choose>
 				<xsl:when test="$display='none'">
@@ -151,6 +151,10 @@
 				</xsl:apply-templates>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="@*" mode="identify-blocks">
+		<xsl:sequence select="."/>
 	</xsl:template>
 	
 	<xsl:template match="css:rule|css:property|css:content|css:string[@name]|css:counter|css:text|css:leader"
@@ -256,7 +260,7 @@
 		<xsl:variable name="result-path" as="xs:integer*" select="pxi:inc-cfipath($result-path,1+((1+$result-path[last()]) mod 2))"/>
 		<xsl:variable name="text-node-count" select="count(.//text())"/>
 		<xsl:copy>
-			<xsl:sequence select="@* except @style"/>
+			<xsl:apply-templates select="@* except @style" mode="#current"/>
 			<xsl:if test="@style">
 				<xsl:variable name="translated-rules" as="element()*">
 					<xsl:apply-templates select="css:parse-stylesheet(@style)" mode="translate-rule-list">
@@ -299,6 +303,10 @@
 			<xsl:with-param name="result-path" select="$result-path"/>
 			<xsl:with-param name="new-text-nodes" select="$new-text-nodes[position()&gt;1]"/>
 		</xsl:apply-templates>
+	</xsl:template>
+	
+	<xsl:template match="@*" mode="treewalk">
+		<xsl:sequence select="."/>
 	</xsl:template>
 	
 	<xsl:function name="pxi:lang" as="xs:string?">
