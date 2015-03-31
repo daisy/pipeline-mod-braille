@@ -126,7 +126,7 @@ public class DotifyHyphenator extends AbstractTransform implements Hyphenator {
 			new LocaleBasedProvider<Locale,DotifyHyphenator>() {
 				public Iterable<DotifyHyphenator> _get(Locale locale) {
 					try {
-						HyphenatorInterface hyphenator = newHyphenator(Locales.toString(locale, '-'));
+						HyphenatorInterface hyphenator = newHyphenator(locale.toLanguageTag());
 						return Optional.of(new DotifyHyphenator(hyphenator)).asSet(); }
 					catch (Exception e) {
 						logger.warn("Could not create hyphenator for locale " + locale, e); }

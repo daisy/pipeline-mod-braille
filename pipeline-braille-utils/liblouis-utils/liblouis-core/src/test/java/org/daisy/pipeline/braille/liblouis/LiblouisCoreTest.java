@@ -115,7 +115,7 @@ public class LiblouisCoreTest {
 	
 	@Test
 	public void testGetTranslatorFromQuery3() {
-		provider.withContext(messageBus).get("(locale:foo_BAR)").iterator().next();
+		provider.withContext(messageBus).get("(locale:foo_BA)").iterator().next();
 	}
 	
 	@Test

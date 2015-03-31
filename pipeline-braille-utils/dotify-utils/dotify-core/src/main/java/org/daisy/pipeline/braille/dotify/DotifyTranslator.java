@@ -127,7 +127,7 @@ public class DotifyTranslator extends AbstractTransform implements TextTransform
 				public Iterable<DotifyTranslator> _get(Locale locale) {
 					try {
 						BrailleTranslator translator = newTranslator(
-							Locales.toString(locale, '-'), BrailleTranslatorFactory.MODE_UNCONTRACTED);
+							locale.toLanguageTag(), BrailleTranslatorFactory.MODE_UNCONTRACTED);
 						translator.setHyphenating(false);
 						return Optional.of(new DotifyTranslator(translator)).asSet(); }
 					catch (Exception e) {

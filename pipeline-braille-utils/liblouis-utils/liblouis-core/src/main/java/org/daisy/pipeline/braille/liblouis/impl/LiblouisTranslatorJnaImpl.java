@@ -28,7 +28,6 @@ import static org.daisy.pipeline.braille.common.Transform.Provider.util.dispatch
 import static org.daisy.pipeline.braille.common.Transform.Provider.util.logCreate;
 import static org.daisy.pipeline.braille.common.Transform.Provider.util.logSelect;
 import org.daisy.pipeline.braille.common.TextTransform;
-import org.daisy.pipeline.braille.common.util.Locales;
 import static org.daisy.pipeline.braille.common.util.Locales.parseLocale;
 import static org.daisy.pipeline.braille.common.util.Strings.extractHyphens;
 import static org.daisy.pipeline.braille.common.util.Strings.insertHyphens;
@@ -195,7 +194,7 @@ public class LiblouisTranslatorJnaImpl implements LiblouisTranslator.Provider {
 			if (table != null)
 				q.put("table", Optional.of(table));
 			if (locale != null)
-				q.put("locale", Optional.of(Locales.toString(parseLocale(locale), '_')));
+				q.put("locale", Optional.of(parseLocale(locale).toLanguageTag().replace('-','_')));
 			q.put("unicode", Optional.<String>absent());
 			Iterable<Translator> tables = tableProvider.get(serializeQuery(q));
 			return concat(
