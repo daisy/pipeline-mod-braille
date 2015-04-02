@@ -214,6 +214,18 @@
             </p:input>
             <p:with-param name="query" select="''"/>
         </css:block-translate>
+        <p:xslt>
+            <p:input port="source">
+                <p:pipe step="transform" port="result"/>
+                <p:pipe step="braille-rendition.fileset" port="result"/>
+            </p:input>
+            <p:input port="stylesheet">
+                <p:document href="update-cross-references.xsl"/>
+            </p:input>
+            <p:input port="parameters">
+                <p:empty/>
+            </p:input>
+        </p:xslt>
         <p:delete match="@style" name="result"/>
         <p:for-each name="resource-map">
             <p:iteration-source>
