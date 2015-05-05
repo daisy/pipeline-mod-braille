@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -297,12 +298,12 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 			byte[] typeform = new byte[cssStyle.length];
 			boolean[] hyphenate = new boolean[cssStyle.length];
 			for (int i = 0; i < cssStyle.length; i++) {
-				Map<String,String> style = CSS_PARSER.split(cssStyle[i]);
+				Map<String,String> style = new HashMap<String,String>(CSS_PARSER.split(cssStyle[i]));
 				String val = style.remove("text-transform");
 				typeform[i] = Typeform.PLAIN;
 				if (val != null)
 					typeform[i] |= typeformFromTextTransform(val);
-				style.remove("hyphens");
+				val = style.remove("hyphens");
 				hyphenate[i] = false;
 				if (val != null)
 					if ("auto".equals(val))
