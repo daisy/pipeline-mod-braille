@@ -13,4 +13,10 @@ public class LiblouisJnaImplTest {
 		             LiblouisJnaImpl.typeformFromInlineCSS(
 			             " text-decoration: underline ;font-weight: bold  ; hyphens:auto; color: #FF00FF "));
 	}
+	
+	@Test
+	public void testTypeformFromTextTransform() {
+		assertEquals(Typeform.BOLD + Typeform.UNDERLINE,
+		             LiblouisJnaImpl.typeformFromTextTransform(" louis-bold  ital louis-under foo "));
+	}
 }
