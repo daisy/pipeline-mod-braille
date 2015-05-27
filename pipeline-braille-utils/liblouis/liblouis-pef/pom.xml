@@ -78,6 +78,7 @@
         <configuration>
           <instructions>
             <Export-Package>!org.daisy.pipeline.braille.liblouis.pef</Export-Package>
+            <SPI-Provider>javax.imageio.spi.ServiceRegistry</SPI-Provider>
             <_dsannotations>*</_dsannotations>
           </instructions>
         </configuration>

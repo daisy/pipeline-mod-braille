@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import org.daisy.braille.table.BrailleConverter;
 import org.daisy.braille.table.Table;
+import org.daisy.braille.table.TableCatalog;
 
 import org.daisy.pipeline.braille.common.Provider;
 import org.daisy.pipeline.braille.common.Provider.DispatchingProvider;
@@ -17,6 +18,7 @@ import static org.daisy.pipeline.pax.exam.Options.felixDeclarativeServices;
 import static org.daisy.pipeline.pax.exam.Options.forThisPlatform;
 import static org.daisy.pipeline.pax.exam.Options.logbackBundles;
 import static org.daisy.pipeline.pax.exam.Options.logbackConfigFile;
+import static org.daisy.pipeline.pax.exam.Options.spiflyBundles;
 import static org.daisy.pipeline.pax.exam.Options.thisBundle;
 
 import org.junit.Test;
@@ -46,10 +48,20 @@ public class LiblouisDisplayTableTest {
 	
 	@Test
 	public void testDisplayTableProvider() {
-		Provider<String,Table> tableProvider = getProvider(TableProvider.class);
-		BrailleConverter converter = tableProvider.get("(liblouis-table:'foobar.dis')").iterator().next().newBrailleConverter();
+		Iterable<TableProvider> tableProviders = getServices(TableProvider.class);
+		Provider<String,Table> tableProvider = DispatchingProvider.<String,Table>newInstance(tableProviders);
+		Table table = tableProvider.get("(liblouis-table:'foobar.dis')").iterator().next();
+		BrailleConverter converter = table.newBrailleConverter();
 		assertEquals("⠋⠕⠕⠃⠁⠗", converter.toBraille("foobar"));
 		assertEquals("foobar", converter.toText("⠋⠕⠕⠃⠁⠗"));
+		String id = table.getIdentifier();
+		assertEquals(table, tableProvider.get("(id:'" + id + "')").iterator().next());
+		TableCatalog tableCatalog = TableCatalog.newInstance();
+		
+		// FIXME: doesn't work yet because TableCatalog.newInstance()
+		// currently creates new instances of the TableProviders
+		
+		// assertEquals(table, tableCatalog.newTable(id));
 	}
 	
 	@Configuration
@@ -59,6 +71,7 @@ public class LiblouisDisplayTableTest {
 			logbackBundles(),
 			felixDeclarativeServices(),
 			domTraversalPackage(),
+			spiflyBundles(),
 			mavenBundle().groupId("com.google.guava").artifactId("guava").versionAsInProject(),
 			mavenBundle().groupId("net.java.dev.jna").artifactId("jna").versionAsInProject(),
 			mavenBundle().groupId("org.liblouis").artifactId("liblouis-java").versionAsInProject(),
@@ -81,13 +94,13 @@ public class LiblouisDisplayTableTest {
 	@Inject
 	private BundleContext context;
 	
-	private <T> Provider<String,T> getProvider(Class<? extends Provider<String,T>> providerClass) {
-		List<Provider<String,T>> providers = new ArrayList<Provider<String,T>>();
+	private <S> Iterable<S> getServices(Class<S> serviceClass) {
+		List<S> services = new ArrayList<S>();
 		try {
-			for (ServiceReference<? extends Provider<String,T>> ref : context.getServiceReferences(providerClass, null))
-				providers.add(context.getService(ref)); }
+			for (ServiceReference<? extends S> ref : context.getServiceReferences(serviceClass, null))
+				services.add(context.getService(ref)); }
 		catch (InvalidSyntaxException e) {
 			throw new RuntimeException(e); }
-		return DispatchingProvider.<String,T>newInstance(providers);
+		return services;
 	}
 }
