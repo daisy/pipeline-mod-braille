@@ -128,11 +128,12 @@ public class Text2PEFStep extends DefaultStep {
 		
 		@Override
 		public XProcStep newStep(XProcRuntime runtime, XAtomicStep step) {
+			// depend on spifly for now
+			setTableCatalog(TableCatalog.newInstance());
 			return new Text2PEFStep(runtime, step, tableCatalog, tableProvider);
 		}
 		
-		// depend on spifly for now
-		private TableCatalog tableCatalog = TableCatalog.newInstance();
+		private TableCatalog tableCatalog;
 		
 		/*@Reference(
 			name = "TableCatalog",
