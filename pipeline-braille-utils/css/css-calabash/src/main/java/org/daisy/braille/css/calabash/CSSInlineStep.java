@@ -112,10 +112,12 @@ public class CSSInlineStep extends DefaultStep {
 			XdmNode source = sourcePipe.read();
 			Document doc = (Document)DocumentOverNodeInfo.wrap(source.getUnderlyingNode());
 			URL defaultSheet = asURL(emptyToNull(getOption(_default_stylesheet, "")));
-			resultPipe.write((new InlineCSSWriter(doc, runtime, defaultSheet)).getResult()); }
+			resultPipe.write((new InlineCSSWriter(doc, runtime, defaultSheet)).getResult());
+		}
 		catch (Exception e) {
 			logger.error("css:inline failed", e);
-			throw new XProcException(step.getNode(), e); }
+			throw new XProcException(step.getNode(), e);
+		}
 	}
 	
 	@Component(
@@ -202,7 +204,8 @@ public class CSSInlineStep extends DefaultStep {
 						addAttribute(new QName(attr.getPrefix(), attr.getNamespaceURI(), attr.getLocalName()), attr.getNodeValue());
 					else if ("style".equals(attr.getLocalName())) {}
 					else
-						addAttribute(new QName(attr.getNamespaceURI(), attr.getLocalName()), attr.getNodeValue()); }
+						addAttribute(new QName(attr.getNamespaceURI(), attr.getLocalName()), attr.getNodeValue());
+				}
 				StringBuilder style = new StringBuilder();
 				NodeData brailleData = brailleStylemap.get((Element)node);
 				if (brailleData != null)
@@ -226,17 +229,20 @@ public class CSSInlineStep extends DefaultStep {
 					else
 						page = pages.get(pageProperty.toString());
 					if (page != null)
-						insertPageStyle(style, page, pages.get("auto")); }
+						insertPageStyle(style, page, pages.get("auto"));
+				}
 				else if (isRoot) {
 					RulePage page = pages.get("auto");
 					if (page != null)
-						insertPageStyle(style, page, null); }
-				if (normalizeSpace(style).length() > 0) {
-					addAttribute(_style, style.toString().trim()); }
+						insertPageStyle(style, page, null);
+				}
+				if (normalizeSpace(style).length() > 0)
+					addAttribute(_style, style.toString().trim());
 				receiver.startContent();
 				for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
 					traverse(child);
-				addEndElement(); }
+				addEndElement();
+			}
 			else if (node.getNodeType() == Node.COMMENT_NODE)
 				addComment(node.getNodeValue());
 			else if (node.getNodeType() == Node.TEXT_NODE)
@@ -256,7 +262,8 @@ public class CSSInlineStep extends DefaultStep {
 				List<NamespaceBinding> namespaces = new ArrayList<NamespaceBinding>();
 				Iterators.<NamespaceBinding>addAll(namespaces, NamespaceIterator.iterateNamespaces(inode));
 				inscopeNS = Iterables.<NamespaceBinding>toArray(namespaces, NamespaceBinding.class);
-				seenRoot = true; }
+				seenRoot = true;
+			}
 			receiver.setSystemId(element.getBaseURI());
 			addStartElement(new NameOfNode(inode), inode.getSchemaType(), inscopeNS);
 		}
@@ -282,14 +289,17 @@ public class CSSInlineStep extends DefaultStep {
 				builder.append(termToString.apply(value));
 			else {
 				CSSProperty prop = nodeData.getProperty(key);
-				builder.append(prop); }
-			builder.append("; "); }
+				builder.append(prop);
+			}
+			builder.append("; ");
+		}
 	}
 	
 	private static void insertPseudoStyle(StringBuilder builder, NodeData nodeData, Selector.PseudoDeclaration decl) {
 		if (builder.length() > 0 && !builder.toString().endsWith("} ")) {
 			builder.insert(0, "{ ");
-			builder.append("} "); }
+			builder.append("} ");
+		}
 		builder.append(decl.isPseudoElement() ? "::" : ":").append(decl.value()).append(" { ");
 		insertStyle(builder, nodeData);
 		builder.append("} ");
@@ -298,7 +308,8 @@ public class CSSInlineStep extends DefaultStep {
 	private static void insertPageStyle(StringBuilder builder, RulePage rulePage, RulePage inheritFrom) {
 		if (builder.length() > 0 && !builder.toString().endsWith("} ")) {
 			builder.insert(0, "{ ");
-			builder.append("} "); }
+			builder.append("} ");
+		}
 		builder.append("@page ");
 		String pseudo = rulePage.getPseudo();
 		if (pseudo != null && !"".equals(pseudo))
@@ -307,7 +318,8 @@ public class CSSInlineStep extends DefaultStep {
 		List<String> seen = new ArrayList<String>();
 		for (Declaration decl : Iterables.<Declaration>filter(rulePage, Declaration.class)) {
 			seen.add(decl.getProperty());
-			insertDeclaration(builder, decl); }
+			insertDeclaration(builder, decl);
+		}
 		if (inheritFrom != null)
 			for (Declaration decl : Iterables.<Declaration>filter(inheritFrom, Declaration.class))
 				if (!seen.contains(decl.getProperty()))
@@ -315,7 +327,8 @@ public class CSSInlineStep extends DefaultStep {
 		seen.clear();
 		for (RuleMargin margin : Iterables.<RuleMargin>filter(rulePage, RuleMargin.class)) {
 			seen.add(margin.getMarginArea().value);
-			insertMarginStyle(builder, margin); }
+			insertMarginStyle(builder, margin);
+		}
 		if (inheritFrom != null)
 			for (RuleMargin margin : Iterables.<RuleMargin>filter(inheritFrom, RuleMargin.class))
 				if (!seen.contains(margin.getMarginArea().value))
