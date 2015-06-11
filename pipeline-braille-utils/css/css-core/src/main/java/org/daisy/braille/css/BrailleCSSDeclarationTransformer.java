@@ -285,26 +285,7 @@ public class BrailleCSSDeclarationTransformer extends DeclarationTransformer {
 	@SuppressWarnings("unused")
 	private boolean processTextTransform(Declaration d,
 			Map<String, CSSProperty> properties, Map<String, Term<?>> values) {
-		
-		if (d.size() == 1 && genericOneIdent(TextTransform.class, d, properties))
-			return true;
-		
-		TermList list = tf.createList();
-		for (Term<?> t : d.asList()) {
-			if (t instanceof TermIdent) {
-				String value = ((TermIdent)t).getValue().toLowerCase();
-				if (!value.equals("auto"))
-					list.add(t); }
-			else
-				return false;
-		}
-		
-		if (list.isEmpty())
-			return false;
-		
-		properties.put("text-transform", TextTransform.list_values);
-		values.put("text-transform", list);
-		return true;
+		return genericOneIdent(TextTransform.class, d, properties);
 	}
 	
 	/****************************************************************

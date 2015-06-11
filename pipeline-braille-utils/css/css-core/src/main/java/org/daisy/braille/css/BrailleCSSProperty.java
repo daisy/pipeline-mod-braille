@@ -241,7 +241,7 @@ public interface BrailleCSSProperty extends CSSProperty {
 	}
 	
 	public enum TextTransform implements BrailleCSSProperty {
-		list_values(""), AUTO("auto"), INHERIT("inherit");
+		NONE("none"), AUTO("auto"), UPPERCASE("uppercase"), LOWERCASE("lowercase"), INHERIT("inherit");
 		
 		private String text;
 		
