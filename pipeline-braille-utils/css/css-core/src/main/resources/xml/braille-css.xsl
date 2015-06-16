@@ -90,7 +90,7 @@
                  re:exact(re:or(('normal','pre-wrap','pre-line'))),
                  re:exact(re:or(('auto','manual','none'))),
                  re:exact(concat('(',$css:NON_NEGATIVE_INTEGER_RE,')\s+(',$css:NON_NEGATIVE_INTEGER_RE,')')),
-                 re:exact(re:or(('none','auto','uppercase','lowercase'))),
+                 re:exact(re:or(($css:IDENT_LIST_RE,'none','auto','uppercase','lowercase'))),
                  re:exact(re:or(('normal','italic','oblique'))),
                  re:exact(re:or(('normal','bold','100','200','300','400','500','600','700','800','900'))),
                  re:exact(re:or(('none','underline','overline','line-through','blink'))),
