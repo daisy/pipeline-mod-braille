@@ -92,11 +92,15 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 						logger.debug("Resolved to " + join(resolved, ","));
 					else
 						logger.error("Table could not be resolved");
-						return resolved; }};
-			Louis.getLibrary().lou_registerTableResolver(_tableResolver); }
+					return resolved;
+				}
+			};
+			Louis.getLibrary().lou_registerTableResolver(_tableResolver);
+		}
 		catch (Throwable e) {
 			logger.error("liblouis service could not be loaded", e);
-			throw e; }
+			throw e;
+		}
 	}
 	
 	@Deactivate
@@ -117,7 +121,9 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 			if (libraryPath != null) {
 				Louis.setLibraryPath(asFile(libraryPath));
 				nativePath = path;
-				logger.debug("Registering liblouis library: " + libraryPath); }}
+				logger.debug("Registering liblouis library: " + libraryPath);
+			}
+		}
 	}
 	
 	protected void unbindLibrary(BundledNativePath path) {
@@ -195,10 +201,14 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 							try {
 								translators = Optional.<LiblouisTranslator>fromNullable(
 									new LiblouisTranslatorHyphenatorImpl(table)
-								).asSet(); }
+								).asSet();
+							}
 							catch (CompilationException e) {
-								logger.warn("Could not create translator for table: " + Arrays.toString(table), e); }
-							break; }}
+								logger.warn("Could not create translator for table: " + Arrays.toString(table), e);
+							}
+							break;
+					}
+				}
 				String hyphenatorQuery = "(locale:" + locale + ")";
 				if (!"auto".equals(hyphenator))
 					hyphenatorQuery = hyphenatorQuery + "(hyphenator:" + hyphenator + ")";
@@ -209,18 +219,26 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 							hyphenators.get(hyphenatorQuery),
 							new Function<Hyphenator,LiblouisTranslator>() {
 								public LiblouisTranslator apply(Hyphenator hyphenator) {
-									try { return new LiblouisTranslatorImpl(table, hyphenator); }
+									try { return new LiblouisTranslatorImpl(table, hyphenator);
+									}
 									catch (CompilationException e) {
-										logger.warn("Could not create translator for table: " + Arrays.toString(table), e); }
-									return null; }}),
-						Predicates.notNull())); }
+										logger.warn("Could not create translator for table: " + Arrays.toString(table), e);
+									}
+									return null;
+							}
+						}),
+						Predicates.notNull()));
+			}
 			try {
 				translators = Iterables.<LiblouisTranslator>concat(
 					translators,
-					Optional.<LiblouisTranslator>fromNullable(new LiblouisTranslatorImpl(table)).asSet()); }
+					Optional.<LiblouisTranslator>fromNullable(new LiblouisTranslatorImpl(table)).asSet());
+			}
 			catch (CompilationException e) {
-				logger.warn("Could not create translator for table: " + Arrays.toString(table), e); }
-			return translators; }
+				logger.warn("Could not create translator for table: " + Arrays.toString(table), e);
+			}
+			return translators;
+		}
 		logger.debug("Could not resolve table: " + Arrays.toString(table));
 		return empty;
 	}
@@ -244,8 +262,12 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 							tableProvider.get(locale),
 							new Function<URI[],Iterable<LiblouisTranslator>>() {
 								public Iterable<LiblouisTranslator> apply(URI[] table) {
-									return LiblouisJnaImpl.this.get(table, hyphenator, locale); }}));
-				return empty; }};
+									return LiblouisJnaImpl.this.get(table, hyphenator, locale);
+								}
+							}));
+				return empty;
+			}
+		};
 	
 	public Iterable<LiblouisTranslator> get(String query) {
 		return provider.get(query);
@@ -308,7 +330,8 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 				if (val != null)
 					if ("auto".equals(val))
 						hyphenate[i] = true;
-				typeform[i] |= typeformFromInlineCSS(style);}
+				typeform[i] |= typeformFromInlineCSS(style);
+			}
 			return transform(text, typeform, hyphenate);
 		}
 		
@@ -346,7 +369,8 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 			boolean someNotHyphenate = false;
 			for (int i = 0; i < hyphenate.length; i++) {
 				if (hyphenate[i]) someHyphenate = true;
-				else someNotHyphenate = true; }
+				else someNotHyphenate = true;
+			}
 			if (someHyphenate) {
 				byte[] autoHyphens = doHyphenate(_text);
 				if (someNotHyphenate) {
@@ -360,9 +384,13 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 							for (int k = 0; k < unhyphenated[j].length() - 1; k++)
 								autoHyphens[i++] = 0;
 							if (i < autoHyphens.length)
-								autoHyphens[i++] = 0; }}}
+								autoHyphens[i++] = 0;
+						}
+					}
+				}
 				for (int i = 0; i < autoHyphens.length; i++)
-					positions[i] += autoHyphens[i]; }
+					positions[i] += autoHyphens[i];
+			}
 			byte[] _typeform = null;
 			for (byte b : typeform)
 				if (b != Typeform.PLAIN) {
@@ -373,8 +401,11 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 						_typeform[j] = typeform[i];
 						if (positions != null && j < positions.length && (positions[j] & 4) == 4) {
 							i++;
-							while (unhyphenated[i].length() == 0) i++; }}
-					break; }
+							while (unhyphenated[i].length() == 0) i++;
+						}
+					}
+					break;
+			}
 			try {
 				
 				// Translate
@@ -395,7 +426,8 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 					for (String s : SEGMENT_SPLITTER.split(braille)) {
 						rv[i++] = s;
 						while (i < text.length && unhyphenated[i].length() == 0)
-							rv[i++] = ""; }
+							rv[i++] = "";
+					}
 					if (i == text.length)
 						return rv;
 					else {
@@ -414,9 +446,11 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 						for (int j = 0; j < positions.length; j++) {
 							if ((positions[j] & 4) == 4) {
 								i++;
-								while (i < text.length && unhyphenated[i].length() == 0) i++; }
+								while (i < text.length && unhyphenated[i].length() == 0) i++;
+							}
 							int n = (i % 31) + 1;
-							positions[j] |= (byte)(n << 3); }
+							positions[j] |= (byte)(n << 3);
+						}
 						r = translator.translate(_text, positions, _typeform);
 						braille = r.getBraille();
 						outputPositions = r.getHyphenPositions();
@@ -432,7 +466,9 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 									rv[i++] = b.toString();
 									b = new StringBuffer();
 									while (((n - i - 1) % 31) > 0)
-										rv[i++] = ""; }}
+										rv[i++] = "";
+							}
+						}
 						b.append(braille.charAt(braille.length() - 1));
 						rv[i++] = b.toString();
 						while (i < text.length && unhyphenated[i].length() == 0)
@@ -440,9 +476,13 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 						if (i == text.length)
 							return rv;
 						else
-							throw new RuntimeException("Coding error"); }}}
+							throw new RuntimeException("Coding error");
+					}
+				}
+			}
 			catch (TranslationException e) {
-				throw new RuntimeException(e); }
+				throw new RuntimeException(e);
+			}
 		}
 		
 		protected byte[] doHyphenate(String text) {
@@ -453,9 +493,11 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 		
 		public String display(String braille) {
 			try {
-				return translator.display(braille); }
+				return translator.display(braille);
+			}
 			catch (TranslationException e) {
-				throw new RuntimeException(e); }
+				throw new RuntimeException(e);
+			}
 		}
 	}
 	
@@ -498,17 +540,22 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 				for (String s : SEGMENT_SPLITTER.split(_text)) {
 					while (unhyphenated[i].length() == 0)
 						rv[i++] = "";
-					rv[i++] = s; }
-				while(i < text.length)
+					rv[i++] = s;
+				}
+				while (i < text.length)
 					rv[i++] = "";
-				return rv; }
+				return rv;
+			}
 		}
 		
 		@Override
 		protected byte[] doHyphenate(String text) {
-			try { return translator.hyphenate(text); }
+			try {
+				return translator.hyphenate(text);
+			}
 			catch (TranslationException e) {
-				throw new RuntimeException(e); }
+				throw new RuntimeException(e);
+			}
 		}
 	}
 	
@@ -540,7 +587,8 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 			else if (prop.equals("text-decoration") && value.equals("underline"))
 				typeform |= Typeform.UNDERLINE;
 			else
-				logger.warn("Inline CSS property {} not supported", prop); }
+				logger.warn("Inline CSS property {} not supported", prop);
+		}
 		return typeform;
 	}
 	
@@ -569,7 +617,8 @@ public class LiblouisJnaImpl implements LiblouisTranslator.Provider {
 			else if (tt.equals("louis-comp"))
 				typeform |= Typeform.COMPUTER;
 			else
-				logger.warn("text-transform: {} not supported", tt); }
+				logger.warn("text-transform: {} not supported", tt);
+		}
 		return typeform;
 	}
 	
