@@ -23,6 +23,10 @@
     </dependency>
     <dependency>
       <groupId>org.daisy.dotify</groupId>
+      <artifactId>dotify.common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.daisy.dotify</groupId>
       <artifactId>dotify.task-api</artifactId>
     </dependency>
     <dependency>
@@ -138,6 +142,18 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.ops4j.pax.exam</groupId>
+        <artifactId>maven-paxexam-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-depends-file</id>
+            <goals>
+              <goal>generate-depends-file</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
@@ -147,6 +163,15 @@
             <Provide-Capability>xproc.step;name="{http://code.google.com/p/dotify/}xml-to-obfl"</Provide-Capability>
           </instructions>
         </configuration>
+        <executions>
+          <execution>
+            <id>bundle-before-test</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>bundle</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
