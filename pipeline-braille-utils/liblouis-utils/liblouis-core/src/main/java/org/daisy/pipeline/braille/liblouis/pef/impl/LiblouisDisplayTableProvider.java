@@ -1,6 +1,5 @@
 package org.daisy.pipeline.braille.liblouis.pef.impl;
 
-import java.net.URI;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,6 +25,8 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component(
 	name = "org.daisy.pipeline.braille.liblouis.pef.impl.LiblouisDisplayTableProvider",
@@ -67,22 +68,20 @@ public class LiblouisDisplayTableProvider extends AbstractTableProvider {
 	 *
 	 * - locale: Matches only liblouis display tables with that locale.
 	 *
-	 * All matches tables must consist of a single file that ends with ".dis".
+	 * All matched tables must be of type "display table".
 	 */
 	protected Iterable<Table> get(Map<String,Optional<String>> query) {
 		for (String feature : query.keySet())
-			if (!supportedFeatures.contains(feature))
-				return empty;
+			if (!supportedFeatures.contains(feature)) {
+				logger.debug("Unsupported feature: " + feature);
+				return empty; }
+		query.put("display", Optional.<String>absent());
 		return filter(
 			transform(
 				tableProvider.get(serializeQuery(query)),
 				new Function<LiblouisJnaImpl.Table,Table>() {
 					public Table apply(LiblouisJnaImpl.Table table) {
-						URI[] subTables = table.asURIs();
-						if (subTables.length == 1)
-							if (subTables[0].toString().endsWith(".dis"))
-								return new LiblouisDisplayTable(table.getTranslator());
-						return null; }}),
+						return new LiblouisDisplayTable(table.getTranslator()); }}),
 			notNull());
 	}
 	
@@ -114,4 +113,7 @@ public class LiblouisDisplayTableProvider extends AbstractTableProvider {
 			return null;
 		}
 	}
+		
+	private static final Logger logger = LoggerFactory.getLogger(LiblouisDisplayTableProvider.class);
+	
 }

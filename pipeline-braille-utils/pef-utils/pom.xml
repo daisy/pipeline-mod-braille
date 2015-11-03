@@ -18,24 +18,22 @@
   <name>DP2 Braille Modules :: pef-utils</name>
 
   <modules>
-    <!-- <module>pef-calabash</module> -->
-    <!-- <module>pef-core</module> -->
+    <module>pef-calabash</module>
+    <module>pef-core</module>
     <!-- <module>pef-saxon</module> -->
-    <!-- <module>pef-utils</module> -->
+    <module>pef-utils</module>
   </modules>
   
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-install-plugin</artifactId>
-        <version>2.4</version>
         <configuration>
           <skip>true</skip>
         </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.4</version>
         <configuration>
           <skip>true</skip>
         </configuration>
