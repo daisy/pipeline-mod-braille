@@ -4156,5 +4156,71 @@
       </x:document>
     </x:expect>
   </x:scenario>
+
+  <!--
+      Page ranges in header
+  -->
+  <x:scenario label="test_47">
+    <x:call step="dotify:format">
+      <x:input port="source">
+        <x:document type="inline">
+          <doc style="@page { @bottom-left { content: string(print-page); } size: 20 6; margin-bottom: 1; }">
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <!-- page break -->
+            <pagenum id="page-1" page="normal" style="string-set: print-page content(); display=none;">1</pagenum>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <!-- page break -->
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <pagenum id="page-2" page="normal" style="string-set: print-page content(); display=none;">2</pagenum>
+            <p style="display: block">⠁⠁⠁</p>
+            <!-- page break -->
+            <pagenum id="page-3" page="normal" style="string-set: print-page content(); display=none;">3</pagenum>
+            <p style="display: block">⠁⠁⠁</p>
+            <pagenum id="page-4" page="normal" style="string-set: print-page content(); display=none;">4</pagenum>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <!-- page break -->
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <p style="display: block">⠁⠁⠁</p>
+            <pagenum id="page-5" page="normal" style="string-set: print-page content(); display=none;">5</pagenum>
+          </doc>
+        </x:document>
+      </x:input>
+    </x:call>
+    <x:context label="obfl">
+      <x:document type="port" port="obfl"/>
+    </x:context>
+    <x:expect label="obfl" type="custom" href="http://www.daisy.org/pipeline/modules/braille/obfl-utils/library.xpl" step="x:obfl-compare">
+      <x:document type="inline">
+        <obfl xmlns="http://www.daisy.org/ns/2011/obfl" version="2011-1" xml:lang="und" hyphenate="false">
+          <layout-master name="a" page-width="20" page-height="6" duplex="true">
+            <default-template>
+              <header/>
+              <footer/>
+            </default-template>
+          </layout-master>
+          <sequence master="a">
+            <block/>
+          </sequence>
+        </obfl>
+      </x:document>
+    </x:expect>
+  </x:scenario>
   
 </x:description>
