@@ -4171,7 +4171,7 @@
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
             <!-- page break -->
-            <pagenum id="page-1" page="normal" style="string-set: print-page content(); display=none;">1</pagenum>
+            <pagenum id="page-1" page="normal" style="string-set: [print-page content()]; display=none;">1</pagenum>
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
@@ -4212,7 +4212,17 @@
           <layout-master name="a" page-width="20" page-height="6" duplex="true">
             <default-template>
               <header/>
-              <footer/>
+              <footer>
+                <field>
+                  <string value=""/>
+                </field>
+                <field>
+                  <string value=""/>
+                </field>
+                <field>
+                  <string value=""/>
+                </field>
+              </footer>
             </default-template>
           </layout-master>
           <sequence master="a">
