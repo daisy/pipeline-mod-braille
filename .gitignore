@@ -17,3 +17,6 @@ maven-eclipse.xml
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# Swap files
+.swo
