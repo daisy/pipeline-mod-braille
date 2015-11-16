@@ -4164,14 +4164,15 @@
     <x:call step="dotify:format">
       <x:input port="source">
         <x:document type="inline">
-          <doc style="@page { @bottom-left { content: string(print-page); } size: 20 6; margin-bottom: 1; }">
+          <doc style="@page:left { @bottom-left { content: string(print-page); } size: 20 6; margin-bottom: 1; }
+                      @page:right { size: 20 6; margin-bottom: 1; }">
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
             <!-- page break -->
-            <pagenum id="page-1" page="normal" style="string-set: [print-page content()]; display=none;">1</pagenum>
+            <pagenum id="page-1" page="normal" style="string-set: print-page content(); display=none;">1</pagenum>
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
@@ -4210,23 +4211,56 @@
       <x:document type="inline">
         <obfl xmlns="http://www.daisy.org/ns/2011/obfl" version="2011-1" xml:lang="und" hyphenate="false">
           <layout-master name="a" page-width="20" page-height="6" duplex="true">
-            <default-template>
+            <!-- Left-hand pages -->
+            <template use-when="(= (% $page 2) 0)">
               <header/>
               <footer>
                 <field>
-                  <string value=""/>
+                  <marker-reference marker="print-page" direction="forward" scope="spread"/>
                 </field>
-                <field>
-                  <string value=""/>
-                </field>
-                <field>
-                  <string value=""/>
-                </field>
+                <field/>
+                <field/>
+            </template>
+            <default-template>
+              <header/>
+              <footer>
+                <field/>
+                <field/>
+                <field/>
               </footer>
             </default-template>
           </layout-master>
           <sequence master="a">
-            <block/>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block><marker class="print-page" value="1"/></block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block><marker class="print-page" value="2"/></block>
+            <block>⠁⠁⠁</block>
+            <block><marker class="print-page" value="3"/></block>
+            <block>⠁⠁⠁</block>
+            <block><marker class="print-page" value="4"/></block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block>⠁⠁⠁</block>
+            <block><marker class="print-page" value="5"/></block>
           </sequence>
         </obfl>
       </x:document>
