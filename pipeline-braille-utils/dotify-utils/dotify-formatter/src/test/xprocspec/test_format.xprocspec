@@ -4164,8 +4164,9 @@
     <x:call step="dotify:format">
       <x:input port="source">
         <x:document type="inline">
-          <doc style="@page:left { @bottom-left { content: string(print-page); } size: 20 6; margin-bottom: 1; }
-                      @page:right { size: 20 6; margin-bottom: 1; }">
+          <doc style="@page { size: 20 6; margin-bottom: 1; }
+                      @page:left { @bottom-left { content: string(print-page); } }
+                      ">
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
             <p style="display: block">⠁⠁⠁</p>
@@ -4220,6 +4221,7 @@
                 </field>
                 <field/>
                 <field/>
+              </footer>
             </template>
             <default-template>
               <header/>
