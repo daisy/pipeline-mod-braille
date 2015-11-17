@@ -37,6 +37,12 @@
             <h2 px:role="name">Input DTBook</h2>
         </p:documentation>
     </p:input>
+    <p:option name="identifier" required="true" px:type="string">
+        <p:documentation>
+            <h2 px:role="name">Identifier</h2>
+            <p px:role="desc">The identifier for the resulting PEF-file.</p>
+        </p:documentation>
+    </p:option>
     <p:option name="stylesheet" required="false" px:type="string" select="''">
         <p:documentation xmlns="http://www.w3.org/1999/xhtml">
             <h2 px:role="name">CSS stylesheets</h2>
