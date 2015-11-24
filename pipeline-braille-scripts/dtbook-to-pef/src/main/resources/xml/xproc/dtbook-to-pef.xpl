@@ -49,10 +49,10 @@
             <p px:role="desc">CSS style sheets to apply. Space separated list of absolute or relative URIs. Applied prior to any style sheets linked from or embedded in the source document.</p>
         </p:documentation>
     </p:option>
-    <p:option name="transform" required="false" px:type="string" select="''">
-        <p:documentation xmlns="http://www.w3.org/1999/xhtml">
-            <h2 px:role="name">Transformer query</h2>
-            <pre><code class="default">(translator:liblouis)(formatter:dotify)</code></pre>
+    <p:option name="translator" required="true" px:type="string" px:data-type="braille-translator" select="''">
+        <p:documentation>
+            <h2 px:role="name">Braille translator</h2>
+            <p px:role="desc">Appropriate translator with accordance to language.</p>
         </p:documentation>
     </p:option>
     <p:option name="ascii-table" required="false" px:type="string" select="''">
@@ -126,10 +126,10 @@
             <h2 px:role="name">Translation/formatting of text: Main document language</h2>
         </p:documentation>
     </p:option>
-    <p:option name="contraction-grade" required="false" px:type="integer" select="'0'">
+    <p:option name="contraction-grade" required="true" px:type="string" px:data-type="braille-contracted" select="'uncontracted'">
         <p:documentation xmlns="http://www.w3.org/1999/xhtml">
             <h2 px:role="name">Translation/formatting of text: Contraction grade</h2>
-            <p px:role="desc">Contraction grades are either uncontracted (0) or grade 1-3.</p>
+            <p px:role="desc">Uncontracted, or contracted braille with desired grade of contraction.</p>
         </p:documentation>
     </p:option>
     <p:option name="hyphenation-with-single-line-spacing" required="false" px:type="string" select="'true'">
@@ -377,6 +377,12 @@ content at the beginning of every other volume, include the following additional
     <!-- ============= -->
     <!-- Miscellaneous -->
     <!-- ============= -->
+    <p:option name="transform" required="false" px:type="string" select="''">
+        <p:documentation xmlns="http://www.w3.org/1999/xhtml">
+            <h2 px:role="name">Miscellaneous: Transformer query</h2>
+            <pre><code class="default">(translator:liblouis)(formatter:dotify)</code></pre>
+        </p:documentation>
+    </p:option>
     <p:option name="sbsform-macros" required="false" px:type="string" select="''">
         <p:documentation xmlns="http://www.w3.org/1999/xhtml">
             <h2 px:role="name">Miscellaneous: SBSForm macros</h2>
