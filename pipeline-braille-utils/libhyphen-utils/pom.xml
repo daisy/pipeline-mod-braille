@@ -12,7 +12,7 @@
   
   <groupId>org.daisy.pipeline.modules.braille</groupId>
   <artifactId>libhyphen-utils-aggregator</artifactId>
-  <version>1.9.8-SNAPSHOT</version>
+  <version>1.9.9-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <name>DP2 Braille Modules :: libhyphen-utils</name>
@@ -21,7 +21,7 @@
     <module>libhyphen-core</module>
     <module>libhyphen-native</module>
     <module>libhyphen-saxon</module>
-    <!-- <module>libhyphen-libreoffice-tables</module> -->
+    <module>libhyphen-libreoffice-tables</module>
     <!-- <module>libhyphen-utils</module> -->
   </modules>
   
