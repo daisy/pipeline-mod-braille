@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.daisy.org/ns/xprocspec"
                xmlns:pef="http://www.daisy.org/ns/2008/pef"
-	       script="../../main/resources/xml/validate.xpl">
+               xmlns:d="http://www.daisy.org/ns/pipeline/data"
+               xmlns:c="http://www.w3.org/ns/xproc-step"
+               xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+               script="../../main/resources/xml/validate.xpl">
 
   <!-- Test valid file -->
   <x:scenario label="test_01">
@@ -54,11 +57,11 @@
       <x:option name="assert-valid" select="'false'"/>
     </x:call>
     <x:context label="report">
-      <x:document type="report"/>
+      <x:document type="port" port="report"/>
     </x:context>
     <x:expect label="error" type="xpath"
               test="string(//d:reports/d:report//svrl:failed-assert/svrl:text)"
-	      equals="'[Rule 1] Rows do not fit within the defined page height'"/>
+              equals="'[Rule 1] Rows do not fit within the defined page height'"/>
   </x:scenario>
 
   <!-- Test error report from Relax NG -->
@@ -70,7 +73,7 @@
       <x:option name="assert-valid" select="'false'"/>
     </x:call>
     <x:context label="report">
-      <x:document type="report"/>
+      <x:document type="port" port="report"/>
     </x:context>
     <x:expect label="error" type="xpath"
               test="contains(string(/d:reports/d:report//c:error), 'character content of element &quot;dc:date&quot; invalid')"/>
