@@ -59,6 +59,11 @@ public class PefUtilsTest {
 			brailleModule("pef-calabash"),
 			pipelineModule("file-utils"),
 			pipelineModule("common-utils"),
+			pipelineModule("validation-utils"),
+			pipelineModule("fileset-utils"),
+			pipelineModule("html-utils"),
+			pipelineModule("zip-utils"),
+			pipelineModule("mediatype-utils"),
 			thisBundle(),
 			xprocspecBundles(),
 			junitBundles()

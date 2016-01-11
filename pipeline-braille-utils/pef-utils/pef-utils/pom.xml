@@ -25,6 +25,11 @@
       <artifactId>file-utils</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>org.daisy.pipeline.modules</groupId>
+      <artifactId>validation-utils</artifactId>
+      <scope>runtime</scope>
+    </dependency>
     <!--
         for file-utils
     -->
@@ -36,6 +41,29 @@
     <dependency>
       <groupId>org.daisy.libs</groupId>
       <artifactId>saxon-he</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <!--
+        for validation-utils
+    -->
+    <dependency>
+      <groupId>org.daisy.pipeline.modules</groupId>
+      <artifactId>fileset-utils</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.daisy.pipeline.modules</groupId>
+      <artifactId>html-utils</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.daisy.pipeline.modules</groupId>
+      <artifactId>zip-utils</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.daisy.pipeline.modules</groupId>
+      <artifactId>mediatype-utils</artifactId>
       <scope>runtime</scope>
     </dependency>
     <!--

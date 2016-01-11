@@ -46,6 +46,8 @@
         </p:documentation>
     </p:option>
     
+    <p:import href="http://www.daisy.org/pipeline/modules/validation-utils/library.xpl"/>
+    
     <!--
         TODO: use l:relax-ng-report
     -->
@@ -132,8 +134,6 @@
     </p:for-each>
     
     <p:wrap-sequence name="error-report" wrapper="d:reports"/>
-
-    <p:import href="https://raw.githubusercontent.com/daisy/pipeline-modules-common/master/validation-utils/src/main/resources/xml/xproc/validation-report-to-html.xpl"/>
     <px:validation-report-to-html name="html-report">
       <p:input port="source">
         <p:pipe port="result" step="error-report"/>
