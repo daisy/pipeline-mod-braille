@@ -132,11 +132,19 @@
         </p:iteration-source>
         <p:wrap match="/" wrapper="d:report"/>
     </p:for-each>
-    
+
     <p:wrap-sequence name="error-report" wrapper="d:reports"/>
+
+    <px:combine-validation-reports name="combined-error-report">
+      <p:input port="source">
+        <p:pipe step="validate-with-relax-ng" port="report"/>
+        <p:pipe step="validate-with-schematron" port="report"/>
+      </p:input>
+    </px:combine-validation-reports>
+
     <px:validation-report-to-html name="html-report">
       <p:input port="source">
-        <p:pipe port="result" step="error-report"/>
+        <p:pipe port="result" step="combined-error-report"/>
       </p:input>
     </px:validation-report-to-html>
 
