@@ -2,6 +2,7 @@
 <p:declare-step version="1.0"
         xmlns:p="http://www.w3.org/ns/xproc"
         xmlns:pef="http://www.daisy.org/ns/2008/pef"
+	xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
         xmlns:d="http://www.daisy.org/ns/pipeline/data"
         exclude-inline-prefixes="#all"
         type="pef:validate"
@@ -31,6 +32,13 @@
         TODO: add output ports `html-report` (use px:px:validation-report-to-html)
         and `validation-status` (use px:validation-status)
     -->
+
+    <p:output port="html-report">
+      <p:documentation xmlns="http://www.w3.org/1999/xhtml">
+        <p>HTML validation report.</p>
+      </p:documentation>
+      <p:pipe step="html-report" port="result"/>
+    </p:output>
     
     <p:option name="assert-valid" required="false" select="'true'">
         <p:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -124,7 +132,14 @@
     </p:for-each>
     
     <p:wrap-sequence name="error-report" wrapper="d:reports"/>
-    
+
+    <p:import href="https://raw.githubusercontent.com/daisy/pipeline-modules-common/master/validation-utils/src/main/resources/xml/xproc/validation-report-to-html.xpl"/>
+    <px:validation-report-to-html name="html-report">
+      <p:input port="source">
+        <p:pipe port="result" step="error-report"/>
+      </p:input>
+    </px:validation-report-to-html>
+
     <p:choose name="assert-valid">
         <p:when test="$assert-valid='true' and count(/*/*)&gt;0">
             <p:output port="result"/>

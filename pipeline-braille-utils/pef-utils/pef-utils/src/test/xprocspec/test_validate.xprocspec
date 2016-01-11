@@ -79,4 +79,21 @@
               test="contains(string(/d:reports/d:report//c:error), 'character content of element &quot;dc:date&quot; invalid')"/>
   </x:scenario>
 
+  <!-- Test HTML report -->
+  <x:scenario label="test_06">
+    <x:call step="pef:validate">
+      <x:input port="source">
+        <x:document type="file" href="../resources/pef_invalid_relax_ng.pef"/>
+      </x:input>
+      <x:option name="assert-valid" select="'false'"/>
+    </x:call>
+    <x:context label="html-report">
+      <x:document type="port" port="html-report"/>
+    </x:context>
+    <x:expect label="html-report" type="compare">
+      <html xmlns="http://www.w3.org/1999/xhtml">
+      </html>
+    </x:expect>
+  </x:scenario>
+
 </x:description>
