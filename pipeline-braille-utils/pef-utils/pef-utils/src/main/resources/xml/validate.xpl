@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:declare-step version="1.0"
+        xmlns:c="http://www.w3.org/ns/xproc-step"
         xmlns:p="http://www.w3.org/ns/xproc"
         xmlns:pef="http://www.daisy.org/ns/2008/pef"
-	xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
+        xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
         xmlns:d="http://www.daisy.org/ns/pipeline/data"
+        xmlns:l="http://xproc.org/library"
         exclude-inline-prefixes="#all"
         type="pef:validate"
         name="main">
@@ -47,7 +49,13 @@
     </p:option>
     
     <p:import href="http://www.daisy.org/pipeline/modules/validation-utils/library.xpl"/>
+    <!--<p:import href="http://www.xproc.org/library/relax-ng-report.xpl"/>-->
+    <p:import href="http://www.daisy.org/pipeline/modules/common-utils/library.xpl"/>
     
+    <p:variable name="document-type" select="'PEF'"/>
+    <p:variable name="base-uri" select="base-uri()"/>
+    <p:variable name="document-name" select="tokenize($base-uri, '/')[last()]"/>
+
     <!--
         TODO: use l:relax-ng-report
     -->
@@ -121,7 +129,102 @@
     
     <p:identity name="copy-of-input"/>
     <p:sink/>
-    
+
+    <p:try name="validate-against-relaxng">
+    <p:group>
+      <p:output port="result" primary="true"/>
+      <p:output port="copy-of-document">
+        <p:pipe port="result" step="run-relaxng-validation"/>
+      </p:output>
+      <!-- validate with RNG -->
+      <l:relax-ng-report name="run-relaxng-validation" assert-valid="false">
+        <p:input port="schema">
+          <p:document href="schema/pef-2008-1.rng"/>
+        </p:input>
+        <p:input port="source">
+          <p:pipe step="main" port="source"/>
+        </p:input>
+      </l:relax-ng-report>
+      <!-- see if there was a report generated -->
+      <p:count name="count-relaxng-report" limit="1">
+        <p:documentation>RelaxNG validation doesn't always produce a report, so this serves as a test to see if there was a document produced.</p:documentation>
+        <p:input port="source">
+          <p:pipe port="report" step="run-relaxng-validation"/>
+        </p:input>
+      </p:count>
+      <!-- if there were no errors, relaxng validation comes up empty. we need to have something to pass around, hence this step -->
+      <p:choose name="get-relaxng-report">
+        <p:xpath-context>
+          <p:pipe port="result" step="count-relaxng-report"/>
+        </p:xpath-context>
+        <!-- if there was no relaxng report, then put an empty errors list document as output -->
+        <p:when test="/c:result = '0'">
+          <p:identity>
+            <p:input port="source">
+              <p:inline>
+                <c:errors/>
+              </p:inline>
+            </p:input>
+          </p:identity>
+        </p:when>
+        <p:otherwise>
+          <p:identity>
+            <p:input port="source">
+              <p:pipe port="report" step="run-relaxng-validation"/>
+            </p:input>
+          </p:identity>
+        </p:otherwise>
+      </p:choose>
+    </p:group>
+    <p:catch name="catch">
+      <p:output port="result" primary="true"/>
+      <p:output port="copy-of-document">
+        <p:pipe port="result" step="run-relaxng-validation"/>
+      </p:output>
+      <p:identity name="copy-errors">
+        <p:input port="source">
+	  <p:pipe step="catch" port="error"/>
+	</p:input>
+      </p:identity>
+      <p:sink/>
+      <p:identity>
+        <p:input port="source">
+	  <p:pipe step="main" port="source"/>
+	</p:input>
+      </p:identity>
+    </p:catch>
+    </p:try>
+
+    <p:try name="validate-against-schematron">
+      <p:group>
+        <p:output port="result" primary="true"/>
+        <p:validate-with-schematron assert-valid="true">
+          <p:input port="schema">
+            <p:document href="schema/pef-2008-1.sch"/>
+          </p:input>
+          <p:input port="source">
+            <p:pipe step="main" port="source"/>
+          </p:input>
+          <p:input port="parameters">
+            <p:empty/>
+          </p:input>
+        </p:validate-with-schematron>
+      </p:group>
+      <p:catch name="catch">
+        <p:output port="result" primary="true"/>
+	<p:validate-with-schematron assert-valid="false" name="validate">
+          <p:input port="schema">
+            <p:document href="schema/pef-2008-1.sch"/>
+          </p:input>
+          <p:input port="parameters">
+            <p:empty/>
+          </p:input>
+	</p:validate-with-schematron>
+      </p:catch>
+    </p:try>
+
+    <p:sink/>
+
     <!--
         TODO: use px:combine-validation-reports
     -->
@@ -136,9 +239,11 @@
     <p:wrap-sequence name="error-report" wrapper="d:reports"/>
 
     <px:combine-validation-reports name="combined-error-report">
+      <p:with-option name="document-type" select="$document-type"/>
+      <p:with-option name="document-name" select="$document-name"/>
       <p:input port="source">
-        <p:pipe step="validate-with-relax-ng" port="report"/>
-        <p:pipe step="validate-with-schematron" port="report"/>
+        <p:pipe port="result" step="validate-against-relaxng"/>
+        <p:pipe port="report" step="validate-against-schematron"/>
       </p:input>
     </px:combine-validation-reports>
 
