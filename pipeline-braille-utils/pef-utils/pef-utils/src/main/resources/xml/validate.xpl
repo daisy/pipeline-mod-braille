@@ -49,8 +49,6 @@
     </p:option>
     
     <p:import href="http://www.daisy.org/pipeline/modules/validation-utils/library.xpl"/>
-    <!--<p:import href="http://www.xproc.org/library/relax-ng-report.xpl"/>-->
-    <p:import href="http://www.daisy.org/pipeline/modules/common-utils/library.xpl"/>
     
     <p:variable name="document-type" select="'PEF'"/>
     <p:variable name="base-uri" select="base-uri()"/>
