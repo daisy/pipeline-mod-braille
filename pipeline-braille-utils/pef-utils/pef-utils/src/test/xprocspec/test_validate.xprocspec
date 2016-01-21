@@ -6,84 +6,12 @@
                xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                script="../../main/resources/xml/validate.xpl">
 
-  <!-- Test valid file -->
-  <x:scenario label="test_01">
-    <x:call step="pef:validate">
-      <x:input port="source">
-        <x:document type="file" href="../resources/pef_valid.pef"/>
-      </x:input>
-      <x:option name="assert-valid" select="'true'"/>
-    </x:call>
-    <x:context label="errors">
-      <x:document type="errors"/>
-    </x:context>
-    <x:expect label="number-of-errors" type="count" max="0"/>
-  </x:scenario>
-
-  <!-- Test invalid file against schematron -->
-  <x:scenario label="test_02">
-    <x:call step="pef:validate">
-      <x:input port="source">
-        <x:document type="file" href="../resources/pef_invalid_schematron.pef"/>
-      </x:input>
-      <x:option name="assert-valid" select="'true'"/>
-    </x:call>
-    <x:context label="errors">
-      <x:document type="errors"/>
-    </x:context>
-    <x:expect label="number-of-errors" type="count" min="1"/>
-  </x:scenario>
-
-  <!-- Test invalid file against Relax NG -->
-  <x:scenario label="test_03">
-    <x:call step="pef:validate">
-      <x:input port="source">
-        <x:document type="file" href="../resources/pef_invalid_relax_ng.pef"/>
-      </x:input>
-      <x:option name="assert-valid" select="'true'"/>
-    </x:call>
-    <x:context label="errors">
-      <x:document type="errors"/>
-    </x:context>
-    <x:expect label="number-of-errors" type="count" min="1"/>
-  </x:scenario>
-
-  <!-- Test error report from schematron -->
-  <x:scenario label="test_04">
-    <x:call step="pef:validate">
-      <x:input port="source">
-        <x:document type="file" href="../resources/pef_invalid_schematron.pef"/>
-      </x:input>
-      <x:option name="assert-valid" select="'false'"/>
-    </x:call>
-    <x:context label="report">
-      <x:document type="port" port="report"/>
-    </x:context>
-    <x:expect label="error" type="xpath"
-              test="string(//d:reports/d:report//svrl:failed-assert/svrl:text)"
-              equals="'[Rule 1] Rows do not fit within the defined page height'"/>
-  </x:scenario>
-
-  <!-- Test error report from Relax NG -->
-  <x:scenario label="test_05">
-    <x:call step="pef:validate">
-      <x:input port="source">
-        <x:document type="file" href="../resources/pef_invalid_relax_ng.pef"/>
-      </x:input>
-      <x:option name="assert-valid" select="'false'"/>
-    </x:call>
-    <x:context label="report">
-      <x:document type="port" port="report"/>
-    </x:context>
-    <x:expect label="error" type="xpath"
-              test="contains(string(/d:reports/d:report//c:error), 'character content of element &quot;dc:date&quot; invalid')"/>
-  </x:scenario>
 
   <!-- Test HTML report -->
   <x:scenario label="test_06">
     <x:call step="pef:validate">
       <x:input port="source">
-        <x:document type="file" href="../resources/pef_invalid_relax_ng.pef"/>
+        <x:document type="file" href="../resources/pef_valid.pef"/>
       </x:input>
       <x:option name="assert-valid" select="'false'"/>
     </x:call>
