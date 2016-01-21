@@ -19,6 +19,7 @@
     <p:variable name="document-type" select="'PEF'"/>
     <p:variable name="base-uri" select="base-uri()"/>
     <p:variable name="document-name" select="tokenize($base-uri, '/')[last()]"/>
+    <p:variable name="document-path" select="'test'"/> <!-- TODO -->
 
     <l:relax-ng-report name="validate-against-relaxng">
       <p:input port="schema">
@@ -32,6 +33,7 @@
     <px:combine-validation-reports name="combined-error-report">
       <p:with-option name="document-type" select="$document-type"/>
       <p:with-option name="document-name" select="$document-name"/>
+      <p:with-option name="document-path" select="$document-path"/>
       <p:input port="source">
         <p:pipe port="report" step="validate-against-relaxng"/>
       </p:input>
