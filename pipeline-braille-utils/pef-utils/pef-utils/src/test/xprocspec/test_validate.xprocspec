@@ -83,7 +83,7 @@
   <x:scenario label="test_06">
     <x:call step="pef:validate">
       <x:input port="source">
-        <x:document type="file" href="../resources/pef_invalid_relax_ng.pef"/>
+        <x:document type="file" href="../resources/pef_invalid_schematron.pef"/>
       </x:input>
       <x:option name="assert-valid" select="'false'"/>
     </x:call>
@@ -91,6 +91,7 @@
       <x:document type="port" port="html-report"/>
     </x:context>
     <x:expect label="html-report" type="compare">
+      <!-- TODO: fix expected output -->
       <html xmlns="http://www.w3.org/1999/xhtml">
       </html>
     </x:expect>
