@@ -11,6 +11,9 @@
     <p:input port="source" primary="true"/>
     
     <p:output port="result" primary="true"/>
+    <p:output port="html-report">
+      <p:pipe step="html-report" port="result"/>
+    </p:output>
     
     <p:option name="assert-valid" required="false" select="'false'"/>
     
@@ -35,7 +38,7 @@
       <p:with-option name="document-name" select="$document-name"/>
       <p:with-option name="document-path" select="$document-path"/>
       <p:input port="source">
-        <p:pipe port="report" step="validate-against-relaxng"/>
+        <p:pipe port="result" step="validate-against-relaxng"/>
       </p:input>
     </px:combine-validation-reports>
 
