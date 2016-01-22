@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<choice id="braille-contracted">
+    <documentation xmlns="http://relaxng.org/ns/compatibility/annotations/1.0" xml:lang="en">
+        <value>Uncontracted</value>
+        <value>Grade 1</value>
+        <value>Grade 2</value>
+    </documentation>
+	<value>0</value>
+	<value>1</value>
+	<value>2</value>
+</choice>

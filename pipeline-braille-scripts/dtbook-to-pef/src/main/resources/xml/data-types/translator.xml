@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <choice id="braille-translator">
-	<value>celia</value>
+	<documentation xmlns="http://relaxng.org/ns/compatibility/annotations/1.0" xml:lang="en">
+        <value>Celia</value>
+        <value>Dedicon</value>
+        <value>MTM</value>
+        <value>NLB</value>
+        <value>Nota</value>
+        <value>SBS</value>
+    </documentation>
+    <value>celia</value>
 	<value>dedicon</value>
 	<value>mtm</value>
 	<value>nlb</value>

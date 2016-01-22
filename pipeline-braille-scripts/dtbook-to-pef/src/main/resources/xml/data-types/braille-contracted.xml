@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<choice id="braille-contracted">
-	<value>uncontracted</value>
-	<value>grade-1</value>
-	<value>grade-2</value>
-	<value>grade-3</value>
-</choice>

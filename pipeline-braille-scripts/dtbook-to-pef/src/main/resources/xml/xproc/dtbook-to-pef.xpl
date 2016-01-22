@@ -37,7 +37,7 @@
             <h2 px:role="name">Input DTBook</h2>
         </p:documentation>
     </p:input>
-    <p:option name="identifier" required="true" px:type="string">
+    <p:option name="identifier" required="false" px:type="string" select="''">
         <p:documentation>
             <h2 px:role="name">Identifier</h2>
             <p px:role="desc">The identifier for the resulting PEF-file.</p>
@@ -49,7 +49,7 @@
             <p px:role="desc">CSS style sheets to apply. Space separated list of absolute or relative URIs. Applied prior to any style sheets linked from or embedded in the source document.</p>
         </p:documentation>
     </p:option>
-    <p:option name="translator" required="true" px:type="string" px:data-type="braille-translator" select="''">
+    <p:option name="translator" required="false" px:type="string" px:data-type="braille-translator" select="'liblouis'">
         <p:documentation>
             <h2 px:role="name">Braille translator</h2>
             <p px:role="desc">Appropriate translator with accordance to language.</p>
@@ -126,7 +126,7 @@
             <h2 px:role="name">Translation/formatting of text: Main document language</h2>
         </p:documentation>
     </p:option>
-    <p:option name="contraction-grade" required="true" px:type="string" px:data-type="braille-contracted" select="'uncontracted'">
+    <p:option name="contraction-grade" required="false" px:type="string" px:data-type="braille-contracted" select="'uncontracted'">
         <p:documentation xmlns="http://www.w3.org/1999/xhtml">
             <h2 px:role="name">Translation/formatting of text: Contraction grade</h2>
             <p px:role="desc">Uncontracted, or contracted braille with desired grade of contraction.</p>
@@ -377,15 +377,16 @@ content at the beginning of every other volume, include the following additional
     <!-- ============= -->
     <!-- Miscellaneous -->
     <!-- ============= -->
-    <p:option name="transform" required="false" px:type="string" select="''">
-        <p:documentation xmlns="http://www.w3.org/1999/xhtml">
-            <h2 px:role="name">Miscellaneous: Transformer query</h2>
-            <pre><code class="default">(translator:liblouis)(formatter:dotify)</code></pre>
-        </p:documentation>
-    </p:option>
     <p:option name="sbsform-macros" required="false" px:type="string" select="''">
         <p:documentation xmlns="http://www.w3.org/1999/xhtml">
             <h2 px:role="name">Miscellaneous: SBSForm macros</h2>
+        </p:documentation>
+    </p:option>
+    <p:option name="transform" required="false" px:type="string" select="''">
+        <p:documentation xmlns="http://www.w3.org/1999/xhtml">
+            <h2 px:role="name">Miscellaneous: Transformer query</h2>
+            <p px:role="desc">Additional options using the following syntax: (name1:value1)(name2:value2). If you specify "translator", "formatter" or "grade" here, this will take priority over anything set in other options.</p>
+            <pre><code class="default">(translator:liblouis)(formatter:dotify)(grade:3)</code></pre>
         </p:documentation>
     </p:option>
     
@@ -412,6 +413,29 @@ content at the beginning of every other volume, include the following additional
     <p:import href="http://www.daisy.org/pipeline/modules/braille/pef-utils/library.xpl"/>
     <p:import href="http://www.daisy.org/pipeline/modules/file-utils/library.xpl"/>
     
+    <!-- find contraction grade as a number, and make sure that the grade is no higher than possible for the given translator -->
+    <p:variable name="contraction-grade-number-1" select="replace($contraction-grade,'[^\d]','')"/>
+    <p:variable name="contraction-grade-number-2" select="if ($contraction-grade-number-1) then $contraction-grade-number-1 else '0'"/>
+    <p:variable name="contraction-grade-number" select="
+        if ($translator=('celia','dedicon')) then '0'
+        else if ($translator=('nota','sbs')) then if (number($contraction-grade-number-2) &gt; 2) then '2' else $contraction-grade-number-2
+        else if ($translator=('nlb')) then if (number($contraction-grade-number-2) &gt; 3) then '3' else $contraction-grade-number-2
+        else if ($translator=('liblouis','')) then ''
+        else $contraction-grade-number-2
+    "/>
+    
+    <!-- put together the transformer query -->
+    <p:variable name="transformer-query-1" select="$transform"/>
+    <p:variable name="transformer-query-2" select="if (contains($transformer-query-1,'(grade:') or not($contraction-grade-number))
+                                                        then $transformer-query-1
+                                                        else concat('(grade:',$contraction-grade-number,')',$transformer-query-1)"/>
+    <p:variable name="transformer-query-3" select="if (contains($transformer-query-2,'(formatter:'))
+                                                        then $transformer-query-2
+                                                        else concat('(formatter:dotify)',$transformer-query-2)"/>
+    <p:variable name="transformer-query" select="if (contains($transformer-query-3,'(translator:'))
+                                                        then $transformer-query-3
+                                                        else concat('(translator:',(if ($translator) then $translator else 'liblouis'),')',$transformer-query-3)"/>
+    
     <!-- =============== -->
     <!-- CREATE TEMP DIR -->
     <!-- =============== -->
@@ -428,8 +452,7 @@ content at the beginning of every other volume, include the following additional
             <p:pipe step="main" port="source"/>
         </p:input>
         <p:with-option name="stylesheet" select="$stylesheet"/>
-        <p:with-option name="transform" select="if ($transform!='') then $transform
-                                                else '(translator:liblouis)(formatter:dotify)'"/>
+        <p:with-option name="transform" select="$transformer-query"/>
         <p:with-option name="temp-dir" select="string(/c:result)">
             <p:pipe step="temp-dir" port="result"/>
         </p:with-option>
