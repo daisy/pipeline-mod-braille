@@ -26,11 +26,13 @@
       </pef:validate>
 
       <p:sink/>
-      <p:identity name="normalize-html">
+
+      <p:delete name="normalize-html">
+        <p:with-option name="match" select="xhtml:div"/>
         <p:input port="source" sequence="true">
 	  <p:pipe step="validate" port="html-report"/>
 	</p:input>
-      </p:identity>
+      </p:delete>
 
     </p:declare-step>
   </x:script>
