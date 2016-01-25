@@ -53,7 +53,7 @@
     <p:variable name="document-type" select="'PEF'"/>
     <p:variable name="base-uri" select="base-uri()"/>
     <p:variable name="document-name" select="tokenize($base-uri, '/')[last()]"/>
-    <p:variable name="document-path" select="'test'"/> <!-- TODO -->
+    <p:variable name="document-path" select="$base-uri"/>
 
     <!--
         TODO: use l:relax-ng-report
@@ -129,27 +129,29 @@
     <p:identity name="copy-of-input"/>
     <p:sink/>
 
-      <!-- validate with RNG -->
-      <l:relax-ng-report name="validate-against-relaxng" assert-valid="false">
-        <p:input port="schema">
-          <p:document href="schema/pef-2008-1.rng"/>
-        </p:input>
-        <p:input port="source">
-          <p:pipe step="main" port="source"/>
-        </p:input>
-      </l:relax-ng-report>
+    <!-- validate with RNG -->
+    <l:relax-ng-report name="validate-against-relaxng" assert-valid="false">
+      <p:input port="schema">
+        <p:document href="schema/pef-2008-1.rng"/>
+      </p:input>
+      <p:input port="source">
+        <p:pipe step="main" port="source"/>
+      </p:input>
+    </l:relax-ng-report>
+    
+    <p:sink/>
 
-        <p:validate-with-schematron name="validate-against-schematron" assert-valid="false">
-          <p:input port="schema">
-            <p:document href="schema/pef-2008-1.sch"/>
-          </p:input>
-          <p:input port="source">
-            <p:pipe step="main" port="source"/>
-          </p:input>
-          <p:input port="parameters">
-            <p:empty/>
-          </p:input>
-        </p:validate-with-schematron>
+    <p:validate-with-schematron name="validate-against-schematron" assert-valid="false">
+      <p:input port="schema">
+        <p:document href="schema/pef-2008-1.sch"/>
+      </p:input>
+      <p:input port="source">
+        <p:pipe step="main" port="source"/>
+      </p:input>
+      <p:input port="parameters">
+        <p:empty/>
+      </p:input>
+    </p:validate-with-schematron>
 
     <p:sink/>
 
@@ -171,7 +173,7 @@
       <p:with-option name="document-name" select="$document-name"/>
       <p:with-option name="document-path" select="$document-path"/>
       <p:input port="source">
-        <p:pipe port="result" step="validate-against-relaxng"/>
+        <p:pipe port="report" step="validate-against-relaxng"/>
         <p:pipe port="report" step="validate-against-schematron"/>
       </p:input>
     </px:combine-validation-reports>

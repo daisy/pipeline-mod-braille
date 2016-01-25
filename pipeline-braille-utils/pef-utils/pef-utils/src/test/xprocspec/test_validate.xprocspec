@@ -79,8 +79,55 @@
               test="contains(string(/d:reports/d:report//c:error), 'character content of element &quot;dc:date&quot; invalid')"/>
   </x:scenario>
 
-  <!-- Test HTML report -->
+  <!-- Test HTML report from valid file -->
   <x:scenario label="test_06">
+    <x:call step="pef:validate">
+      <x:input port="source">
+        <x:document type="file" href="../resources/pef_valid.pef"/>
+      </x:input>
+      <x:option name="assert-valid" select="'false'"/>
+    </x:call>
+    <x:context label="html-report">
+      <x:document type="port" port="html-report"/>
+    </x:context>
+    <x:expect label="html-report" type="compare">
+      <!-- TODO: should be some sort of html comparison -->
+      <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+          <title>Validation Results</title>
+          <style type="text/css"> body { font-family: helvetica; } pre.box { white-space: pre-wrap; /* css-3 */ white-space: -moz-pre-wrap; /*Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /*Internet Explorer 5.5+ */ } li.error div { display: table; border: gray thin solid; padding: 5px; } li.error div h3 { display: table-cell; padding-right: 10px; font-size: smaller; } li.error div pre.box { display: table-cell; } li { padding-bottom: 15px; } #toc { border-spacing: 0px; } #toc th, #toc td { padding: 5px 30px 5px 10px; border-spacing: 0px; font-size: 90%; margin: 0px; } #toc th, #toc td { text-align: left; border-top: 1px solid #f1f8fe; border-bottom: 1px solid #cbd2d8; border-right: 1px solid #cbd2d8; } #toc tr:nth-child(odd) { background-color: #e0e9f0; } #toc tr:nth-child(even), #toc thead th { background-color: #e8eff5; !important; } </style>
+        </head>
+        <body>
+          <div id="header">
+            <h1>Validation Results</h1>
+            <p id="datetime">Generated on 2016-01-25+02:00 at 11:11:19.485+02:00</p>
+          </div>
+          <div class="document-validation-report" id="d4689e2">
+            <div class="document-info">
+              <h2>
+                <code>pef_valid.pef</code>
+              </h2>
+              <p>Validated as
+                <code>PEF</code>
+              </p>
+              <p>Path:
+                <code>test</code>
+              </p>
+              <p>0 issues found.</p>
+            </div>
+            <div class="document-report">
+              <ul/>
+              <ul/>
+            </div>
+          </div>
+          <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"> </script>
+        </body>
+      </html>
+    </x:expect>
+  </x:scenario>
+
+  <!-- Test HTML report from file that's invalid against Schematron -->
+  <x:scenario label="test_07">
     <x:call step="pef:validate">
       <x:input port="source">
         <x:document type="file" href="../resources/pef_invalid_schematron.pef"/>
@@ -91,10 +138,95 @@
       <x:document type="port" port="html-report"/>
     </x:context>
     <x:expect label="html-report" type="compare">
-      <!-- TODO: fix expected output -->
+      <!-- TODO: should be some sort of html comparison -->
       <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+          <title>Validation Results</title>
+          <style type="text/css"> body { font-family: helvetica; } pre.box { white-space: pre-wrap; /* css-3 */ white-space: -moz-pre-wrap; /*Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /*Internet Explorer 5.5+ */ } li.error div { display: table; border: gray thin solid; padding: 5px; } li.error div h3 { display: table-cell; padding-right: 10px; font-size: smaller; } li.error div pre.box { display: table-cell; } li { padding-bottom: 15px; } #toc { border-spacing: 0px; } #toc th, #toc td { padding: 5px 30px 5px 10px; border-spacing: 0px; font-size: 90%; margin: 0px; } #toc th, #toc td { text-align: left; border-top: 1px solid #f1f8fe; border-bottom: 1px solid #cbd2d8; border-right: 1px solid #cbd2d8; } #toc tr:nth-child(odd) { background-color: #e0e9f0; } #toc tr:nth-child(even), #toc thead th { background-color: #e8eff5; !important; } </style>
+        </head>
+        <body>
+          <div id="header">
+            <h1>Validation Results</h1>
+            <p id="datetime">Generated on 2016-01-25+02:00 at 11:29:52.542+02:00</p>
+          </div>
+          <div class="document-validation-report" id="d5226e2">
+            <div class="document-info">
+              <h2>
+                <code>pef_invalid_schematron.pef</code>
+              </h2>
+              <p>Validated as
+                <code>PEF</code>
+              </p>
+              <p>Path:
+                <code>test</code>
+              </p>
+              <p>1 issue found.</p>
+            </div>
+            <div class="document-report">
+              <ul/>
+              <ul>
+                <li class="error">
+                  <p>[Rule 1] Rows do not fit within the defined page height</p>
+                  <div>
+                    <h3>Location (XPath)</h3>
+                    <pre>/*[local-name()='pef']/*[local-name()='body']/*[local-name()='volume']/*[local-name()='section']/*[local-name()='page']</pre>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"> </script>
+        </body>
       </html>
     </x:expect>
   </x:scenario>
+
+  <!-- Test HTML report from file that's invalid against Relax NG -->
+  <x:scenario label="test_08">
+    <x:call step="pef:validate">
+      <x:input port="source">
+        <x:document type="file" href="../resources/pef_invalid_relax_ng.pef"/>
+      </x:input>
+      <x:option name="assert-valid" select="'false'"/>
+    </x:call>
+    <x:context label="html-report">
+      <x:document type="port" port="html-report"/>
+    </x:context>
+    <x:expect label="html-report" type="compare">
+      <!-- TODO: should be some sort of html comparison -->
+      <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+          <title>Validation Results</title>
+          <style type="text/css"> body { font-family: helvetica; } pre.box { white-space: pre-wrap; /* css-3 */ white-space: -moz-pre-wrap; /*Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /*Internet Explorer 5.5+ */ } li.error div { display: table; border: gray thin solid; padding: 5px; } li.error div h3 { display: table-cell; padding-right: 10px; font-size: smaller; } li.error div pre.box { display: table-cell; } li { padding-bottom: 15px; } #toc { border-spacing: 0px; } #toc th, #toc td { padding: 5px 30px 5px 10px; border-spacing: 0px; font-size: 90%; margin: 0px; } #toc th, #toc td { text-align: left; border-top: 1px solid #f1f8fe; border-bottom: 1px solid #cbd2d8; border-right: 1px solid #cbd2d8; } #toc tr:nth-child(odd) { background-color: #e0e9f0; } #toc tr:nth-child(even), #toc thead th { background-color: #e8eff5; !important; } </style>
+        </head>
+        <body>
+          <div id="header">
+            <h1>Validation Results</h1>
+            <p id="datetime">Generated on 2016-01-25+02:00 at 11:29:54.015+02:00</p>
+          </div>
+          <div class="document-validation-report" id="d5755e2">
+            <div class="document-info">
+              <h2>
+                <code>pef_invalid_relax_ng.pef</code>
+              </h2>
+              <p>Validated as
+                <code>PEF</code>
+              </p>
+              <p>Path:
+                <code>test</code>
+              </p>
+              <p>0 issues found.</p>
+            </div>
+            <div class="document-report">
+              <ul/>
+              <ul/>
+            </div>
+          </div>
+          <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"> </script>
+        </body>
+      </html>
+    </x:expect>
+  </x:scenario>
+
 
 </x:description>
