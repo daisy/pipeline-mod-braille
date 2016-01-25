@@ -7,9 +7,29 @@
                xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                script="../../main/resources/xml/validate.xpl">
 
+  <x:script>
+    <p:declare-step type="pef:test-validate" version="1.0">
+      <p:import href="../../main/resources/xml/validate.xpl"/>
+      <p:input port="source"/>
+      <p:output port="result" primary="true" sequence="true"/>
+      <p:output port="report" sequence="true">
+        <p:pipe step="validate" port="report"/>
+      </p:output>
+      <p:output port="html-report" sequence="true">
+        <p:pipe step="validate" port="html-report"/>
+      </p:output>
+      
+      <p:option name="assert-valid"/>
+      
+      <pef:validate name="validate">
+        <p:with-option name="assert-valid" select="$assert-valid"/>
+      </pef:validate>
+    </p:declare-step>
+  </x:script>
+
   <!-- Test valid file -->
   <x:scenario label="test_01">
-    <x:call step="pef:validate">
+    <x:call step="pef:test-validate">
       <x:input port="source">
         <x:document type="file" href="../resources/pef_valid.pef"/>
       </x:input>
@@ -23,7 +43,7 @@
 
   <!-- Test invalid file against schematron -->
   <x:scenario label="test_02">
-    <x:call step="pef:validate">
+    <x:call step="pef:test-validate">
       <x:input port="source">
         <x:document type="file" href="../resources/pef_invalid_schematron.pef"/>
       </x:input>
@@ -37,7 +57,7 @@
 
   <!-- Test invalid file against Relax NG -->
   <x:scenario label="test_03">
-    <x:call step="pef:validate">
+    <x:call step="pef:test-validate">
       <x:input port="source">
         <x:document type="file" href="../resources/pef_invalid_relax_ng.pef"/>
       </x:input>
@@ -51,7 +71,7 @@
 
   <!-- Test error report from schematron -->
   <x:scenario label="test_04">
-    <x:call step="pef:validate">
+    <x:call step="pef:test-validate">
       <x:input port="source">
         <x:document type="file" href="../resources/pef_invalid_schematron.pef"/>
       </x:input>
@@ -67,7 +87,7 @@
 
   <!-- Test error report from Relax NG -->
   <x:scenario label="test_05">
-    <x:call step="pef:validate">
+    <x:call step="pef:test-validate">
       <x:input port="source">
         <x:document type="file" href="../resources/pef_invalid_relax_ng.pef"/>
       </x:input>
@@ -82,7 +102,7 @@
 
   <!-- Test HTML report from valid file -->
   <x:scenario label="test_06">
-    <x:call step="pef:validate">
+    <x:call step="pef:test-validate">
       <x:input port="source">
         <x:document type="file" href="../resources/pef_valid.pef"/>
       </x:input>
@@ -130,7 +150,7 @@
 
   <!-- Test HTML report from file that's invalid against Schematron -->
   <x:scenario label="test_07">
-    <x:call step="pef:validate">
+    <x:call step="pef:test-validate">
       <x:input port="source">
         <x:document type="file" href="../resources/pef_invalid_schematron.pef"/>
       </x:input>
@@ -186,7 +206,7 @@
 
   <!-- Test HTML report from file that's invalid against Relax NG -->
   <x:scenario label="test_08">
-    <x:call step="pef:validate">
+    <x:call step="pef:test-validate">
       <x:input port="source">
         <x:document type="file" href="../resources/pef_invalid_relax_ng.pef"/>
       </x:input>
