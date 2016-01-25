@@ -8,7 +8,7 @@
                script="../../main/resources/xml/validate.xpl">
 
   <x:script>
-    <p:declare-step type="pef:test-validate" version="1.0">
+    <p:declare-step type="pef:test-validate" name="main" version="1.0">
       <p:import href="../../main/resources/xml/validate.xpl"/>
       <p:input port="source"/>
       <p:output port="result" primary="true" sequence="true"/>
@@ -16,7 +16,7 @@
         <p:pipe step="validate" port="report"/>
       </p:output>
       <p:output port="html-report" sequence="true">
-        <p:pipe step="validate" port="html-report"/>
+        <p:pipe step="normalize-html" port="result"/>
       </p:output>
       
       <p:option name="assert-valid"/>
@@ -24,6 +24,14 @@
       <pef:validate name="validate">
         <p:with-option name="assert-valid" select="$assert-valid"/>
       </pef:validate>
+
+      <p:sink/>
+      <p:identity name="normalize-html">
+        <p:input port="source" sequence="true">
+	  <p:pipe step="validate" port="html-report"/>
+	</p:input>
+      </p:identity>
+
     </p:declare-step>
   </x:script>
 
