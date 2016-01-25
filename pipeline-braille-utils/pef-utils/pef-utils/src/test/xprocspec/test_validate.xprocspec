@@ -27,8 +27,7 @@
 
       <p:sink/>
 
-      <p:delete name="normalize-html">
-        <p:with-option name="match" select="xhtml:div"/>
+      <p:delete name="normalize-html" match="*[@id='datetime']|@id">
         <p:input port="source" sequence="true">
 	  <p:pipe step="validate" port="html-report"/>
 	</p:input>
