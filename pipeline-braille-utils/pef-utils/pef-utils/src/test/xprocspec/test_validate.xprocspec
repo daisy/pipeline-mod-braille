@@ -27,7 +27,7 @@
 
       <p:sink/>
 
-      <p:delete name="normalize-html" match="*[@id='datetime']|@id">
+      <p:delete name="normalize-html" match="*[@id='datetime']|@id|//*[local-name()='code']">
         <p:input port="source" sequence="true">
 	  <p:pipe step="validate" port="html-report"/>
 	</p:input>
@@ -128,25 +128,20 @@
           <style type="text/css"> body { font-family: helvetica; } pre.box { white-space: pre-wrap; /* css-3 */ white-space: -moz-pre-wrap; /*Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /*Internet Explorer 5.5+ */ } li.error div { display: table; border: gray thin solid; padding: 5px; } li.error div h3 { display: table-cell; padding-right: 10px; font-size: smaller; } li.error div pre.box { display: table-cell; } li { padding-bottom: 15px; } #toc { border-spacing: 0px; } #toc th, #toc td { padding: 5px 30px 5px 10px; border-spacing: 0px; font-size: 90%; margin: 0px; } #toc th, #toc td { text-align: left; border-top: 1px solid #f1f8fe; border-bottom: 1px solid #cbd2d8; border-right: 1px solid #cbd2d8; } #toc tr:nth-child(odd) { background-color: #e0e9f0; } #toc tr:nth-child(even), #toc thead th { background-color: #e8eff5; !important; } </style>
         </head>
         <body>
-          <div id="header">
+          <div>
             <h1>Validation Results</h1>
-            <p id="datetime">Generated on 2016-01-25+02:00 at 11:11:19.485+02:00</p>
           </div>
-          <div class="document-validation-report" id="d4689e2">
+          <div class="document-validation-report">
             <div class="document-info">
               <h2>
-                <code>pef_valid.pef</code>
               </h2>
               <p>Validated as
-                <code>PEF</code>
               </p>
               <p>Path:
-                <code>test</code>
               </p>
               <p>0 issues found.</p>
             </div>
             <div class="document-report">
-              <ul/>
               <ul/>
             </div>
           </div>
@@ -176,25 +171,20 @@
           <style type="text/css"> body { font-family: helvetica; } pre.box { white-space: pre-wrap; /* css-3 */ white-space: -moz-pre-wrap; /*Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /*Internet Explorer 5.5+ */ } li.error div { display: table; border: gray thin solid; padding: 5px; } li.error div h3 { display: table-cell; padding-right: 10px; font-size: smaller; } li.error div pre.box { display: table-cell; } li { padding-bottom: 15px; } #toc { border-spacing: 0px; } #toc th, #toc td { padding: 5px 30px 5px 10px; border-spacing: 0px; font-size: 90%; margin: 0px; } #toc th, #toc td { text-align: left; border-top: 1px solid #f1f8fe; border-bottom: 1px solid #cbd2d8; border-right: 1px solid #cbd2d8; } #toc tr:nth-child(odd) { background-color: #e0e9f0; } #toc tr:nth-child(even), #toc thead th { background-color: #e8eff5; !important; } </style>
         </head>
         <body>
-          <div id="header">
+          <div>
             <h1>Validation Results</h1>
-            <p id="datetime">Generated on 2016-01-25+02:00 at 11:29:52.542+02:00</p>
           </div>
-          <div class="document-validation-report" id="d5226e2">
+          <div class="document-validation-report">
             <div class="document-info">
               <h2>
-                <code>pef_invalid_schematron.pef</code>
               </h2>
               <p>Validated as
-                <code>PEF</code>
               </p>
               <p>Path:
-                <code>test</code>
               </p>
               <p>1 issue found.</p>
             </div>
             <div class="document-report">
-              <ul/>
               <ul>
                 <li class="error">
                   <p>[Rule 1] Rows do not fit within the defined page height</p>
@@ -232,25 +222,26 @@
           <style type="text/css"> body { font-family: helvetica; } pre.box { white-space: pre-wrap; /* css-3 */ white-space: -moz-pre-wrap; /*Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /*Internet Explorer 5.5+ */ } li.error div { display: table; border: gray thin solid; padding: 5px; } li.error div h3 { display: table-cell; padding-right: 10px; font-size: smaller; } li.error div pre.box { display: table-cell; } li { padding-bottom: 15px; } #toc { border-spacing: 0px; } #toc th, #toc td { padding: 5px 30px 5px 10px; border-spacing: 0px; font-size: 90%; margin: 0px; } #toc th, #toc td { text-align: left; border-top: 1px solid #f1f8fe; border-bottom: 1px solid #cbd2d8; border-right: 1px solid #cbd2d8; } #toc tr:nth-child(odd) { background-color: #e0e9f0; } #toc tr:nth-child(even), #toc thead th { background-color: #e8eff5; !important; } </style>
         </head>
         <body>
-          <div id="header">
+          <div>
             <h1>Validation Results</h1>
-            <p id="datetime">Generated on 2016-01-25+02:00 at 11:29:54.015+02:00</p>
           </div>
-          <div class="document-validation-report" id="d5755e2">
+          <div class="document-validation-report">
             <div class="document-info">
               <h2>
-                <code>pef_invalid_relax_ng.pef</code>
-              </h2>
+	      </h2>
               <p>Validated as
-                <code>PEF</code>
               </p>
               <p>Path:
-                <code>test</code>
               </p>
               <p>0 issues found.</p>
             </div>
             <div class="document-report">
-              <ul/>
+              <ul>
+                <li class="message-error">
+                  <p>org.xml.sax.SAXParseException; systemId: file:/Users/jukka/workspace/duuni_celia/pipeline-mod-braille/pipeline-braille-utils/pef-utils/pef-utils/src/test/resources/pef_invalid_relax_ng.pef; lineNumber: 5; columnNumber: 42; character content of element "dc:date" invalid; must be a string matching the regular expression "[0-9]{4}-[0-9]{2}-[0-9]{2}"</p>
+                  <div class="message-details"/>
+                </li>
+              </ul>
               <ul/>
             </div>
           </div>
