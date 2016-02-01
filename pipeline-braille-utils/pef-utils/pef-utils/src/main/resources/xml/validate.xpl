@@ -54,43 +54,6 @@
     <p:variable name="base-uri" select="base-uri()"/>
     <p:variable name="document-name" select="tokenize($base-uri, '/')[last()]"/>
     <p:variable name="document-path" select="$base-uri"/>
-
-    <!--
-        TODO: use l:relax-ng-report
-    -->
-    <p:try name="validate-with-relax-ng">
-        <p:group>
-            <p:output port="result" primary="true"/>
-            <p:output port="report" sequence="true">
-                <p:empty/>
-            </p:output>
-            <p:validate-with-relax-ng assert-valid="true">
-                <p:input port="source">
-                    <p:pipe step="main" port="source"/>
-                </p:input>
-                <p:input port="schema">
-                    <p:document href="schema/pef-2008-1.rng"/>
-                </p:input>
-            </p:validate-with-relax-ng>
-        </p:group>
-        <p:catch name="catch">
-            <p:output port="result" primary="true"/>
-            <p:output port="report" sequence="true">
-                <p:pipe step="copy-errors" port="result"/>
-            </p:output>
-            <p:identity name="copy-errors">
-                <p:input port="source">
-                    <p:pipe step="catch" port="error"/>
-                </p:input>
-            </p:identity>
-            <p:sink/>
-            <p:identity>
-                <p:input port="source">
-                    <p:pipe step="main" port="source"/>
-                </p:input>
-            </p:identity>
-        </p:catch>
-    </p:try>
     
     <p:try name="validate-with-schematron">
         <p:group>
@@ -130,7 +93,7 @@
     <p:sink/>
 
     <!-- validate with RNG -->
-    <l:relax-ng-report name="validate-against-relaxng" assert-valid="false">
+    <l:relax-ng-report name="validate-with-relax-ng" assert-valid="false">
       <p:input port="schema">
         <p:document href="schema/pef-2008-1.rng"/>
       </p:input>
@@ -159,7 +122,7 @@
       <p:with-option name="document-name" select="$document-name"/>
       <p:with-option name="document-path" select="$document-path"/>
       <p:input port="source">
-        <p:pipe port="report" step="validate-against-relaxng"/>
+        <p:pipe port="report" step="validate-with-relax-ng"/>
         <p:pipe port="report" step="validate-with-schematron"/>
       </p:input>
     </px:combine-validation-reports>
