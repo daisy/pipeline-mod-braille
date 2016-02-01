@@ -138,22 +138,8 @@
         <p:pipe step="main" port="source"/>
       </p:input>
     </l:relax-ng-report>
-    
     <p:sink/>
 
-    <p:validate-with-schematron name="validate-against-schematron" assert-valid="false">
-      <p:input port="schema">
-        <p:document href="schema/pef-2008-1.sch"/>
-      </p:input>
-      <p:input port="source">
-        <p:pipe step="main" port="source"/>
-      </p:input>
-      <p:input port="parameters">
-        <p:empty/>
-      </p:input>
-    </p:validate-with-schematron>
-
-    <p:sink/>
 
     <!--
         TODO: use px:combine-validation-reports
@@ -174,7 +160,7 @@
       <p:with-option name="document-path" select="$document-path"/>
       <p:input port="source">
         <p:pipe port="report" step="validate-against-relaxng"/>
-        <p:pipe port="report" step="validate-against-schematron"/>
+        <p:pipe port="report" step="validate-with-schematron"/>
       </p:input>
     </px:combine-validation-reports>
 

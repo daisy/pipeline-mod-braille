@@ -141,9 +141,8 @@
               </p>
               <p>0 issues found.</p>
             </div>
-            <div class="document-report">
-              <ul/>
-            </div>
+            <div class="document-report"/>
+            
           </div>
           <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"> </script>
         </body>
@@ -242,7 +241,6 @@
                   <div class="message-details"/>
                 </li>
               </ul>
-              <ul/>
             </div>
           </div>
           <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"> </script>
