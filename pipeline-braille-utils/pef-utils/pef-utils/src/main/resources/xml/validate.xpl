@@ -91,9 +91,10 @@
     
     <p:identity name="copy-of-input"/>
     <p:sink/>
+    
 
     <!-- validate with RNG -->
-    <l:relax-ng-report name="validate-with-relax-ng" assert-valid="false">
+    <l:relax-ng-report name="validate-with-relax-ng">
       <p:input port="schema">
         <p:document href="schema/pef-2008-1.rng"/>
       </p:input>
@@ -102,7 +103,6 @@
       </p:input>
     </l:relax-ng-report>
     <p:sink/>
-
 
     <!--
         TODO: use px:combine-validation-reports
@@ -133,8 +133,13 @@
       </p:input>
     </px:validation-report-to-html>
 
+    <!--
+        l:relax-ng-report always generates 24 text nodes, whereas
+        p:validate-with-schematron creates a report if and only if validation
+        errors occur.
+    -->
     <p:choose name="assert-valid">
-        <p:when test="$assert-valid='true' and count(/*/*)&gt;0">
+        <p:when test="$assert-valid='true' and count(//*/text())&gt;24">
             <p:output port="result"/>
             <p:error code="error">
                 <p:input port="source">
@@ -151,5 +156,6 @@
             </p:identity>
         </p:otherwise>
     </p:choose>
+    
     
 </p:declare-step>
