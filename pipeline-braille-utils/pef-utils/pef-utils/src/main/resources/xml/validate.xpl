@@ -31,8 +31,7 @@
     </p:output>
     
     <!--
-        TODO: add output ports `html-report` (use px:px:validation-report-to-html)
-        and `validation-status` (use px:validation-status)
+        TODO: add output port `validation-status` (use px:validation-status)
     -->
 
     <p:output port="html-report">
@@ -104,9 +103,6 @@
     </l:relax-ng-report>
     <p:sink/>
 
-    <!--
-        TODO: use px:combine-validation-reports
-    -->
     <p:for-each>
         <p:iteration-source>
             <p:pipe step="validate-with-relax-ng" port="report"/>
@@ -134,9 +130,9 @@
     </px:validation-report-to-html>
 
     <!--
-        l:relax-ng-report always generates 24 text nodes, whereas
-        p:validate-with-schematron creates a report if and only if validation
-        errors occur.
+        l:relax-ng-report generates 24 text nodes if there are no errors,
+	over 24 if errors do occur, whereas p:validate-with-schematron
+	creates a report if and only if validation errors occur.
     -->
     <p:choose name="assert-valid">
         <p:when test="$assert-valid='true' and count(//*/text())&gt;24">
