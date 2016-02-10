@@ -87,6 +87,14 @@
             <p px:role="desc">Directory for storing temporary files.</p>
         </p:documentation>
     </p:option>
+
+    <p:output port="html-report" px:media-type="application/vnd.pipeline.report+xml" sequence="true">
+        <p:documentation xmlns="http://www.w3.org/1999/xhtml">
+	    <h1 px:role="name">HTML report</h1>
+	    <p px:role="desc">An HTML-formatted version of the validation report.</p>
+	</p:documentation>
+	<p:pipe port="html-report" step="validate-pef"/>
+    </p:output>
     
     <p:import href="dtbook-to-pef.convert.xpl"/>
     <p:import href="http://www.daisy.org/pipeline/modules/braille/pef-utils/library.xpl"/>
@@ -116,6 +124,13 @@
             <p:pipe step="temp-dir" port="result"/>
         </p:with-option>
     </px:dtbook-to-pef.convert>
+
+    <!-- ============ -->
+    <!-- VALIDATE PEF -->
+    <!-- ============ -->
+
+    <pef:validate name="validate-pef">
+    </pef:validate>
     
     <!-- ========= -->
     <!-- STORE PEF -->
