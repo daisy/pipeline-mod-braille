@@ -128,7 +128,6 @@
             <Require-Capability>
               xproc.step;filter:="(name={http://www.daisy.org/ns/2008/pef}pef2text)",
               xproc.step;filter:="(name={http://www.daisy.org/ns/2008/pef}text2pef)",
-              xproc.step;filter:="(name={http://www.daisy.org/ns/2008/pef}validate)",
               xpath.function;filter:="(name={http://www.daisy.org/ns/2008/pef}encode)"
             </Require-Capability>
           </instructions>

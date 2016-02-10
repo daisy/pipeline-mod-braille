@@ -138,8 +138,7 @@
             <_dsannotations>*</_dsannotations>
             <Provide-Capability>
               xproc.step;name="{http://www.daisy.org/ns/2008/pef}pef2text",
-              xproc.step;name="{http://www.daisy.org/ns/2008/pef}text2pef",
-              xproc.step;name="{http://www.daisy.org/ns/2008/pef}validate"
+              xproc.step;name="{http://www.daisy.org/ns/2008/pef}text2pef"
             </Provide-Capability>
           </instructions>
         </configuration>
