@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.daisy.org/ns/xprocspec"
+               xmlns:p="http://www.w3.org/ns/xproc"
+               xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
+               xmlns:pef="http://www.daisy.org/ns/2008/pef"
+               xmlns:c="http://www.w3.org/ns/xproc-step"
+               xmlns:cx="http://xmlcalabash.com/ns/extensions">
+  
+  <x:script>
+    <p:declare-step type="px:my-dtbook-to-pef" version="1.0" name="main">
+      
+      <p:input port="source"/>
+      
+      <p:output port="html-report" sequence="true">
+        <p:pipe port="html-report" step="validate-pef"/>
+      </p:output>
+      
+      <p:option name="output-dir" required="true"/>
+      
+      <p:import href="../../main/resources/xml/xproc/dtbook-to-pef.convert.xpl"/>
+      <p:import href="http://www.daisy.org/pipeline/modules/braille/pef-utils/library.xpl"/>
+      <p:import href="http://www.daisy.org/pipeline/modules/file-utils/library.xpl"/>
+      
+      <px:tempdir name="temp-dir">
+        <p:with-option name="href" select="$output-dir"/>
+      </px:tempdir>
+      <p:sink/>
+      
+      <px:dtbook-to-pef.convert default-stylesheet="http://www.daisy.org/pipeline/modules/braille/dtbook-to-pef/css/default.css" name="x">
+        <p:input port="source">
+          <p:pipe step="main" port="source"/>
+        </p:input>
+        <p:with-option name="stylesheet" select="''"/>
+        <p:with-option name="transform" select="'(translator:liblouis)(formatter:dotify)'"/>
+        <p:with-option name="temp-dir" select="string(/c:result)">
+          <p:pipe step="temp-dir" port="result"/>
+        </p:with-option>
+      </px:dtbook-to-pef.convert>
+      
+      <pef:store name="store">
+        <p:with-option name="output-dir" select="$output-dir"/>
+        <p:with-option name="name" select="replace(p:base-uri(/),'^.*/([^/]*)\.[^/\.]*$','$1')">
+          <p:pipe step="main" port="source"/>
+        </p:with-option>
+        <p:with-option name="brf-table" select="'(locale:und)'"/>
+        <p:with-option name="include-preview" select="'false'"/>
+        <p:with-option name="include-brf" select="'false'"/>
+      </pef:store>
+      
+      <p:load cx:depends-on="store">
+        <p:with-option name="href" select="resolve-uri(replace(p:base-uri(/),'^.*/([^/]*)\.[^/\.]*$','$1.pef'), $output-dir)">
+          <p:pipe step="main" port="source"/>
+        </p:with-option>
+      </p:load>
+      
+      <pef:validate name="validate-pef"/>
+      <p:sink/>
+      
+    </p:declare-step>
+  </x:script>
+  
+  <x:scenario label="test-validate">
+    <x:call step="px:my-dtbook-to-pef">
+      <x:input port="source">
+        <x:document type="file" href="../resources/hauy_valid.xml"/>
+      </x:input>
+      <x:option name="output-dir" select="concat($temp-dir,'1/output-dir/')"/>
+    </x:call>
+    <x:context label="html-report">
+      <x:document type="port" port="html-report"/>
+    </x:context>
+    <x:expect label="html-report" type="compare">
+      <x:document type="inline">
+        <html/>
+      </x:document>
+    </x:expect>
+  </x:scenario>
+  
+</x:description>
