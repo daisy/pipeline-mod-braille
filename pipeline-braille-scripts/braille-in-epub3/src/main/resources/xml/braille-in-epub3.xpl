@@ -63,6 +63,13 @@
     <p:variable name="target.base" select="base-uri(/*)"/>
     <p:variable name="target" select="substring-before($target.base,'!/')"/>
     
+    <!--
+        FIXME: copy + zip to same target: java.util.zip.ZipException: invalid entry compressed size
+        => solution 1: fix calabash: http://stackoverflow.com/questions/13435683/invalid-entry-compressed-size
+        => solution 2: load whole epub in memory
+    -->
+    
+    <!-- epub-in-memory -->
     <px:unzip name="source-zipfile">
         <p:with-option name="href" select="$source"/>
     </px:unzip>
@@ -84,6 +91,7 @@
         </p:input>
     </px:fileset-load>
     <p:sink/>
+    <!-- end epub-in-memory -->
     
     <px:unzip file="META-INF/container.xml" content-type="application/xml" name="original-container">
         <p:with-option name="href" select="$source"/>
@@ -182,6 +190,14 @@
             <p:pipe step="braille-rendition.fileset" port="result"/>
         </p:input>
     </px:fileset-filter>
+    <!--
+    <px:fileset-load cx:depends-on="copy">
+        <p:input port="in-memory">
+            <p:empty/>
+        </p:input>
+    </px:fileset-load>
+    -->
+    <!-- epub-in-memory -->
     <p:label-elements match="d:file" attribute="original-href">
         <p:with-option name="label" select="concat('resolve-uri(@original-href,&quot;',$source.base,'&quot;)')"/>
     </p:label-elements>
@@ -190,6 +206,7 @@
             <p:empty/>
         </p:input>
     </px:fileset-load>
+    <!-- end epub-in-memory -->
     <p:for-each name="braille-rendition.html">
         <p:output port="result" primary="true">
             <p:pipe step="result" port="result"/>
@@ -200,6 +217,9 @@
         <px:message message="Generating $1" severity="INFO">
             <p:with-option name="param1" select="substring-after(base-uri(/*),'!/')"/>
         </px:message>
+        <!--
+            FIXME: FileNotFoundException: .../test_braille.epub!/EPUB/css/accessibility.css
+        -->
         <css:inline>
             <p:input port="context">
                 <p:pipe step="source.in-memory" port="result"/>
@@ -227,6 +247,9 @@
             </p:input>
         </p:xslt>
         <p:delete match="@style" name="result"/>
+        <!--
+            TODO: if no resource-map, sync on document level
+        -->
         <p:for-each name="resource-map">
             <p:iteration-source>
                 <p:pipe step="transform" port="resource-map"/>
@@ -344,6 +367,7 @@
         - what if default rendition != reflowable?
         - rendition:layout must match global rendition:layout setting for the referenced Rendition
           (see http://www.idpf.org/epub/301/spec/epub-publications.html#property-layout-global)
+        - rendition:media?
     -->
     
     <p:insert position="last-child" match="/ocf:container/ocf:rootfiles">
@@ -379,6 +403,18 @@
     <!-- Store -->
     <!-- ===== -->
     
+    <!--
+    <px:copy name="copy">
+        <p:with-option name="href" select="$source"/>
+        <p:with-option name="target" select="$target"/>
+    </px:copy>
+    <p:identity>
+        <p:input port="source">
+            <p:pipe step="braille-rendition.html.fileset" port="result"/>
+        </p:input>
+    </p:identity>
+    -->
+    <!-- epub-in-memory -->
     <px:fileset-join>
         <p:input port="source">
             <p:pipe step="braille-rendition.html.fileset" port="result"/>
@@ -386,14 +422,20 @@
             <p:pipe step="source.fileset" port="result"/>
         </p:input>
     </px:fileset-join>
+    <!-- end epub-in-memory -->
     <px:fileset-add-entry href="META-INF/container.xml"/>
     <px:fileset-add-entry href="META-INF/metadata.xml"/>
     <px:fileset-add-entry href="EPUB/package-braille.opf"/>
     <px:fileset-add-entry href="EPUB/renditionMapping.html"/>
     <p:add-attribute match="d:file[@href='META-INF/metadata.xml']" attribute-name="indent" attribute-value="true"/>
     <p:add-attribute match="d:file[@href='EPUB/renditionMapping.html']" attribute-name="indent" attribute-value="true"/>
-    <px:fileset-store>
+    <px:fileset-store> <!-- cx:depends-on="copy" -->
         <p:input port="in-memory.in">
+            <!--
+                FIXME: META-INF/container.xml in both source.in-memory and container sequences, and
+                not predictable which will be chosen
+                => use p:split-sequence instead of px:unzip to load container.xml
+            -->
             <p:pipe step="source.in-memory" port="result"/>
             <p:pipe step="container" port="result"/>
             <p:pipe step="metadata" port="result"/>
