@@ -110,6 +110,8 @@ public class CSSInlineStep extends DefaultStep {
 	private CSSInlineStep(XProcRuntime runtime, XAtomicStep step, final URIResolver resolver) {
 		super(runtime, step);
 		inMemoryResolver = new ProxyURIResolver();
+		
+		// TODO: switch order?
 		final URIResolver _resolver = fallback(inMemoryResolver, resolver);
 		network = new DefaultNetworkProcessor() {
 			@Override

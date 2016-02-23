@@ -338,6 +338,14 @@
         container.xml
     -->
     
+    <!--
+        FIXME:
+        - add rendition:layout="reflowable"
+        - what if default rendition != reflowable?
+        - rendition:layout must match global rendition:layout setting for the referenced Rendition
+          (see http://www.idpf.org/epub/301/spec/epub-publications.html#property-layout-global)
+    -->
+    
     <p:insert position="last-child" match="/ocf:container/ocf:rootfiles">
         <p:input port="source">
             <p:pipe step="original-container" port="result"/>
