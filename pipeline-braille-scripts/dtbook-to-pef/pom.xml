@@ -14,7 +14,7 @@
   <version>3.5.1-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
-  <name>DP2 Braille Modules :: dtbook-to-pef</name>
+  <name>DP2 Braille Modules :: DTBook to PEF</name>
 
   <dependencies>
     <dependency>
