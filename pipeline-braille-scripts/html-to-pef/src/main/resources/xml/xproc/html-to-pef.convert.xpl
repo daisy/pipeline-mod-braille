@@ -66,7 +66,7 @@
                                                                $stylesheet),' ')">
             <p:inline><_/></p:inline>
         </p:variable>
-        <px:message severity="DEBUG">
+        <px:message>
             <p:with-option name="message" select="concat('stylesheets: ',$stylesheets-to-be-inlined)"/>
         </px:message>
         <px:apply-stylesheets>
