@@ -85,6 +85,12 @@
     <!-- pass all the variables all the time.              -->
     <!-- ================================================= -->
     <p:in-scope-names name="in-scope-names"/>
+    <p:identity>
+        <p:input port="source">
+            <p:pipe port="result" step="in-scope-names"/>
+        </p:input>
+    </p:identity>
+    <px:message message="[progress 1 px:delete-parameters] Collecting parameters"/>
     <px:delete-parameters name="input-options"
                           parameter-names="stylesheet
                                            transform
@@ -94,16 +100,12 @@
                                            pef-output-dir
                                            brf-output-dir
                                            preview-output-dir
-                                           temp-dir">
-        <p:input port="source">
-            <p:pipe port="result" step="in-scope-names"/>
-        </p:input>
-    </px:delete-parameters>
-    <p:sink/>
+                                           temp-dir"/>
     
     <!-- =============== -->
     <!-- CREATE TEMP DIR -->
     <!-- =============== -->
+    <px:message message="[progress 1 px:tempdir] Creating temporary directory"/>
     <px:tempdir name="temp-dir">
         <p:with-option name="href" select="if ($temp-dir!='') then $temp-dir else $pef-output-dir"/>
     </px:tempdir>
@@ -111,7 +113,7 @@
     <!-- ========= -->
     <!-- LOAD HTML -->
     <!-- ========= -->
-    <px:message message="Loading HTML"/>
+    <px:message message="[progress 3 px:html-load] Loading HTML"/>
     <px:html-load name="html">
         <p:with-option name="href" select="$html"/>
     </px:html-load>
@@ -119,7 +121,9 @@
     <!-- ============ -->
     <!-- HTML TO PEF -->
     <!-- ============ -->
-    <px:message message="Done loading HTML, starting conversion to PEF"/>
+    <p:identity cx:depends-on="input-options"/>
+    <p:identity cx:depends-on="temp-dir"/>
+    <px:message message="[progress 90 px:html-to-pef.convert] Converting from HTML to PEF"/>
     <px:html-to-pef.convert default-stylesheet="http://www.daisy.org/pipeline/modules/braille/html-to-pef/css/default.css"
                             name="convert">
         <p:with-option name="temp-dir" select="concat(string(/c:result),'convert/')">
@@ -135,7 +139,7 @@
     <!-- ========= -->
     <!-- STORE PEF -->
     <!-- ========= -->
-    <px:message message="Storing PEF"/>
+    <px:message cx:depends-on="html" message="[progress 5 pef:store] Storing PEF"/>
     <p:group>
         <p:variable name="name" select="replace(p:base-uri(/),'^.*/([^/]*)\.[^/\.]*$','$1')">
             <p:pipe step="html" port="result"/>
