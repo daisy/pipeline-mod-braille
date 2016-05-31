@@ -22,6 +22,7 @@
     <p:option name="skip-margin-top-of-page" select="'false'"/>
     
     <p:import href="http://www.daisy.org/pipeline/modules/common-utils/library.xpl"/>
+    <p:import href="http://www.daisy.org/pipeline/modules/braille/common-utils/library.xpl"/>
     <p:import href="http://www.daisy.org/pipeline/modules/braille/css-utils/library.xpl"/>
     <p:import href="propagate-page-break.xpl"/>
     <p:import href="shift-obfl-marker.xpl"/>
@@ -561,7 +562,7 @@
             </p:input>
         </css:new-definition>
         <px:message message="[progress pxi:css-to-obfl.for-each-margin-attributes.item 10 p:delete] Remove text nodes from block boxes with no line boxes."/>
-        <p:delete match="css:box[@type='block']
+        <px:xslt-delete match="css:box[@type='block']
                                 [matches(string(.), '^[\s&#x2800;]*$') and
                                  not(descendant::css:white-space or
                                      descendant::css:string or
@@ -574,7 +575,7 @@
             <p:documentation>
                 Remove text nodes from block boxes with no line boxes.
             </p:documentation>
-        </p:delete>
+        </px:xslt-delete>
         <px:message message="[progress pxi:css-to-obfl.for-each-margin-attributes.item 20 pxi:propagate-page-break] Resolve css:page-break-before=avoid and css:page-break-after=always."/>
         <pxi:propagate-page-break>
             <p:documentation>

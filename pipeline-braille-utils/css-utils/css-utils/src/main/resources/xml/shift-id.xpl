@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc"
                 xmlns:css="http://www.daisy.org/ns/pipeline/braille-css"
+                xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
                 type="css:shift-id"
                 exclude-inline-prefixes="#all"
                 version="1.0">
@@ -27,17 +28,19 @@
         </p:documentation>
     </p:output>
     
-    <p:wrap-sequence wrapper="_"/>
+    <p:import href="http://www.daisy.org/pipeline/modules/braille/common-utils/library.xpl"/>
     
-    <p:label-elements match="css:box"
-                      attribute="css:id" replace="false"
-                      label="for $flow in (ancestor-or-self::*/@css:flow,'normal')[1] return
-                             string(
-                               ((preceding::*|ancestor::*)[not(self::css:box)][@css:id]
-                                                          [(ancestor-or-self::*/@css:flow,'normal')[1]=$flow]
-                                except (preceding::css:box|ancestor::css:box)
-                                       [last()]/(preceding::*|ancestor::*)
-                               )[last()]/@css:id)"/>
+    <p:wrap-sequence wrapper="css:_"/>
+    
+    <px:xslt-label-elements name="xslt-label-elements" match="css:box"
+                            attribute="css:id" replace="false"
+                            label="for $flow in (ancestor-or-self::*/@css:flow,'normal')[1] return
+                                   string(
+                                     ((preceding::*|ancestor::*)[not(self::css:box)][@css:id]
+                                                                [(ancestor-or-self::*/@css:flow,'normal')[1]=$flow]
+                                      except (preceding::css:box|ancestor::css:box)
+                                             [last()]/(preceding::*|ancestor::*)
+                                     )[last()]/@css:id)"/>
     <p:delete match="@css:id[.='']"/>
     
     <p:label-elements match="css:counter[@name][@target]" attribute="target"
@@ -52,6 +55,6 @@
     
     <p:delete match="*[not(self::css:box)]/@css:id"/>
     
-    <p:filter select="/_/*"/>
+    <p:filter select="/css:_/*"/>
     
 </p:declare-step>

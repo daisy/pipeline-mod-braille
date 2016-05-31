@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc"
+                xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
                 xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc/internal"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:css="http://www.daisy.org/ns/pipeline/braille-css"
@@ -46,6 +47,8 @@
         </p:documentation>
     </p:output>
     
+    <p:import href="http://www.daisy.org/pipeline/modules/braille/common-utils/library.xpl"/>
+    
     <p:declare-step type="pxi:split-into-sections-inner">
         <p:input port="source"/>
         <p:output port="result" sequence="true"/>
@@ -64,11 +67,11 @@
                 <p:label-elements attribute="part" label="if (@part=('middle','last')) then 'middle' else 'first'">
                     <p:with-option name="match" select="concat('css:box[descendant::',$matcher,']')"/>
                 </p:label-elements>
-                <p:delete>
+                <px:xslt-delete>
                     <p:with-option name="match" select="if ($position='before')
                                                         then concat('node()[preceding::',$matcher,']|',$matcher)
                                                         else concat('node()[preceding::',$matcher,']')"/>
-                </p:delete>
+                </px:xslt-delete>
                 <p:identity name="first-part"/>
                 <p:identity>
                     <p:input port="source">
@@ -78,11 +81,11 @@
                 <p:label-elements attribute="part" label="if (@part=('first','middle')) then 'middle' else 'last'">
                     <p:with-option name="match" select="concat('css:box[descendant::',$matcher,']')"/>
                 </p:label-elements>
-                <p:delete>
+                <px:xslt-delete>
                     <p:with-option name="match" select="if ($position='before')
                                                         then concat('node()[following::',$matcher,']')
                                                         else concat('node()[following::',$matcher,']|',$matcher)"/>
-                </p:delete>
+                </px:xslt-delete>
                 <p:for-each>
                     <pxi:split-into-sections-inner/>
                 </p:for-each>

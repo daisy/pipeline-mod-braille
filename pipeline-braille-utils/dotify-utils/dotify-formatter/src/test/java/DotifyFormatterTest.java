@@ -23,6 +23,7 @@ import org.daisy.pipeline.braille.common.CSSStyledText;
 import org.daisy.pipeline.braille.common.Query;
 import org.daisy.pipeline.braille.common.TransformProvider;
 
+import static org.daisy.pipeline.pax.exam.Options.pipelineModule;
 import static org.daisy.pipeline.pax.exam.Options.brailleModule;
 import static org.daisy.pipeline.pax.exam.Options.calabashConfigFile;
 import static org.daisy.pipeline.pax.exam.Options.domTraversalPackage;
@@ -70,6 +71,7 @@ public class DotifyFormatterTest {
 			thisBundle(),
 			junitBundles(),
 			mavenBundlesWithDependencies(
+				pipelineModule("common-utils"),
 				brailleModule("css-core"),
 				brailleModule("css-utils"),
 				brailleModule("pef-utils"),
