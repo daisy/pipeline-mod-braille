@@ -176,7 +176,7 @@
         <plugin>
           <groupId>org.daisy.pipeline.modules.braille</groupId>
           <artifactId>build-helper</artifactId>
-          <version>1.1.1</version>
+          <version>1.1.2-SNAPSHOT</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -306,16 +306,6 @@
               <exclude>META-INF/catalog.xml</exclude>
             </excludes>
           </resource>
-          <resource>
-            <directory>${project.build.directory}/generated-resources</directory>
-            <includes>
-              <include>META-INF/catalog.xml</include>
-              <include>generated-scripts</include>
-              <include>generated-scripts/*</include>
-              <include>data-types</include>
-              <include>data-types/**/*</include>
-            </includes>
-          </resource>
         </resources>
         <plugins>
           <!--
@@ -341,10 +331,6 @@
                 <goals>
                   <goal>process-catalog</goal>
                 </goals>
-                <configuration>
-                  <catalogFile>src/main/resources/META-INF/catalog.xml</catalogFile>
-                  <outputDir>${project.build.directory}/generated-resources</outputDir>
-                </configuration>
               </execution>
             </executions>
           </plugin>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.ctc.wstx.stax.WstxInputFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -50,16 +52,19 @@ import org.xml.sax.InputSource;
 public class ProcessCatalogMojo extends AbstractMojo {
 	
 	@Parameter(
-		readonly = true,
 		defaultValue = "${project.basedir}/src/main/resources/META-INF/catalog.xml"
 	)
 	private File catalogFile;
 	
 	@Parameter(
-		readonly = true,
 		defaultValue = "${project.build.directory}/generated-resources/"
 	)
 	private File outputDirectory;
+	
+	@Parameter(
+		defaultValue = "true"
+	)
+	private boolean addResources;
 	
 	@Parameter(
 		readonly = true,
@@ -101,6 +106,20 @@ public class ProcessCatalogMojo extends AbstractMojo {
 			           ImmutableMap.of("outputDir", asURI(outputDirectory).toASCIIString(),
 			                           "version", projectVersion),
 			           null);
+			if (addResources) {
+				Resource generatedResources = new Resource(); {
+					generatedResources.setDirectory(outputDirectory.getAbsolutePath());
+					List<String> includes = new ArrayList<String>(); {
+						includes.add("META-INF/catalog.xml");
+						includes.add("generated-scripts");
+						includes.add("generated-scripts/*");
+						includes.add("data-types");
+						includes.add("data-types/**/*");
+					}
+					generatedResources.setIncludes(includes);
+				}
+				mavenProject.addResource(generatedResources);
+			}
 		} catch (Throwable e) {
 			e.printStackTrace();
 			throw new MojoFailureException(e.getMessage(), e);
