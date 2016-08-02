@@ -1,12 +1,12 @@
-# Liblouis: Danish table for 8 dots grade 1
+# Liblouis: Danish table for 6 dots grade 1
 #
-# By Bue Vester-Andersen
+#  Copyright (C) 2014-2016, Bue Vester-Andersen <bue@vester-andersen.dk>
 #
 #  This file is part of liblouis.
 #
 #  liblouis is free software: you can redistribute it and/or modify it
 #  under the terms of the GNU Lesser General Public License as
-#  published by the Free Software Foundation, either version 3 of the
+#  published by the Free Software Foundation, either version 2.1 of the
 #  License, or (at your option) any later version.
 #
 #  liblouis is distributed in the hope that it will be useful, but
@@ -20,34 +20,16 @@
 #
 #------------
 #
-# This file is the Danish main table for 8 dots grade 1.
+# This file is the Danish main 6 dots grade 1 table.
+# If used alone, it will create 6 dots grade 1 with capital letters.
+# to eliminate capital letters except all caps, use this file together with da-dk-nocaps.uti.
 #
-# Version: Bue Vester-Andersen, 140511
+# Version: Bue Vester-Andersen, 10713
 
-# Display upcodes
+include da-dk-common6.uti
 
-include da-ansi8.dis
 
-#Character definitions
-include da-chardefs8.cti
+noletsign abcdefghjklmnopqrstuvwxyz\x00e4\x00e5\x00e6\x00f6\x00f8\x00fc
 
-# Rules for grade 1 and grade 2
-
-# Emphasis opcodes
-firstwordital 56
-lastworditalafter 56
-firstletterital 56
-lastletterital 56
-
-firstwordbold 56
-lastwordboldafter 56
-firstletterbold 56
-lastletterbold 56
-
-firstwordunder 56
-lastwordunderafter 56
-firstletterunder 56
-lastletterunder 56
-
-#always \x2013 36-36
-#always \x0096 36-36
+#ensure dot 6 between a digit and a letter
+context $d[]$u @6

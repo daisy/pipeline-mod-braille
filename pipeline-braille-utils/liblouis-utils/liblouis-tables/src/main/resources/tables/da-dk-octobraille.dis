@@ -1,12 +1,12 @@
 # Liblouis: Display table for Danish CP1252 Octo Braille
 #
-# By Bue Vester-Andersen
+#  Copyright (C) 2014-2016, Bue Vester-Andersen <bue@vester-andersen.dk>
 #
 #  This file is part of liblouis.
 #
 #  liblouis is free software: you can redistribute it and/or modify it
 #  under the terms of the GNU Lesser General Public License as
-#  published by the Free Software Foundation, either version 3 of the
+#  published by the Free Software Foundation, either version 2.1 of the
 #  License, or (at your option) any later version.
 #
 #  liblouis is distributed in the hope that it will be useful, but
@@ -23,7 +23,7 @@
 # This file contains display definitions for Danish 8 dot Braille.
 # It should be included in high level tables to ensure correct mapping of characters to dot patterns.
 #
-# Version: Bue Vester-Andersen 140511
+# Version: Bue Vester-Andersen 160713
 
 display \x0000 8 NULL
 display \x0001 178 START OF HEADING

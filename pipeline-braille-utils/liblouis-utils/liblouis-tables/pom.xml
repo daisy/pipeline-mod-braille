@@ -11,15 +11,15 @@
   </parent>
 
   <artifactId>liblouis-tables</artifactId>
-  <version>2.6.3-3-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
   <name>DP2 Braille Modules :: liblouis-utils :: liblouis-tables</name>
 
   <properties>
-    <liblouis.version>2.6.3</liblouis.version>
-    <liblouis.tarball.url>https://github.com/liblouis/liblouis/tarball/v${liblouis.version}</liblouis.tarball.url>
-    <liblouis.tarball.sha1>c3dcdcae2082cc85efc2eacd4923d0b762d27084</liblouis.tarball.sha1>
+    <liblouis.version>3.0.0</liblouis.version>
+    <liblouis.tarball.url>https://codeload.github.com/liblouis/liblouis/legacy.tar.gz/v${liblouis.version}</liblouis.tarball.url>
+    <liblouis.tarball.sha1>0d6d79b67d2ea870863701592ad1714127ed376e</liblouis.tarball.sha1>
   </properties>
   
   <dependencies>
@@ -128,7 +128,7 @@
                         <exclude name="*/tables/README" />
                       </patternset>
                       <mapper>
-                        <globmapper from="liblouis-liblouis-e043e8c/*" to="*" />
+                        <globmapper from="liblouis-liblouis-aa23403/*" to="*" />
                       </mapper>
                     </untar>
                   </target>
