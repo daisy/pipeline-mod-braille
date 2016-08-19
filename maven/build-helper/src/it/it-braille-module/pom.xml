@@ -107,6 +107,18 @@
             </goals>
           </execution>
           <execution>
+            <id>index-liblouis-tables</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>index-liblouis-tables</goal>
+            </goals>
+            <configuration>
+              <sourceDirectory>${project.build.directory}/doc/resources/liblouis</sourceDirectory>
+              <outputFile>${project.build.directory}/doc/resources/liblouis/index.html</outputFile>
+              <identifier>http://www.daisy.org/pipeline/modules/braille/foo-utils/</identifier>
+            </configuration>
+          </execution>
+          <execution>
             <id>htmlize-sources</id>
             <phase>prepare-package</phase>
             <goals>
