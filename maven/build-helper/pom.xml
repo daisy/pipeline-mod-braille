@@ -71,4 +71,46 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+  
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/main/java</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <version>1.8</version>
+        <configuration>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <postBuildHookScript>verify</postBuildHookScript>
+          <properties>
+            <build-helper.version>${project.version}</build-helper.version>
+          </properties>
+          <goals>
+            <goal>install</goal>
+          </goals>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
 </project>
