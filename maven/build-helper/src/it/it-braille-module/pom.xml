@@ -107,6 +107,24 @@
             </goals>
           </execution>
           <execution>
+            <id>htmlize-sources</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>htmlize-sources</goal>
+            </goals>
+            <configuration>
+              <sourceDirectory>${project.build.directory}/doc</sourceDirectory>
+              <outputDirectory>${project.build.directory}/doc</outputDirectory>
+              <includes>
+                resources/**/*.xpl,
+                resources/**/*.xsl,
+                resources/liblouis/*.utb,
+                resources/liblouis/*.uti,
+                resources/META-INF/catalog.xml
+              </includes>
+            </configuration>
+          </execution>
+          <execution>
             <id>xprocdoc</id>
             <phase>prepare-package</phase>
             <goals>
