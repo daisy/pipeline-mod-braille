@@ -85,11 +85,34 @@
                 <resource>
                   <directory>src/main</directory>
                   <includes>
+                    <include>java/**/*</include>
                     <include>resources/**/*</include>
                   </includes>
                 </resource>
               </resources>
               <outputDirectory>${project.build.directory}/doc/</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.3</version>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/doc/javadoc</outputDirectory>
+              <additionalparam>-linksource</additionalparam>
+              <doclet>org.daisy.pipeline.braille.maven.javadoc.HtmlDoclet</doclet>
+              <docletArtifact>
+                <groupId>org.daisy.pipeline.modules.braille</groupId>
+                <artifactId>build-helper</artifactId>
+                <version>${build-helper.version}</version>
+              </docletArtifact>
             </configuration>
           </execution>
         </executions>
