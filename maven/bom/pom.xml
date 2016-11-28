@@ -292,7 +292,10 @@
             <dependency>
                 <groupId>org.daisy.dotify</groupId>
                 <artifactId>dotify.formatter.impl</artifactId>
-                <version>3.1.0</version>
+                <!--
+                    depends on master (1406dc6)
+                -->
+                <version>3.2.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.daisy.dotify</groupId>
