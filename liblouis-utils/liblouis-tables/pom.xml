@@ -91,10 +91,10 @@
         </configuration>
         <executions>
           <execution>
-            <id>manifest-before-test</id>
+            <id>bundle-before-test</id>
             <phase>generate-test-resources</phase>
             <goals>
-              <goal>manifest</goal>
+              <goal>bundle</goal>
             </goals>
           </execution>
         </executions>

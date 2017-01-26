@@ -26,7 +26,8 @@ public class PaxExamConfig extends AbstractXSpecAndXProcSpecTest {
 	
 	@ProbeBuilder
 	public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-		probe.setHeader("Bundle-Name", "css-utils test");
+		probe.setHeader("Bundle-Name", "test-module");
+		probe.setHeader("Service-Component", "OSGI-INF/module.xml");
 		return probe;
 	}
 }

@@ -85,6 +85,7 @@ public class LiblouisCoreTest extends AbstractTest {
 	
 	@ProbeBuilder
 	public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+		probe.setHeader("Bundle-Name", "test-module");
 		probe.setHeader("Import-Package", "org.daisy.pipeline.braille.liblouis");
 		probe.setHeader("Service-Component", "OSGI-INF/table_paths.xml");
 		return probe;
