@@ -70,6 +70,13 @@
     </dependency>
   </dependencies>
   
+  <properties>
+    <expose-services>
+      org.daisy.pipeline.braille.common.calabash.impl.PxTransformStep$StepProvider,
+      org.daisy.pipeline.braille.common.saxon.impl.TextTransformDefinition
+    </expose-services>
+  </properties>
+  
   <build>
     <plugins>
       <plugin>
@@ -89,7 +96,10 @@
         <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
           <instructions>
-            <_dsannotations>*</_dsannotations>
+            <Private-Package>
+              org.daisy.pipeline.braille.common.calabash.impl,
+              org.daisy.pipeline.braille.common.saxon.impl
+            </Private-Package>
           </instructions>
         </configuration>
         <executions>

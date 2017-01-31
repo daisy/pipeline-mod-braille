@@ -63,6 +63,14 @@
     </dependency>
   </dependencies>
   
+  <properties>
+    <expose-services>
+      org.daisy.pipeline.braille.tex.impl.TexHyphenatorDotifyImpl,
+      org.daisy.pipeline.braille.tex.impl.TexHyphenatorSimpleImpl,
+      org.daisy.pipeline.braille.tex.impl.TexHyphenatorTableRegistry
+    </expose-services>
+  </properties>
+  
   <build>
     <plugins>
       <plugin>
@@ -82,7 +90,9 @@
         <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
           <instructions>
-            <_dsannotations>*</_dsannotations>
+            <Private-Package>
+              org.daisy.pipeline.braille.tex.impl
+            </Private-Package>
           </instructions>
         </configuration>
         <executions>

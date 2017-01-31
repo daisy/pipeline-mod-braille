@@ -48,6 +48,12 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+  
+  <properties>
+    <expose-services>
+      org.daisy.pipeline.braille.liblouis.calabash.impl.TranslateFileStep$Provider
+    </expose-services>
+  </properties>
 
   <build>
     <plugins>
@@ -56,7 +62,9 @@
         <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
           <instructions>
-            <_dsannotations>*</_dsannotations>
+            <Private-Package>
+              org.daisy.pipeline.braille.liblouis.calabash.impl
+            </Private-Package>
             <Provide-Capability>xproc.step;name="{http://liblouis.org/liblouis}translate-file"</Provide-Capability>
           </instructions>
         </configuration>

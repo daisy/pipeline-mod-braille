@@ -121,6 +121,13 @@
     </dependency>
   </dependencies>
 
+  <properties>
+    <expose-services>
+      org.daisy.pipeline.braille.dotify.calabash.impl.FileToOBFLStep$Provider,
+      org.daisy.pipeline.braille.dotify.calabash.impl.OBFLToPEFStep$Provider
+    </expose-services>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -140,7 +147,9 @@
         <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
           <instructions>
-            <_dsannotations>*</_dsannotations>
+            <Private-Package>
+              org.daisy.pipeline.braille.dotify.calabash.impl
+            </Private-Package>
             <Provide-Capability>
               xproc.step;name="{http://code.google.com/p/dotify/}obfl-to-pef",
               xproc.step;name="{http://code.google.com/p/dotify/}file-to-obfl"
