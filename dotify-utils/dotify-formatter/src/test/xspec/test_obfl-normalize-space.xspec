@@ -390,5 +390,14 @@
       </obfl>
     </x:expect>
   </x:scenario>
+
+  <x:scenario label="test_09">
+    <x:context>
+      <block first-line-indent="2" xmlns="http://www.daisy.org/ns/2011/obfl">⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁⠄<span translate="" hyphenate="true">*⁠</span><span translate="" hyphenate="true">1</span></block>
+    </x:context>
+    <x:expect label="normalized">
+      <block first-line-indent="2" xmlns="http://www.daisy.org/ns/2011/obfl">⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁ ⠃⠇⠁⠄⁠<span translate="" hyphenate="true">*⁠⁠</span><span translate="" hyphenate="true">1</span></block>
+    </x:expect>
+  </x:scenario>
   
 </x:description>

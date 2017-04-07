@@ -105,7 +105,8 @@ public class DotifyFormatterTest extends AbstractXSpecAndXProcSpecTest {
 		private final static char LF = '\n';
 		private final static char TAB = '\t';
 		private final static char NBSP = '\u00a0';
-		private final static Pattern VALID_INPUT = Pattern.compile("[ivxlcdm0-9\u2800-\u28ff" + SHY + ZWSP + SPACE + LF + CR + TAB + NBSP + "]*");
+		private final static char WJ = '\u2060';
+		private final static Pattern VALID_INPUT = Pattern.compile("[ivxlcdm0-9\u2800-\u28ff" + SHY + ZWSP + SPACE + LF + CR + TAB + NBSP + WJ + "]*");
 		private final static Pattern NUMBER = Pattern.compile("(?<natural>[0-9]+)|(?<roman>[ivxlcdm]+)");
 		private final static String NUMSIGN = "\u283c";
 		private final static String[] DIGIT_TABLE = new String[]{
@@ -114,8 +115,15 @@ public class DotifyFormatterTest extends AbstractXSpecAndXProcSpecTest {
 			"\u2834","\u2802","\u2806","\u2812","\u2832","\u2822","\u2816","\u2836","\u2826","\u2814"};
 		
 		private String transform(String text, SimpleInlineStyle style) {
-			if (!VALID_INPUT.matcher(text).matches())
-				throw new RuntimeException("Invalid input: \"" + text + "\"");
+			if (!VALID_INPUT.matcher(text).matches()) {
+				int pos = 0;
+				while (pos < text.length()) {
+					if (!VALID_INPUT.matcher(text.substring(pos, pos + 1)).matches())
+						break;
+					pos++;
+				}
+				throw new RuntimeException("Invalid input: \"" + text + "\" at position " + pos);
+			}
 			if (style != null
 			    &&style.getProperty("text-transform") == TextTransform.list_values
 			    && style.getValue("text-transform").toString().equals("downshift"))

@@ -124,12 +124,12 @@ public class BrailleFilterFactoryImpl implements BrailleFilterFactory {
 	 *
 	 * Requires that input text is a string consisting of only digits (for
 	 * generating page numbers), braille pattern characters (U+28xx), white
-	 * space characters (SPACE, NBSP, BRAILLE PATTERN BLANK) and
+	 * space characters (SPACE, NBSP, BRAILLE PATTERN BLANK, WORD JOINER) and
 	 * pre-hyphenation characters (SHY and ZWSP).
 	 */
 	private static class NumberBrailleTranslator extends AbstractBrailleTranslator implements BrailleTranslator {
 		
-		private final static Pattern VALID_INPUT = Pattern.compile("[0-9\u2800-\u28ff" + SHY + ZWSP + SPACE + LF + CR + TAB + NBSP + "]*");
+		private final static Pattern VALID_INPUT = Pattern.compile("[0-9\u2800-\u28ff" + SHY + ZWSP + SPACE + LF + CR + TAB + NBSP + WJ + "]*");
 		private final static Pattern NUMBER = Pattern.compile("[0-9]+");
 		private final static String NUMSIGN = "\u283c";
 		private final static String[] DIGIT_TABLE = new String[]{
@@ -161,8 +161,15 @@ public class BrailleFilterFactoryImpl implements BrailleFilterFactory {
 			
 			// The input text must consist of only digits, braille pattern characters and
 			// pre-hyphenation characters.
-			if (!VALID_INPUT.matcher(text).matches())
-				throw new RuntimeException("Invalid input: \"" + text + "\"");
+			if (!VALID_INPUT.matcher(text).matches()) {
+				int pos = 0;
+				while (pos < text.length()) {
+					if (!VALID_INPUT.matcher(text.substring(pos, pos + 1)).matches())
+						break;
+					pos++;
+				}
+				throw new RuntimeException("Invalid input: \"" + text + "\" at position " + pos);
+			}
 			return translateNumbers(text);
 		}
 		
@@ -260,6 +267,7 @@ public class BrailleFilterFactoryImpl implements BrailleFilterFactory {
 	private final static char LF = '\n';
 	private final static char TAB = '\t';
 	private final static char NBSP = '\u00a0';
+	private final static char WJ = '\u2060';
 	
 	protected final static Pattern BRAILLE = Pattern.compile("[\u2800-\u28ff" + SHY + ZWSP + SPACE + NBSP + "]*");
 	

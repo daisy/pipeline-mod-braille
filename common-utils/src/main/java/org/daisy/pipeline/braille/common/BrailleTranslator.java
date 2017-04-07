@@ -33,6 +33,8 @@ public interface BrailleTranslator extends Transform {
 	/* ------------ */
 	
 	public interface LineIterator extends BrailleTranslatorResult {
+		@Override
+		public LineIterator copy();
 	}
 	
 }
