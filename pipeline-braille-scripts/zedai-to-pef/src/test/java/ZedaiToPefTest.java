@@ -30,6 +30,7 @@ import org.ops4j.pax.exam.util.PathUtils;
 
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.systemPackage;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -41,6 +42,7 @@ public class ZedaiToPefTest {
 			logbackConfigFile(),
 			calabashConfigFile(),
 			domTraversalPackage(),
+			systemPackage("javax.xml.stream;version=\"1.0.1\""),
 			felixDeclarativeServices(),
 			thisBundle(),
 			junitBundles(),
@@ -57,14 +59,7 @@ public class ZedaiToPefTest {
 				brailleModule("pef-utils"),
 				brailleModule("liblouis-native").forThisPlatform(),
 				pipelineModule("file-utils"),
-				pipelineModule("common-utils"),
-				pipelineModule("html-utils"),
-				pipelineModule("zip-utils"),
-				pipelineModule("mediatype-utils"),
-				pipelineModule("fileset-utils"),
 				pipelineModule("metadata-utils"),
-				pipelineModule("validation-utils"),
-				pipelineModule("dtbook-validator"),
 				// logging
 				logbackClassic(),
 				// xprocspec

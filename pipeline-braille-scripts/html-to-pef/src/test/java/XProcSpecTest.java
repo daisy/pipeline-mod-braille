@@ -30,6 +30,7 @@ import org.ops4j.pax.exam.util.PathUtils;
 
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.systemPackage;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -41,6 +42,7 @@ public class XProcSpecTest {
 			logbackConfigFile(),
 			calabashConfigFile(),
 			domTraversalPackage(),
+			systemPackage("javax.xml.stream;version=\"1.0.1\""),
 			felixDeclarativeServices(),
 			thisBundle(),
 			junitBundles(),
@@ -55,9 +57,8 @@ public class XProcSpecTest {
 				brailleModule("liblouis-native").forThisPlatform(),
 				brailleModule("dotify-formatter"),
 				pipelineModule("file-utils"),
-				pipelineModule("fileset-utils"),
+				pipelineModule("html-utils"),
 				pipelineModule("common-utils"),
-				pipelineModule("mediatype-utils"),
 				// logging
 				logbackClassic(),
 				// xprocspec
