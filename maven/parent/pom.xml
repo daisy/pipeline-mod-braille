@@ -25,7 +25,7 @@
   </scm>
 
   <properties>
-    <liblouis.version>3.2.0-SNAPSHOT</liblouis.version>
+    <liblouis.version>3.2.0-1-SNAPSHOT</liblouis.version>
   </properties>
 
   <dependencyManagement>
