@@ -24,6 +24,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <!-- must match version from framework-bom -->
+    <saxon.versionRange>[9.5.1,9.5.2)</saxon.versionRange>
+  </properties>
 
   <dependencyManagement>
     <dependencies>
@@ -43,7 +47,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -53,14 +57,14 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>common-utils-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>scripts-utils-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -75,7 +79,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.build</groupId>
         <artifactId>modules-test-helper</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
