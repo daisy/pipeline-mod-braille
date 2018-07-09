@@ -121,10 +121,12 @@ public abstract class AbstractBrailleTranslator extends AbstractTransform implem
 			protected static class FullyHyphenatedAndTranslatedString implements BrailleStream {
 				private String next;
 				public FullyHyphenatedAndTranslatedString(String string) {
+					if (string.replaceAll("[\u00ad\u200b]","").isEmpty())
+						string = null;
 					next = string;
 				}
 				public boolean hasNext() {
-					return (next != null && !next.isEmpty());
+					return next != null;
 				}
 				public String next(int limit, boolean force, boolean allowHyphens) {
 					if (next == null)
