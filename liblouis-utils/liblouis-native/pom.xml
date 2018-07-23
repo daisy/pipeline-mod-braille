@@ -26,6 +26,11 @@
       <artifactId>org.osgi.compendium</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.daisy.pipeline</groupId>
+      <artifactId>ds-to-spi-runtime</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <dependencyManagement>
@@ -292,6 +297,7 @@
                 </Private-Package>
                 <Bundle-SymbolicName>org.daisy.pipeline.modules.braille.liblouis-native-linux</Bundle-SymbolicName>
                 <Include-Resource>
+                  META-INF/services=target/generated-resources/spi/META-INF/services,
                   native/linux/x86=target/generated-resources/native/liblouis/i386-Linux-gpp,
                   native/linux/x86_64=target/generated-resources/native/liblouis/amd64-Linux-gpp,
                   native/linux/x86/liblouisutdml=target/generated-resources/native/liblouisutdml/i386-Linux-gpp,
@@ -315,6 +321,7 @@
                 </Private-Package>
                 <Bundle-SymbolicName>org.daisy.pipeline.modules.braille.liblouis-native-mac</Bundle-SymbolicName>
                 <Include-Resource>
+                  META-INF/services=target/generated-resources/spi/META-INF/services,
                   native/macosx/x86=target/generated-resources/native/liblouis/i386-MacOSX-gpp,
                   native/macosx/x86_64=target/generated-resources/native/liblouis/x86_64-MacOSX-gpp,
                   native/macosx/x86/liblouisutdml=target/generated-resources/native/liblouisutdml/i386-MacOSX-gpp,
@@ -338,6 +345,7 @@
                 </Private-Package>
                 <Bundle-SymbolicName>org.daisy.pipeline.modules.braille.liblouis-native-windows</Bundle-SymbolicName>
                 <Include-Resource>
+                  META-INF/services=target/generated-resources/spi/META-INF/services,
                   native/windows/x86=target/generated-resources/native/liblouis/i686-w64-mingw32-gpp,
                   native/windows/x86_64=target/generated-resources/native/liblouis/x86_64-w64-mingw32-gpp,
                   native/windows/x86/liblouisutdml=target/generated-resources/native/liblouisutdml/i586-mingw32msvc-gpp

@@ -33,6 +33,8 @@ import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactoryService;
 
+import org.osgi.framework.FrameworkUtil;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -201,6 +203,8 @@ public class OBFLToPEFStep extends DefaultStep {
 			policy = ReferencePolicy.DYNAMIC
 		)
 		protected void bindPagedMediaWriterFactoryService(PagedMediaWriterFactoryService service) {
+			if (!OSGiHelper.inOSGiContext())
+				service.setCreatedWithSPI();
 			writerFactoryServices.add(service);
 		}
 		
@@ -219,6 +223,8 @@ public class OBFLToPEFStep extends DefaultStep {
 			policy = ReferencePolicy.STATIC
 		)
 		protected void bindFormatterEngineFactoryService(FormatterEngineFactoryService service) {
+			if (!OSGiHelper.inOSGiContext())
+				service.setCreatedWithSPI();
 			engineFactoryServices.add(service);
 		}
 	
@@ -229,4 +235,13 @@ public class OBFLToPEFStep extends DefaultStep {
 	
 	private static final Logger logger = LoggerFactory.getLogger(OBFLToPEFStep.class);
 	
+	private static abstract class OSGiHelper {
+		static boolean inOSGiContext() {
+			try {
+				return FrameworkUtil.getBundle(OSGiHelper.class) != null;
+			} catch (NoClassDefFoundError e) {
+				return false;
+			}
+		}
+	}
 }
