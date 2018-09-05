@@ -5,7 +5,7 @@
                xmlns:pxi="http://www.daisy.org/ns/pipeline/xproc/internal"
                xmlns:css="http://www.daisy.org/ns/pipeline/braille-css"
                xmlns:dc="http://purl.org/dc/elements/1.1/"
-               xmlns:pef="http://www.daisy.org/ns/2008/pef">
+               xmlns:pef="http://www.daisy.org/ns/2008/pef" focus="">
   
   <x:script>
     <p:pipeline type="pxi:test" version="1.0">
@@ -16,6 +16,7 @@
       <css:inline/>
       <px:transform query="(input:css)(output:pef)(locale:en-US)(grade:2)(translator:liblouis)(formatter:liblouis)">
         <p:with-option name="temp-dir" select="$temp-dir"/>
+        <p:with-param port="parameters" name="foo" select="'bar'"/>
       </px:transform>
     </p:pipeline>
   </x:script>

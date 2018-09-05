@@ -8,6 +8,8 @@
 	<p:input port="source"/>
 	<p:output port="result"/>
 	
+	<p:input port="parameters" kind="parameter" primary="false"/>
+	
 	<p:option name="block-transform" select="''"/>
 	<p:option name="temp-dir" required="true"/>
 	
