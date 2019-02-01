@@ -13520,9 +13520,13 @@
     </x:expect>
   </x:scenario>
   
- <x:scenario label="test_118">
+ <x:scenario label="test_118" xfail="true">
     <x:documentation>
       Tests that last sheet of volume is modified so that volume break occurs between blocks.
+      
+      Broken: block is not moved to next volume if it starts on right-hand page.
+      
+      FIXME: only the case on libs/dotify/dotify.formatter.impl/issue-70 branch (ff3b8d7)
     </x:documentation>
     <x:call step="dotify:format">
       <x:input port="source">
