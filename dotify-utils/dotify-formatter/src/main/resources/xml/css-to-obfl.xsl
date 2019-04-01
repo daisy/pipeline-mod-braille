@@ -331,6 +331,7 @@
                                     <xsl:variable name="pending-text-transform" as="xs:string?" select="$volume-area-properties[@name='text-transform']/@value"/>
                                     <xsl:variable name="pending-hyphens" as="xs:string?" select="$volume-area-properties[@name='hyphens']/@value"/>
                                     <xsl:variable name="word-spacing" as="xs:integer" select="($volume-area-properties[@name='word-spacing']/@value,$word-spacing)[1]"/>
+                                    <xsl:variable name="white-space" as="xs:string?" select="$volume-area-properties[@name='white-space']/@value"/>
                                     <xsl:variable name="volume-area-content" as="element()*"> <!-- css:_|obfl:list-of-references -->
                                         <xsl:apply-templates mode="css:eval-volume-area-content-list"
                                                              select="css:parse-content-list($volume-area-properties[@name='content'][1]/@value,())"/>
@@ -405,6 +406,7 @@
                                                                             <xsl:with-param name="pending-text-transform" tunnel="yes" select="$pending-text-transform"/>
                                                                             <xsl:with-param name="pending-hyphens" tunnel="yes" select="$pending-hyphens"/>
                                                                             <xsl:with-param name="word-spacing" tunnel="yes" select="$word-spacing"/>
+                                                                            <xsl:with-param name="white-space" tunnel="yes" select="$white-space"/>
                                                                         </xsl:call-template>
                                                                     </xsl:variable>
                                                                     <xsl:element name="{if ($sequence/self::obfl:list-of-references) then 'dynamic-sequence' else 'sequence'}">
@@ -424,6 +426,7 @@
                                                                                     <xsl:with-param name="pending-text-transform" tunnel="yes" select="$pending-text-transform"/>
                                                                                     <xsl:with-param name="pending-hyphens" tunnel="yes" select="$pending-hyphens"/>
                                                                                     <xsl:with-param name="word-spacing" tunnel="yes" select="$word-spacing"/>
+                                                                                    <xsl:with-param name="white-space" tunnel="yes" select="$white-space"/>
                                                                                 </xsl:call-template>
                                                                             </xsl:if>
                                                                         </xsl:for-each-group>
@@ -459,6 +462,7 @@
                                                                                     <xsl:with-param name="pending-text-transform" tunnel="yes" select="$pending-text-transform"/>
                                                                                     <xsl:with-param name="pending-hyphens" tunnel="yes" select="$pending-hyphens"/>
                                                                                     <xsl:with-param name="word-spacing" tunnel="yes" select="$word-spacing"/>
+                                                                                    <xsl:with-param name="white-space" tunnel="yes" select="$white-space"/>
                                                                                 </xsl:call-template>
                                                                             </xsl:variable>
                                                                             <xsl:if test="exists($before-toc) and not($toc-range='document')
@@ -484,6 +488,7 @@
                                                                                         <xsl:with-param name="pending-text-transform" tunnel="yes" select="$pending-text-transform"/>
                                                                                         <xsl:with-param name="pending-hyphens" tunnel="yes" select="$pending-hyphens"/>
                                                                                         <xsl:with-param name="word-spacing" tunnel="yes" select="$word-spacing"/>
+                                                                                        <xsl:with-param name="white-space" tunnel="yes" select="$white-space"/>
                                                                                     </xsl:apply-templates>
                                                                                 </table-of-contents>
                                                                                 <xsl:if test="(exists($before-toc) and $toc-range='document' and not($before-toc/self::obfl:list-of-references))
@@ -500,6 +505,7 @@
                                                                                             <xsl:with-param name="pending-text-transform" tunnel="yes" select="$pending-text-transform"/>
                                                                                             <xsl:with-param name="pending-hyphens" tunnel="yes" select="$pending-hyphens"/>
                                                                                             <xsl:with-param name="word-spacing" tunnel="yes" select="$word-spacing"/>
+                                                                                            <xsl:with-param name="white-space" tunnel="yes" select="$white-space"/>
                                                                                         </xsl:apply-templates>
                                                                                     </on-toc-start>
                                                                                 </xsl:if>
@@ -509,6 +515,7 @@
                                                                                             <xsl:with-param name="pending-text-transform" tunnel="yes" select="$pending-text-transform"/>
                                                                                             <xsl:with-param name="pending-hyphens" tunnel="yes" select="$pending-hyphens"/>
                                                                                             <xsl:with-param name="word-spacing" tunnel="yes" select="$word-spacing"/>
+                                                                                            <xsl:with-param name="white-space" tunnel="yes" select="$white-space"/>
                                                                                         </xsl:apply-templates>
                                                                                     </on-volume-start>
                                                                                 </xsl:if>
@@ -518,6 +525,7 @@
                                                                                             <xsl:with-param name="pending-text-transform" tunnel="yes" select="$pending-text-transform"/>
                                                                                             <xsl:with-param name="pending-hyphens" tunnel="yes" select="$pending-hyphens"/>
                                                                                             <xsl:with-param name="word-spacing" tunnel="yes" select="$word-spacing"/>
+                                                                                            <xsl:with-param name="white-space" tunnel="yes" select="$white-space"/>
                                                                                         </xsl:apply-templates>
                                                                                     </on-volume-end>
                                                                                 </xsl:if>
@@ -527,6 +535,7 @@
                                                                                             <xsl:with-param name="pending-text-transform" tunnel="yes" select="$pending-text-transform"/>
                                                                                             <xsl:with-param name="pending-hyphens" tunnel="yes" select="$pending-hyphens"/>
                                                                                             <xsl:with-param name="word-spacing" tunnel="yes" select="$word-spacing"/>
+                                                                                            <xsl:with-param name="white-space" tunnel="yes" select="$white-space"/>
                                                                                         </xsl:apply-templates>
                                                                                         <xsl:if test="not($after-toc/self::obfl:list-of-references)">
                                                                                             <xsl:sequence select="$after-toc"/>
@@ -566,6 +575,7 @@
                         <xsl:variable name="pending-text-transform" as="xs:string?" select="css:property[@name='text-transform']/@value"/>
                         <xsl:variable name="pending-hyphens" as="xs:string?" select="css:property[@name='hyphens']/@value"/>
                         <xsl:variable name="word-spacing" as="xs:integer" select="(css:property[@name='word-spacing']/@value,$word-spacing)[1]"/>
+                        <xsl:variable name="white-space" as="xs:string?" select="css:property[@name='white-space']/@value"/>
                         <xsl:variable name="sequence-interrupted-resumed-content" as="element()*"> <!-- (css:_|css:box)* -->
                             <xsl:apply-templates mode="css:eval-sequence-interrupted-resumed-content-list"
                                                  select="css:parse-content-list($sequence-interrupted-resumed-content,())"/>
@@ -585,6 +595,7 @@
                                 <xsl:with-param name="pending-text-transform" tunnel="yes" select="$pending-text-transform"/>
                                 <xsl:with-param name="pending-hyphens" tunnel="yes" select="$pending-hyphens"/>
                                 <xsl:with-param name="word-spacing" tunnel="yes" select="$word-spacing"/>
+                                <xsl:with-param name="white-space" tunnel="yes" select="$white-space"/>
                             </xsl:apply-templates>
                         </xsl:variable>
                         <xsl:if test="$sequence">
@@ -1502,6 +1513,17 @@
     <xsl:template mode="block-attr span-attr td-attr table-attr toc-entry-attr assert-nil-attr"
                   match="css:box/@css:word-spacing"/>
     
+    <xsl:template priority="1.01"
+                  mode="block span td table toc-entry"
+                  match="css:box[@css:white-space]|
+                         css:string[@name][@css:white-space]|
+                         css:counter[@target][@name=$page-counter-names][@css:white-space]|
+                         css:custom-func[@name='-obfl-evaluate'][@css:white-space]">
+        <xsl:next-match>
+            <xsl:with-param name="white-space" tunnel="yes" select="@css:white-space"/>
+        </xsl:next-match>
+    </xsl:template>
+    
     <!-- ================ -->
     <!-- Other attributes -->
     <!-- ================ -->
@@ -1868,6 +1890,7 @@
     -->
     <xsl:template mode="block span toc-entry"
                   match="css:string[@name]">
+        <xsl:param name="white-space" as="xs:string?" tunnel="yes" select="()"/>
         <xsl:if test="@scope">
             <xsl:call-template name="pf:warn">
                 <xsl:with-param name="msg">string({}, {}): second argument not supported</xsl:with-param>
@@ -1875,10 +1898,10 @@
                                                      @scope)"/>
             </xsl:call-template>
         </xsl:if>
-        <xsl:if test="@css:white-space">
+        <xsl:if test="$white-space[not(.='normal')]">
             <xsl:call-template name="pf:warn">
                 <xsl:with-param name="msg">white-space:{} could not be applied to {}({})</xsl:with-param>
-                <xsl:with-param name="args" select="(@css:white-space,
+                <xsl:with-param name="args" select="($white-space,
                                                      if (@target) then 'target-string' else 'string',
                                                      @name)"/>
             </xsl:call-template>
@@ -1954,6 +1977,7 @@
         <xsl:param name="hyphens" as="xs:string" tunnel="yes"/>
         <xsl:param name="pending-text-transform" as="xs:string?" tunnel="yes"/>
         <xsl:param name="pending-hyphens" as="xs:string?" tunnel="yes"/>
+        <xsl:param name="white-space" as="xs:string?" tunnel="yes" select="()"/>
         <xsl:if test="($pending-text-transform[not(.='none')] and $text-transform='none')
                       or ($pending-hyphens[not(.='auto')] and $hyphens='auto')">
             <xsl:message terminate="yes">Coding error</xsl:message>
@@ -1978,8 +2002,8 @@
             <xsl:if test="$hyphens='none'">
                 <xsl:sequence select="concat('hyphens: ',$hyphens)"/>
             </xsl:if>
-            <xsl:if test="@css:white-space">
-                <xsl:sequence select="concat('white-space:',@css:white-space)"/>
+            <xsl:if test="$white-space[not(.='normal')]">
+                <xsl:sequence select="concat('white-space:',$white-space)"/>
             </xsl:if>
             <xsl:if test="matches(@style,re:exact($css:SYMBOLS_FN_RE))">
                 <xsl:sequence select="concat('-dotify-counter-style: ',@style)"/>
@@ -2078,6 +2102,7 @@
         <xsl:param name="hyphens" as="xs:string" tunnel="yes"/>
         <xsl:param name="pending-text-transform" as="xs:string?" tunnel="yes"/>
         <xsl:param name="pending-hyphens" as="xs:string?" tunnel="yes"/>
+        <xsl:param name="white-space" as="xs:string?" tunnel="yes" select="()"/>
         <xsl:if test="($pending-text-transform[not(.='none')] and $text-transform='none')
                       or ($pending-hyphens[not(.='auto')] and $hyphens='auto')">
             <xsl:message terminate="yes">Coding error</xsl:message>
@@ -2091,8 +2116,8 @@
             <xsl:if test="$hyphens='none'">
                 <xsl:sequence select="concat('hyphens: ',$hyphens)"/>
             </xsl:if>
-            <xsl:if test="@css:white-space[not(.='normal')]">
-                <xsl:sequence select="concat('white-space: ',@css:white-space)"/>
+            <xsl:if test="$white-space[not(.='normal')]">
+                <xsl:sequence select="concat('white-space: ',$white-space)"/>
             </xsl:if>
         </xsl:variable>
         <xsl:variable name="expression" as="xs:string" select="css:parse-string(@arg1)/@value"/>
@@ -2284,6 +2309,13 @@
         </xsl:call-template>
     </xsl:template>
     
+    <xsl:template mode="block span td toc-entry"
+                  match="css:white-space">
+        <xsl:apply-templates mode="#current">
+            <xsl:with-param name="white-space" tunnel="yes" select="'pre-wrap'"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
     <!--
         FIXME: only if within block and no sibling blocks
     -->
@@ -2292,107 +2324,114 @@
         <xsl:param name="text-transform" as="xs:string" tunnel="yes"/>
         <xsl:param name="hyphens" as="xs:string" tunnel="yes"/>
         <xsl:param name="word-spacing" as="xs:integer" tunnel="yes"/>
+        <xsl:param name="white-space" as="xs:string?" tunnel="yes" select="()"/>
         
         <xsl:call-template name="pf:progress">
             <xsl:with-param name="progress" select="concat('1/',$progress-total)"/>
         </xsl:call-template>
         
-        <xsl:variable name="text" as="xs:string" select="translate($text,'&#x2800;',' ')"/>
-        <xsl:variable name="text" as="xs:string">
-            <xsl:choose>
-                <!--
-                    For 'hyphens:none' all SHY and ZWSP characters are removed from the text in advance.
-                -->
-                <xsl:when test="$hyphens='none'">
-                    <xsl:sequence select="replace($text,'[&#x00AD;&#x200B;]','')"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:sequence select="$text"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="text" as="xs:string">
-            <xsl:choose>
-                <xsl:when test="$word-spacing=1">
-                    <xsl:sequence select="$text"/>
-                </xsl:when>
-                <!--
-                    FIXME: style elements are currently processed in a step before line breaking (in
-                    MarkerProcessorFactoryServiceImpl) so that they can't be used for passing
-                    word-spacing to a "LineBreakingFromStyledText". Performing word spacing in XSLT
-                    instead. Alternatively this could be implemented in a "FromStyledTextToBraille".
-                -->
-                <xsl:otherwise>
-                    <xsl:variable name="words" as="xs:string*">
-                        <xsl:analyze-string select="$text" regex="[&#x00AD;&#x200B;]*[ \t\n\r][&#x00AD;&#x200B; \t\n\r]*">
-                            <xsl:matching-substring/>
-                            <xsl:non-matching-substring>
-                                <xsl:sequence select="."/>
-                            </xsl:non-matching-substring>
-                        </xsl:analyze-string>
-                    </xsl:variable>
-                    <xsl:variable name="spacing" as="xs:string" select="concat(string-join(for $x in 1 to $word-spacing return '&#x00A0;',''),'&#x200B;')"/>
-                    <xsl:sequence select="string-join($words, $spacing)"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
         <xsl:choose>
-            <!--
-                text-transform values 'none' and 'auto' are handled through the translate attribute.
-            -->
-            <xsl:when test="$text-transform=('none','auto')">
-                <xsl:value-of select="$text"/>
-            </xsl:when>
-            <!--
-                Other values are handled through the style element
-            -->
-            <xsl:otherwise>
-                <xsl:variable name="style" as="xs:string*">
-                    <xsl:sequence select="concat('text-transform: ',$text-transform)"/>
-                    <xsl:if test="$hyphens='auto'">
-                        <!--
-                            The translation of a style always happens in two stages (result of
-                            Dotify implementation). We have to make sure that the first translation
-                            has all the information needed (and ideally make the second a
-                            no-op). This includes whether to hyphenate or not. In the case we need
-                            to hyphenate, a "hyphenate" attribute has been added to a ancestor block
-                            or span. However, since that attribute is processed only during the
-                            second translation stage, we have to add a 'hyphens' style as well. This
-                            leads to some duplication, but that's alright.
-                        -->
-                        <xsl:sequence select="concat('hyphens: ',$hyphens)"/>
-                    </xsl:if>
-                </xsl:variable>
-                <style name="{string-join($style,'; ')}">
-                    <xsl:value-of select="$text"/>
-                </style>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    
-    <xsl:template mode="block span td toc-entry"
-                  match="css:white-space">
-        <xsl:apply-templates mode="#current"/>
-    </xsl:template>
-    
-    <xsl:template mode="block span td toc-entry"
-                  match="css:white-space/text()">
-        <xsl:analyze-string select="." regex="\n">
-            <xsl:matching-substring>
-                <xsl:text>&#x200B;</xsl:text> <!-- to make sure there are no leading br elements in a block because those are ignored -->
-                <br/>
-            </xsl:matching-substring>
-            <xsl:non-matching-substring>
-                <xsl:analyze-string select="." regex="[ \t\n\r&#x2800;]+">
+            <xsl:when test="$white-space=('pre-wrap','pre-line') and matches($text,'\n')">
+                <xsl:analyze-string select="$text" regex="\n">
                     <xsl:matching-substring>
-                        <xsl:value-of select="concat(replace(.,'.','&#x00A0;'),'&#x200B;')"/>
+                        <xsl:text>&#x200B;</xsl:text> <!-- to make sure there are no leading br elements in a block because those would be ignored -->
+                        <br/>
                     </xsl:matching-substring>
                     <xsl:non-matching-substring>
-                        <xsl:value-of select="."/>
+                        <xsl:call-template name="text">
+                            <xsl:with-param name="text" select="."/>
+                        </xsl:call-template>
                     </xsl:non-matching-substring>
                 </xsl:analyze-string>
-            </xsl:non-matching-substring>
-        </xsl:analyze-string>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="text" as="xs:string">
+                    <xsl:choose>
+                        <!--
+                            For 'hyphens:none' all SHY and ZWSP characters are removed from the text in advance.
+                        -->
+                        <xsl:when test="$hyphens='none'">
+                            <xsl:sequence select="replace($text,'[&#x00AD;&#x200B;]','')"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="$text"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="text" as="xs:string">
+                    <xsl:choose>
+                        <xsl:when test="$white-space='pre-wrap'">
+                            <xsl:analyze-string select="$text" regex="[ \t\n\r&#x2800;]+">
+                                <xsl:matching-substring>
+                                    <xsl:value-of select="concat(replace(.,'.','&#x00A0;'),'&#x200B;')"/>
+                                </xsl:matching-substring>
+                                <xsl:non-matching-substring>
+                                    <xsl:value-of select="."/>
+                                </xsl:non-matching-substring>
+                            </xsl:analyze-string>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:variable name="text" as="xs:string" select="translate($text,'&#x2800;',' ')"/>
+                            <xsl:choose>
+                                <xsl:when test="$word-spacing=1">
+                                    <xsl:sequence select="$text"/>
+                                </xsl:when>
+                                <!--
+                                    FIXME: style elements are currently processed in a step before line breaking (in
+                                    MarkerProcessorFactoryServiceImpl) so that they can't be used for passing
+                                    word-spacing to a "LineBreakingFromStyledText". Performing word spacing in XSLT
+                                    instead. Alternatively this could be implemented in a "FromStyledTextToBraille".
+                                -->
+                                <xsl:otherwise>
+                                    <xsl:variable name="words" as="xs:string*">
+                                        <xsl:analyze-string select="$text" regex="[&#x00AD;&#x200B;]*[ \t\n\r][&#x00AD;&#x200B; \t\n\r]*">
+                                            <xsl:matching-substring/>
+                                            <xsl:non-matching-substring>
+                                                <xsl:sequence select="."/>
+                                            </xsl:non-matching-substring>
+                                        </xsl:analyze-string>
+                                    </xsl:variable>
+                                    <xsl:variable name="spacing" as="xs:string" select="concat(string-join(for $x in 1 to $word-spacing return '&#x00A0;',''),'&#x200B;')"/>
+                                    <xsl:sequence select="string-join($words, $spacing)"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:choose>
+                    <!--
+                        text-transform values 'none' and 'auto' are handled through the translate attribute.
+                    -->
+                    <xsl:when test="$text-transform=('none','auto')">
+                        <xsl:value-of select="$text"/>
+                    </xsl:when>
+                    <!--
+                        Other values are handled through the style element
+                    -->
+                    <xsl:otherwise>
+                        <xsl:variable name="style" as="xs:string*">
+                            <xsl:sequence select="concat('text-transform: ',$text-transform)"/>
+                            <xsl:if test="$hyphens='auto'">
+                                <!--
+                                    The translation of a style always happens in two stages (result of
+                                    Dotify implementation). We have to make sure that the first translation
+                                    has all the information needed (and ideally make the second a
+                                    no-op). This includes whether to hyphenate or not. In the case we need
+                                    to hyphenate, a "hyphenate" attribute has been added to a ancestor block
+                                    or span. However, since that attribute is processed only during the
+                                    second translation stage, we have to add a 'hyphens' style as well. This
+                                    leads to some duplication, but that's alright.
+                                -->
+                                <xsl:sequence select="concat('hyphens: ',$hyphens)"/>
+                            </xsl:if>
+                        </xsl:variable>
+                        <style name="{string-join($style,'; ')}">
+                            <xsl:value-of select="$text"/>
+                        </style>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <!-- === -->
