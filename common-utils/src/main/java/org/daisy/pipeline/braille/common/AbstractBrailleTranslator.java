@@ -328,6 +328,10 @@ public abstract class AbstractBrailleTranslator extends AbstractTransform implem
 				 *                 at the end if needed.
 				 */
 				public String nextTranslatedRow(int limit, boolean force, boolean wholeWordsOnly) {
+					return nextTranslatedRow(limit, force, wholeWordsOnly, false);
+				}
+				
+				private String nextTranslatedRow(int limit, boolean force, boolean wholeWordsOnly, boolean noProhibit) {
 					fillRow(limit, force, !wholeWordsOnly);
 					int bufSize = charBuffer.length();
 					if (force && bufSize == 0)
@@ -361,7 +365,7 @@ public abstract class AbstractBrailleTranslator extends AbstractTransform implem
 						
 						// except if break is prohibited at the end
 						// continue search but limit search range to bufSize
-						if (bufSize > 0 && wrapInfo.get(bufSize - 1) == PROHIBIT_WRAP)
+						if (!noProhibit && bufSize > 0 && wrapInfo.get(bufSize - 1) == PROHIBIT_WRAP)
 							limit = bufSize;
 						else {
 							String rv = charBuffer.substring(0, bufSize);
@@ -392,7 +396,8 @@ public abstract class AbstractBrailleTranslator extends AbstractTransform implem
 					// break at SPACE or ZWSP or end of string (if break is not prohibited at the end)
 					// FIXME: ignore ZWSP if it comes from hyphenation (how to find out?) and wholeWordsOnly==true
 					if ((wrapInfo.get(limit - 1) & SOFT_WRAP_WITHOUT_HYPHEN) == SOFT_WRAP_WITHOUT_HYPHEN
-					    || wrapInfo.get(limit - 1) == END_OF_STRING) {
+					    || wrapInfo.get(limit - 1) == END_OF_STRING
+					    || (noProhibit && wrapInfo.get(limit - 1) == PROHIBIT_WRAP)) {
 						int cut = limit;
 						
 						// strip trailing SPACE/LF/CR/TAB/BLANK/NBSP (all except NBSP are already collapsed into one)
@@ -414,7 +419,8 @@ public abstract class AbstractBrailleTranslator extends AbstractTransform implem
 					// try to break later if the overflowing characters are blank (and break is not prohibited at the end)
 					for (int i = limit + 1; i - 1 < bufSize && charBuffer.charAt(i - 1) == blankChar; i++)
 						if ((wrapInfo.get(i - 1) & SOFT_WRAP_WITHOUT_HYPHEN) == SOFT_WRAP_WITHOUT_HYPHEN
-						    || wrapInfo.get(i - 1) == END_OF_STRING) {
+						    || wrapInfo.get(i - 1) == END_OF_STRING
+						    || (noProhibit && wrapInfo.get(limit - 1) == PROHIBIT_WRAP)) {
 							
 							// strip trailing SPACE/LF/CR/TAB/BLANK/NBSP (all except NBSP are already collapsed into one)
 							int cut = limit;
@@ -461,11 +467,11 @@ public abstract class AbstractBrailleTranslator extends AbstractTransform implem
 							// FIXME: breaks cases where NBSP after SHY is not from letter-spacing
 							int cut2 = i;
 							while (cut2 < bufSize && charBuffer.charAt(cut2) == blankChar) cut2++;
-							if (cut2 == bufSize && bufSize == limit && wrapInfo.get(bufSize - 1) == PROHIBIT_WRAP) {
+							if (cut2 == bufSize && bufSize == limit && !noProhibit && wrapInfo.get(bufSize - 1) == PROHIBIT_WRAP) {
 							
 								// if break is prohibited at the end of the stripped blanks, it means there are NBSP at the
-								// end (because a SPACE/LF/CR/TAG/BLANK would have overruled the WJ)
-								// strip only SPACE/LF/CR/TAG/BLANK because we can assume the NBSP is not from letter-spacing
+								// end (because a SPACE/LF/CR/TAB/BLANK would have overruled the WJ)
+								// strip only SPACE/LF/CR/TAB/BLANK because we can assume the NBSP is not from letter-spacing
 								cut2 = i;
 								while (cut2 < bufSize && wrapInfo.get(cut2) == SOFT_WRAP_AFTER_SPACE) cut2++;
 								if (cut2 == bufSize)
@@ -496,6 +502,8 @@ public abstract class AbstractBrailleTranslator extends AbstractTransform implem
 				 * @return returns the characters not yet extracted with nextTranslatedRow
 				 */
 				public String getTranslatedRemainder() {
+					if (!hasNext())
+						return "";
 					
 					// Note that I could use clone() here, but the current code is slightly more efficient
 					BrailleStream save_inputStream = inputStream;
@@ -521,15 +529,17 @@ public abstract class AbstractBrailleTranslator extends AbstractTransform implem
 					lastCharIsSpace = false;
 					int save_forcedBreakCount = forcedBreakCount;
 					forcedBreakCount = 0;
-					fillRow(Integer.MAX_VALUE, true, false);
-					String remainder = charBuffer.toString();
+					StringBuilder remainder = new StringBuilder();
+					remainder.append(nextTranslatedRow(Integer.MAX_VALUE, true, false, true));
+					while (hasNext())
+						remainder.append('\n').append(nextTranslatedRow(Integer.MAX_VALUE, true, false, true));
 					inputStream = save_inputStream;
 					inputBuffer = save_inputBuffer != null ? peekingIterator(save_inputBuffer.iterator()) : null;
 					charBuffer = save_charBuffer;
 					wrapInfo = save_wrapInfo;
 					lastCharIsSpace = save_lastCharIsSpace;
 					forcedBreakCount = save_forcedBreakCount;
-					return remainder;
+					return remainder.toString();
 				}
 				
 				/**
