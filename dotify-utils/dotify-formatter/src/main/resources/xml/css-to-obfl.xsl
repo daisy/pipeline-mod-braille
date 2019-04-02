@@ -767,18 +767,14 @@
                                     <xsl:if test="exists($on-volume-start)">
                                         <on-volume-start>
                                             <xsl:for-each select="$on-volume-start">
-                                                <xsl:apply-templates mode="sequence" select=".">
-                                                    <xsl:with-param name="first-in-sequence" tunnel="yes" select="position()=1"/>
-                                                </xsl:apply-templates>
+                                                <xsl:apply-templates mode="sequence" select="."/>
                                             </xsl:for-each>
                                         </on-volume-start>
                                     </xsl:if>
                                     <xsl:if test="exists($on-volume-end)">
                                         <on-volume-end>
                                             <xsl:for-each select="$on-volume-end">
-                                                <xsl:apply-templates mode="sequence" select=".">
-                                                    <xsl:with-param name="first-in-sequence" tunnel="yes" select="position()=1"/>
-                                                </xsl:apply-templates>
+                                                <xsl:apply-templates mode="sequence" select="."/>
                                             </xsl:for-each>
                                         </on-volume-end>
                                     </xsl:if>
@@ -803,7 +799,6 @@
                                         <on-collection-start>
                                             <xsl:for-each select="current-group()">
                                                 <xsl:apply-templates mode="sequence" select=".">
-                                                    <xsl:with-param name="first-in-sequence" tunnel="yes" select="position()=1"/>
                                                     <xsl:with-param name="top-of-page" tunnel="yes" select="$first and position()=1"/>
                                                 </xsl:apply-templates>
                                             </xsl:for-each>
@@ -814,7 +809,6 @@
                             <xsl:otherwise>
                                 <xsl:for-each select="current-group()">
                                     <xsl:apply-templates mode="sequence" select=".">
-                                        <xsl:with-param name="first-in-sequence" tunnel="yes" select="position()=1"/>
                                         <xsl:with-param name="top-of-page" tunnel="yes" select="$first and position()=1"/>
                                     </xsl:apply-templates>
                                 </xsl:for-each>
@@ -1674,18 +1668,6 @@
     <xsl:template mode="block-attr"
                   match="css:box[@type='block']/@css:page-break-before[.='right']">
         <xsl:attribute name="break-before" select="'sheet'"/>
-    </xsl:template>
-    
-    <!--
-        ignore page-break-before on first box of sequence
-    -->
-    <xsl:template mode="block-attr
-                        table-attr"
-                  match="css:box[@type='block'][not(parent::css:box) and not(preceding-sibling::*)]/@css:page-break-before[.=('always','right')]">
-        <xsl:param name="first-in-sequence" as="xs:boolean" tunnel="yes" select="true()"/>
-        <xsl:if test="not($first-in-sequence)">
-            <xsl:next-match/>
-        </xsl:if>
     </xsl:template>
     
     <!--
