@@ -286,8 +286,15 @@ public abstract class AbstractBrailleTranslator extends AbstractTransform implem
 							lastCharIsSpace = false;
 							break;
 						case LS:
-							if (bufSize > 0)
+							if (bufSize > 0 && (wrapInfo.get(bufSize - 1) & HARD_WRAP) != HARD_WRAP)
 								wrapInfo.set(bufSize - 1, (byte)(wrapInfo.get(bufSize - 1) | HARD_WRAP));
+							else {
+								// add a blank to attach the HARD_WRAP info to
+								// otherwise we can't preserve empty lines
+								charBuffer.append(blankChar);
+								bufSize ++;
+								wrapInfo.add(HARD_WRAP);
+							}
 							lastCharIsSpace = true;
 							break;
 						case WJ:
@@ -335,7 +342,7 @@ public abstract class AbstractBrailleTranslator extends AbstractTransform implem
 					fillRow(limit, force, !wholeWordsOnly);
 					int bufSize = charBuffer.length();
 					if (force && bufSize == 0)
-						throw new IllegalStateException();
+						throw new IllegalStateException(); // but what if BrailleStream returned empty string due to preserved line break?
 					
 					// charBuffer may be empty (even if hasNext() was true)
 					if (bufSize == 0)
