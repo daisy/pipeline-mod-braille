@@ -161,6 +161,10 @@ div.page {
     -moz-box-shadow: 0.2em 0.2em 10px #444;
     -webkit-box-shadow: 0.2em 0.2em 10px #444;
 }
+#main div.page:nth-of-type(even) {
+    float: left;
+    clear: right;
+}
 div.braille-page {
     display: block;
 }
