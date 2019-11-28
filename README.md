@@ -1,6 +1,8 @@
 [pipeline-mod-braille][]
 ========================
 
+**NOTE: This project is deprecated, its content have been integrated in the [pipeline-modules project](https://github.com/daisy/pipeline-modules)**
+
 [![Build Status](https://travis-ci.org/daisy/pipeline-mod-braille.png?branch=master)](https://travis-ci.org/daisy/pipeline-mod-braille)
 
 This repository contains a library of utility modules for braille
